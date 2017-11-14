@@ -1,0 +1,6 @@
+framework module Pods_NoteShare {
+  umbrella header "Pods-NoteShare-umbrella.h"
+
+  export *
+  module * { export * }
+}

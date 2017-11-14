@@ -8,6 +8,9 @@
 
 import UIKit
 import CoreData
+import FirebaseInstanceID
+import UserNotifications
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,7 +20,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        
+        FirebaseApp.configure()
+        // Override point for customization after application launch.
+        
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        if launchedBefore {
+            Thread.sleep(forTimeInterval: 1.0)
+            window = UIWindow(frame: UIScreen.main.bounds)
+            window?.makeKeyAndVisible()
+            window?.rootViewController = UINavigationController(rootViewController: HomePageController())
+            
+        } else {
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+            UserDefaults.standard.synchronize()
+            Thread.sleep(forTimeInterval: 1.0)
+            window = UIWindow(frame: UIScreen.main.bounds)
+            window?.makeKeyAndVisible()
+            window?.rootViewController = UINavigationController(rootViewController: HomePageController())
+        }
+        
+        UINavigationBar.appearance().barTintColor = UIColor.black
+        UINavigationBar.appearance().backgroundColor = UIColor.black
+        UINavigationBar.appearance().tintColor = UIColor.white
+        
+//        if let font = UIFont(name: "MarkerFelt-Wide", size: 20) {
+//
+//        }
         return true
+
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
