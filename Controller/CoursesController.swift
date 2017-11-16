@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CoursesController: UIViewController, LeftMenuDelegate, UINavigationControllerDelegate {
+class CoursesController: UIViewController, LeftMenuDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
     
 
     
@@ -17,50 +17,41 @@ class CoursesController: UIViewController, LeftMenuDelegate, UINavigationControl
     }
     
     let leftMenu = LeftMenu()
-    
+    let courseView = CourseView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.green
+        view.backgroundColor = UIColor.white
 
         self.navigationController?.navigationBar.isHidden = true
         
-        view.addSubview(menuButton)
-        view.addSubview(leftMenu)
-        view.addSubview(testText)
+        view.addSubview(courseView)
+        view.addSubview(closeButton)
+
         leftMenu.delegate = self
         
-        NSLayoutConstraint.activate([leftMenu.leftAnchor.constraint(equalTo: view.leftAnchor), leftMenu.topAnchor.constraint(equalTo: view.topAnchor), leftMenu.heightAnchor.constraint(equalTo: view.heightAnchor), leftMenu.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)])
-        leftMenu.isHidden = true
-        
-        NSLayoutConstraint.activate([menuButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 10), menuButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10), menuButton.heightAnchor.constraint(equalToConstant: 100), menuButton.widthAnchor.constraint(equalToConstant: 100)])
-        
-        NSLayoutConstraint.activate([testText.centerXAnchor.constraint(equalTo: view.centerXAnchor), testText.centerYAnchor.constraint(equalTo: view.centerYAnchor), testText.heightAnchor.constraint(equalToConstant: 100), testText.widthAnchor.constraint(equalToConstant: 100)])
+        NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 10), closeButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10), closeButton.heightAnchor.constraint(equalToConstant: 23), closeButton.widthAnchor.constraint(equalToConstant: 70)])
+
+        NSLayoutConstraint.activate([courseView.rightAnchor.constraint(equalTo: view.rightAnchor), courseView.leftAnchor.constraint(equalTo: view.leftAnchor), courseView.heightAnchor.constraint(equalToConstant: 1000), courseView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor)])
+        self.hideKeyboardWhenTappedAround()
         
         
     }
     
-    var menuButton: UIButton = {
+    var closeButton: UIButton = {
         let mb = UIButton()
         mb.translatesAutoresizingMaskIntoConstraints = false
         mb.clipsToBounds = true
-        mb.titleLabel?.textColor = UIColor.blue
+        mb.setTitleColor(Constants.themeColor, for: .normal)
         mb.setTitle("Close", for: .normal)
         mb.isUserInteractionEnabled = true
         mb.addTarget(self, action: #selector(closeView), for: .touchUpInside)
         mb.contentHorizontalAlignment = .left
         return mb
     }()
+
+
     
-    var testText: UITextField = {
-        let tt = UITextField()
-        tt.translatesAutoresizingMaskIntoConstraints = false
-        tt.clipsToBounds = true
-        tt.isUserInteractionEnabled = true
-        tt.backgroundColor = UIColor.white
-        tt.textColor = UIColor.red
-        return tt
-    }()
     
     func closeView() {
         self.navigationController?.popToRootViewController(animated: true)

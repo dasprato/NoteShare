@@ -30,12 +30,15 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         
         
         leftMenu.delegate = self
-        NSLayoutConstraint.activate([homePageView.leftAnchor.constraint(equalTo: view.leftAnchor), homePageView.rightAnchor.constraint(equalTo: view.rightAnchor), homePageView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor), homePageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor)])
+        NSLayoutConstraint.activate([homePageView.leftAnchor.constraint(equalTo: view.leftAnchor), homePageView.rightAnchor.constraint(equalTo: view.rightAnchor), homePageView.bottomAnchor.constraint(equalTo: view.bottomAnchor), homePageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor)])
         
         NSLayoutConstraint.activate([leftMenu.leftAnchor.constraint(equalTo: view.leftAnchor), leftMenu.topAnchor.constraint(equalTo: view.topAnchor), leftMenu.heightAnchor.constraint(equalTo: view.heightAnchor), leftMenu.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)])
         leftMenu.isHidden = true
         
         NSLayoutConstraint.activate([menuButton.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 10), menuButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10), menuButton.heightAnchor.constraint(equalToConstant: 23), menuButton.widthAnchor.constraint(equalToConstant: 70)])
+        
+        
+        self.hideKeyboardWhenTappedAround()
         
         
     }
