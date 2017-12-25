@@ -6,7 +6,12 @@ target 'NoteShare' do
   use_frameworks!
 
   # Pods for NoteShare
-
+pod 'Firebase/Database'
+pod 'Firebase/Auth'
+pod 'Firebase/Storage'
+pod 'Firebase/Core'
+pod 'Firebase/Firestore'
+pod 'SDWebImage'
   target 'NoteShareTests' do
     inherit! :search_paths
     # Pods for testing
@@ -17,9 +22,4 @@ target 'NoteShare' do
     # Pods for testing
   end
 
-pod 'Firebase/Database'
-pod 'Firebase/Auth'
-pod 'Firebase/Storage'
-
 end
-

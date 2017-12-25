@@ -47,7 +47,7 @@ class CourseView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
         addSubview(pckCourses)
         addSubview(txtSearch)
         pckCoursesBottomAnchor = pckCourses.bottomAnchor.constraint(equalTo: bottomAnchor)
-        NSLayoutConstraint.activate([txtSearch.leftAnchor.constraint(equalTo: leftAnchor, constant: 5), txtSearch.rightAnchor.constraint(equalTo: rightAnchor, constant: -5), txtSearch.topAnchor.constraint(equalTo: topAnchor, constant: 35), txtSearch.heightAnchor.constraint(equalToConstant: 35)])
+        NSLayoutConstraint.activate([txtSearch.leftAnchor.constraint(equalTo: leftAnchor, constant: 5), txtSearch.rightAnchor.constraint(equalTo: rightAnchor, constant: -5), txtSearch.topAnchor.constraint(equalTo: topAnchor, constant: 44), txtSearch.heightAnchor.constraint(equalToConstant: 44)])
         NSLayoutConstraint.activate([pckCourses.leftAnchor.constraint(equalTo: leftAnchor, constant: 5), pckCourses.rightAnchor.constraint(equalTo: rightAnchor, constant: -5),  pckCourses.topAnchor.constraint(equalTo: txtSearch.bottomAnchor), pckCourses.heightAnchor.constraint(equalToConstant: 90)])
     
         let toolbar = UIToolbar()
@@ -80,7 +80,7 @@ class CourseView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
                 do {
                     //let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
                     let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                    let dict = json as? [String: Any]
+                    var dict = json as? [String: Any]
                     if let dict = dict {
                         self.allCourses.removeAll()
                         for (kind, _) in dict {
@@ -89,8 +89,13 @@ class CourseView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
                         }
                         self.reloadPickerView()
                     }
+                    if dict?.count == 0 {
+                        self.allCourses.removeAll()
+                        self.reloadPickerView()
+                    }
                 } catch {
-                    print(error)
+                    self.allCourses.removeAll()
+                    self.reloadPickerView()
                 }
             }
             }.resume()
@@ -121,11 +126,11 @@ class CourseView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
         if txtSearch.text?.count == 0 {
             pckCourses.isHidden = true
             
-        } else if tempString.count > 0 && tempString.count < 3{
+        } else if tempString.count > 0 && tempString.count < 4{
             self.allCourses.removeAll()
             reloadPickerView()
             code = txtSearch.text
-            pckCourses.isHidden = false
+            pckCourses.isHidden = true
             
         } else {
             self.allCourses.removeAll()

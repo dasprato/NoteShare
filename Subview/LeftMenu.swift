@@ -14,7 +14,7 @@ class LeftMenu: UIView, UITableViewDelegate, UITableViewDataSource {
 
     
     let cellId = "cellId"
-    let menuItems = ["Notes", "Courses", "Settings"]
+    let menuItems = ["Notes", "Courses", "Settings", "Upload Image"]
     
     var tableView: UITableView = {
         let tv = UITableView()
@@ -146,9 +146,9 @@ class LeftMenu: UIView, UITableViewDelegate, UITableViewDataSource {
         case "Courses":
             let viewController = CoursesController()
             self.delegate?.leftMenuDidSelectViewController(viewController)
-//        case "Payments":
-//            let viewController = PaymentsController()
-//            self.delegate?.leftMenuDidSelectViewController(viewController)
+        case "Upload Image":
+            let viewController = UploadImageController()
+            self.delegate?.leftMenuDidSelectViewController(viewController)
 //        case "Profile":
 //            let viewController = ProfileController()
 //            self.delegate?.leftMenuDidSelectViewController(viewController)
