@@ -8,7 +8,7 @@
 
 import UIKit
 
-class activityCell: UICollectionViewCell {
+class HomePageCollectionViewCellRedundant: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

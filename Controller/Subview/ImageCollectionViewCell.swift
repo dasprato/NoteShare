@@ -11,11 +11,11 @@ import UIKit
 class ImageCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = 5.0
-        
         addSubview(profileImageView)
         NSLayoutConstraint.activate([profileImageView.leftAnchor.constraint(equalTo: leftAnchor), profileImageView.rightAnchor.constraint(equalTo: rightAnchor), profileImageView.topAnchor.constraint(equalTo: topAnchor), profileImageView.topAnchor.constraint(equalTo: topAnchor), profileImageView.bottomAnchor.constraint(equalTo: bottomAnchor)])
-        profileImageView.layer.cornerRadius = 5.0 
+//                NSLayoutConstraint.activate([profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor), profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor), profileImageView.widthAnchor.constraint(equalTo: widthAnchor)])
+        
+        profileImageView.layer.cornerRadius = 5.0
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -26,7 +26,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         let pi = UIImageView()
         pi.translatesAutoresizingMaskIntoConstraints = false
         pi.clipsToBounds = true
-        pi.contentMode = .scaleAspectFill
+        pi.contentMode = .scaleAspectFit
         pi.isUserInteractionEnabled = true
         return pi
     }()

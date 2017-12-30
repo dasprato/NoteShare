@@ -35,7 +35,7 @@ class UploadImageController: UIViewController, LeftMenuDelegate, UIImagePickerCo
         
                 NSLayoutConstraint.activate([viewAllButton.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 8), viewAllButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8), viewAllButton.heightAnchor.constraint(equalToConstant: 44)])
         
-        NSLayoutConstraint.activate([profileImageView.topAnchor.constraint(equalTo: closeButton.topAnchor, constant: 44), profileImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8), profileImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8), profileImageView.heightAnchor.constraint(equalToConstant: view.frame.width - 16)])
+        NSLayoutConstraint.activate([profileImageView.topAnchor.constraint(equalTo: closeButton.topAnchor, constant: 44), profileImageView.rightAnchor.constraint(equalTo: view.rightAnchor), profileImageView.leftAnchor.constraint(equalTo: view.leftAnchor), profileImageView.heightAnchor.constraint(equalToConstant: view.frame.width)])
         
         NSLayoutConstraint.activate([uploadButton.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8), uploadButton.rightAnchor.constraint(equalTo: profileImageView.rightAnchor), uploadButton.leftAnchor.constraint(equalTo: profileImageView.leftAnchor), uploadButton.heightAnchor.constraint(equalToConstant: 44)])
         
@@ -80,10 +80,7 @@ class UploadImageController: UIViewController, LeftMenuDelegate, UIImagePickerCo
         print("Attempting to show all images")
         self.navigationController?.pushViewController(AllImagesController(), animated: true)
     }
-    
-    
-    
-    
+
     func closeView() {
         self.navigationController?.popToRootViewController(animated: true)
     }
@@ -123,22 +120,20 @@ class UploadImageController: UIViewController, LeftMenuDelegate, UIImagePickerCo
         let imageName = UUID().uuidString
         // Then get the reference to Firebase Storage
         let storageRef = Storage.storage().reference().child("profileImages").child("\(imageName).jpg")
-        // First get a jpeg representation of the image, I used the built in function UIImageJPEGRepresentation(imageName, compressionQuality)
+//         First get a jpeg representation of the image, I used the built in function UIImageJPEGRepresentation(imageName, compressionQuality)
         if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 1) {
             _ = storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 // NOTE for Sumit: This is the completion handler, meaning the code will execute when the process is complete
-                
+
                 // CHECK for error
                 if error != nil {
                     print(error ?? "")
                     return // exit if error is faced to prevent any crashes
                 }
-                
+
                 // Retrieving the downloadUrl
                 if let profileImageURL = metadata?.downloadURL()?.absoluteString {
-                    print("image URL is: " + "\n")
-                    print(profileImageURL)
-                    var dict: [String: Any] = ["url": profileImageURL]
+                    let dict: [String: Any] = ["url": profileImageURL]
                     let db = Firestore.firestore()
                     db.collection("imageURLs").document(imageName).setData(dict)
                     self.resultLabel.text = "Image Upload Success!"
@@ -146,6 +141,15 @@ class UploadImageController: UIViewController, LeftMenuDelegate, UIImagePickerCo
                 }
             })
         }
+
+//        let image = profileImageView.image
+//        let imageData: NSData = UIImageJPEGRepresentation(image!, 0)! as NSData
+//        let dict: [String: Any] = ["bytes": imageData]
+//        let db = Firestore.firestore()
+//        db.collection("images").document(imageName).setData(dict)
+//        self.resultLabel.text = "Image Upload Success!"
+//        self.profileImageView.image = UIImage()
+    
     }
     
     func onProfileImageTapped() {

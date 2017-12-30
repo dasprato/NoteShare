@@ -26,26 +26,47 @@ struct Album: Decodable {
 
 class AllImagesController: UIViewController {
 
-    var albumsForDataSource = [Album]()
+
     let imageCollectionViewCellId = "imageCollectionViewCellId"
-    var arrayOfUrls = [String]()
+    var arrayOfUrl = [String]()
     fileprivate func fetchURLs() {
         let db = Firestore.firestore()
-        db.collection("imageURLs").getDocuments { (snapshot, error) in
+//        db.collection("images").getDocuments { (snapshot, error) in
+//            if error != nil {
+//                return
+//            } else {
+//                for document in (snapshot?.documents)! {
+//                    if let data = document.data()["bytes"] as? NSData {
+//                        self.arrayOfData.append(data)
+//                        DispatchQueue.main.async {
+//                            self.imageCollectionView.reloadData()
+//                        }
+//                    }
+//                }
+//
+//            }
+//        }
+        
+        db.collection("imageURLs").addSnapshotListener { snapshot, error in
             if error != nil {
+                self.arrayOfUrl.removeAll()
                 return
             } else {
+                self.arrayOfUrl.removeAll()
                 for document in (snapshot?.documents)! {
                     if let url = document.data()["url"] as? String {
-                        self.arrayOfUrls.append(url)
+                        self.arrayOfUrl.append(url)
+                        DispatchQueue.main.async {
+                            self.imageCollectionView.reloadData()
+                        }
+                        print(self.arrayOfUrl.count)
                     }
                 }
-                print(self.arrayOfUrls.count)
-                DispatchQueue.main.async {
-                    self.imageCollectionView.reloadData()
-                }
+                
             }
         }
+//        ViewController.swift
+        
 //        let jsonUrlString = "https://jsonplaceholder.typicode.com/photos"
 //        guard let url = URL(string: jsonUrlString) else { return }
 //        URLSession.shared.dataTask(with: url) { (data, response, err) in
@@ -98,7 +119,7 @@ class AllImagesController: UIViewController {
         
         NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 8), closeButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8), closeButton.heightAnchor.constraint(equalToConstant: 44)])
         
-        NSLayoutConstraint.activate([imageCollectionView.topAnchor.constraint(equalTo: closeButton.topAnchor, constant: 44), imageCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor), imageCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16), imageCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)])
+        NSLayoutConstraint.activate([imageCollectionView.topAnchor.constraint(equalTo: closeButton.topAnchor, constant: 44), imageCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor), imageCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor), imageCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor)])
         
     }
     
@@ -108,7 +129,7 @@ class AllImagesController: UIViewController {
         layout.minimumLineSpacing = 5
         layout.minimumInteritemSpacing = 0
         let rcv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        rcv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        rcv.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         rcv.backgroundColor = UIColor.white
         rcv.translatesAutoresizingMaskIntoConstraints = false
         rcv.keyboardDismissMode = .interactive
@@ -124,18 +145,22 @@ class AllImagesController: UIViewController {
 
 extension AllImagesController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayOfUrls.count
+        return arrayOfUrl.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: imageCollectionViewCellId, for: indexPath) as! ImageCollectionViewCell
-        cell.profileImageView.sd_setImage(with: URL(string: arrayOfUrls[indexPath.row]), placeholderImage: #imageLiteral(resourceName: "placeHolder"), options: [.continueInBackground, .progressiveDownload])
+//        cell.profileImageView.image = UIImage(data: arrayOfUrl[indexPath.row] as Data)
+                cell.profileImageView.sd_setImage(with: URL(string: arrayOfUrl[indexPath.row]), placeholderImage: #imageLiteral(resourceName: "profileIcon"), options: [.continueInBackground, .progressiveDownload])
+        
+        
+        
         return cell
         
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: view.frame.width - 16, height: view.frame.width - 16)
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.width)
     }
 }

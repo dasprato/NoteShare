@@ -41,12 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = UINavigationController(rootViewController: HomePageController())
         }
         
-        UINavigationBar.appearance().barTintColor = UIColor.black
-        UINavigationBar.appearance().backgroundColor = UIColor.black
-        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().tintColor = Constants.themeColor
         
-//        if let font = UIFont(name: "MarkerFelt-Wide", size: 20) {
-//
+//        if let font = UIFont(name: "Arial", size: 20) {
+//            UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : Constants.primaryColor, NSAttributedStringKey.font: font]
 //        }
         return true
 
