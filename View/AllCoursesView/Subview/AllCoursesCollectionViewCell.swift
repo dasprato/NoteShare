@@ -34,7 +34,7 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
         ct.translatesAutoresizingMaskIntoConstraints = false
         ct.text = "ABP100Y1Y"
         ct.font = UIFont.systemFont(ofSize: ct.font.pointSize + 4)
-        ct.textColor = UIColor.black
+        ct.textColor = Constants.themeColor
         return ct
     }()
     var courseName: UILabel = {
@@ -43,7 +43,7 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
         cn.numberOfLines = 2
         cn.text = "This is a long piece of text demonstrating the descrtiption of the course"
         cn.font = UIFont.systemFont(ofSize: cn.font.pointSize - 4)
-        cn.textColor = UIColor.lightGray
+        cn.textColor = UIColor.gray
         return cn
     }()
     

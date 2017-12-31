@@ -29,7 +29,9 @@ class AllCoursesController: UIViewController {
         navigationItem.setRightBarButton(barSearchTextField, animated: true)
         navigationController?.navigationItem.title = ""
         navigationItem.title = ""
+        navigationController?.navigationBar.shadowImage = UIImage()
         setupObservers()
+        
     }
     
     func setupObservers() {
@@ -40,7 +42,6 @@ class AllCoursesController: UIViewController {
     func openAllNotes() {
         let viewControllerToPush = AllNotesController()
         let cell = allCoursesView.allCoursesCollectionView.cellForItem(at: allCoursesView.currentCell!) as! AllCoursesCollectionViewCell
-        
         viewControllerToPush.titleForNavBar = cell.courseTitle.text!
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }

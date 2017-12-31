@@ -22,6 +22,10 @@ class AllNotesView: UIView {
         addSubview(allNotesCollectionView)
         NSLayoutConstraint.activate([allNotesCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), allNotesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), allNotesCollectionView.topAnchor.constraint(equalTo: topAnchor), allNotesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)])
         
+        if arrayOfNotes.count == 0 {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "noNoteFoundError"), object: nil)
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,12 +58,14 @@ extension AllNotesView: UICollectionViewDelegateFlowLayout, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: allNotesCollectionViewCellId, for: indexPath) as! AllNotesCollectionViewCell
         cell.backgroundColor = UIColor.white
-        cell.layer.borderColor = UIColor.lightGray.cgColor
-        cell.layer.borderWidth = 0.5
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))
         cell.starIcon.addGestureRecognizer(tapGesture)
-        cell.courseTitle.text = arrayOfNotes[indexPath.row].noteName
-        cell.courseName.text = "Lecture Section: Not Available At This Time. Sorry!"
+
+    cell.noteDescription.text = arrayOfNotes[indexPath.row].noteDescription
+        cell.noteName.text = arrayOfNotes[indexPath.row].noteName
+        cell.layer.cornerRadius = 10.0
+        cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -68,12 +74,7 @@ extension AllNotesView: UICollectionViewDelegateFlowLayout, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         currentCell = indexPath
-        let cell = allNotesCollectionView.cellForItem(at: currentCell!) as! AllNotesCollectionViewCell
-        if cell.starIcon.tintColor == UIColor.lightGray {
-            cell.starIcon.tintColor = UIColor.red
-        } else {
-            cell.starIcon.tintColor = UIColor.lightGray
-        }
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showNote"), object: nil)
     }
     @objc func changeColor() {
         

@@ -16,8 +16,8 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
     var arrayOfHomePages = [HomePage]()
     
     func populateHomePageArray() {
-        arrayOfHomePages.append(HomePage(titleLabel: "Notes", iconForTitle: ""))
-        arrayOfHomePages.append(HomePage(titleLabel: "Courses", iconForTitle: ""))
+        arrayOfHomePages.append(HomePage(titleLabel: "My Notes", iconForTitle: ""))
+        arrayOfHomePages.append(HomePage(titleLabel: "My Courses", iconForTitle: ""))
         arrayOfHomePages.append(HomePage(titleLabel: "All Courses", iconForTitle: ""))
         arrayOfHomePages.append(HomePage(titleLabel: "Settings", iconForTitle: ""))
         arrayOfHomePages.append(HomePage(titleLabel: "Logout", iconForTitle: ""))
@@ -37,9 +37,9 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
     
     func tappedOnCell(withTitle title: String) {
         switch title {
-        case "Notes":
+        case "My Notes":
             print(title)
-        case "Courses":
+        case "My Courses":
             print(title)
         case "All Courses":
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openAllCourses"), object: nil)

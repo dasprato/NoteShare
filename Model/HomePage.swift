@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct HomePage: Encodable, Decodable {
+struct HomePage {
     let titleLabel: String
     let iconForTitle: String
 }

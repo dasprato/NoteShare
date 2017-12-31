@@ -13,14 +13,14 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(courseTitle)
+        addSubview(noteName)
         addSubview(starIcon)
-        addSubview(courseName)
-        NSLayoutConstraint.activate([courseTitle.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), courseTitle.topAnchor.constraint(equalTo: topAnchor, constant: 8)])
+        addSubview(noteDescription)
+        NSLayoutConstraint.activate([noteName.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), noteName.topAnchor.constraint(equalTo: topAnchor, constant: 8)])
         
         NSLayoutConstraint.activate([starIcon.centerYAnchor.constraint(equalTo: centerYAnchor), starIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), starIcon.heightAnchor.constraint(equalToConstant: 30), starIcon.widthAnchor.constraint(equalToConstant: 30)])
         
-        NSLayoutConstraint.activate([courseName.leftAnchor.constraint(equalTo: courseTitle.leftAnchor), courseName.rightAnchor.constraint(equalTo: starIcon.leftAnchor, constant: 8), courseName.topAnchor.constraint(equalTo: courseTitle.bottomAnchor)])
+        NSLayoutConstraint.activate([noteDescription.leftAnchor.constraint(equalTo: noteName.leftAnchor), noteDescription.rightAnchor.constraint(equalTo: starIcon.leftAnchor, constant: 8), noteDescription.topAnchor.constraint(equalTo: noteName.bottomAnchor)])
         
     }
     
@@ -29,21 +29,19 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
     }
     
     
-    var courseTitle: UILabel = {
+    var noteName: UILabel = {
         let ct = UILabel()
         ct.translatesAutoresizingMaskIntoConstraints = false
-        ct.text = "ABP100Y1Y"
         ct.font = UIFont.systemFont(ofSize: ct.font.pointSize + 4)
-        ct.textColor = UIColor.black
+        ct.textColor = Constants.themeColor
         return ct
     }()
-    var courseName: UILabel = {
+    var noteDescription: UILabel = {
         let cn = UILabel()
         cn.translatesAutoresizingMaskIntoConstraints = false
         cn.numberOfLines = 2
-        cn.text = "This is a long piece of text demonstrating the descrtiption of the course"
         cn.font = UIFont.systemFont(ofSize: cn.font.pointSize - 4)
-        cn.textColor = UIColor.lightGray
+        cn.textColor = UIColor.gray
         return cn
     }()
     

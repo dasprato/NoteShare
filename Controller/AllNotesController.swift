@@ -23,9 +23,31 @@ class AllNotesController: UIViewController {
         let addNotesButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNote))
         navigationItem.setRightBarButtonItems([addNotesButton], animated: true)
         navigationItem.title = titleForNavBar
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Constants.themeColor]
+        navigationController?.navigationBar.shadowImage = UIImage()
         fetchNotes()
+        setupObservers()
     }
     
+    func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showError), name: NSNotification.Name(rawValue: "noNoteFoundError"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showNote), name: NSNotification.Name(rawValue: "showNote"), object: nil)
+        
+    }
+
+    
+    @objc func showNote() {
+        let viewControllerToPush = NotesController()
+        guard let unwrappedCurrentCell = allNotesView.currentCell else { return }
+        let cell = allNotesView.allNotesCollectionView.cellForItem(at: unwrappedCurrentCell) as? AllNotesCollectionViewCell
+        guard let unwrappedCell = cell else { return }
+        viewControllerToPush.titleForNavBar = unwrappedCell.noteName.text!
+        viewControllerToPush.note = arrayOfNotes[(allNotesView.currentCell?.row)!]
+        
+
+
+        self.navigationController?.pushViewController(viewControllerToPush, animated: true)
+    }
     @objc func addNote() {
         print("Trying to add a Note")
     }
@@ -35,13 +57,20 @@ class AllNotesController: UIViewController {
         db.collection("Courses").document(titleForNavBar).collection("Notes").addSnapshotListener { snapshot, error in
             if error != nil {
                 self.arrayOfNotes.removeAll()
+
                 return
             } else {
                 self.arrayOfNotes.removeAll()
                 for document in (snapshot?.documents)! {
-                    if let noteName = document.data()["noteName"] as? String {
-//                        self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: document.data()["forCourse"], noteDescription: document.data()["forCourse"], noteName: document.data()["forCourse"], noteSize: document.data()["forCourse"], rating: document.data()["forCourse"], storageReference: document.data()["forCourse"]))
-                        self.arrayOfNotes.append(Note(noteName: noteName))
+                    if let noteName = document.data()["noteName"] as? String,
+                        let lectureInformation = document.data()["lectureInformation"] as? String,
+                        let noteDescription = document.data()["noteDescription"] as? String,
+                        let forCourse = document.data()["forCourse"] as? String,
+                        let storageReference = document.data()["storageReference"] as? String,
+                        let noteSize = document.data()["noteSize"] as? Int,
+                        let rating = document.data()["rating"] as? Int
+                    {
+                        self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, storageReference: storageReference))
                         self.allNotesView.arrayOfNotes = self.arrayOfNotes
                         DispatchQueue.main.async {
                            self.allNotesView.allNotesCollectionView.reloadData()
@@ -51,6 +80,15 @@ class AllNotesController: UIViewController {
                 
             }
         }
+
+        
+    }
+    
+    func showError() {
+        let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        print("No notes found")
     }
     
     

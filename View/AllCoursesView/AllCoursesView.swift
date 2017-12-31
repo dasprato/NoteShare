@@ -57,12 +57,14 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: allCoursesCollectionViewCellId, for: indexPath) as! AllCoursesCollectionViewCell
         cell.backgroundColor = UIColor.white
-        cell.layer.borderColor = UIColor.lightGray.cgColor
-        cell.layer.borderWidth = 0.5
+//        cell.layer.borderColor = UIColor.lightGray.cgColor
+//        cell.layer.borderWidth = 0.5
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))
         cell.starIcon.addGestureRecognizer(tapGesture)
         cell.courseTitle.text = arrayOfCourses[indexPath.row].code
         cell.courseName.text = arrayOfCourses[indexPath.row].name
+        cell.layer.cornerRadius = 10.0
+        cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

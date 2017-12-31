@@ -9,11 +9,11 @@
 import Foundation
 
 struct Note {
-//    let forCourse: String
-//    let lectureInformation: String
-//    let noteDescription: String
+    let forCourse: String
+    let lectureInformation: String
+    let noteDescription: String
     let noteName: String
-//    let noteSize: Double
-//    let rating: Double
-//    let storageReference: String
+    let noteSize: Int
+    let rating: Int
+    let storageReference: String
 }
