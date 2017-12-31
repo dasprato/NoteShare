@@ -28,6 +28,7 @@ class NotesController: UIViewController {
         navigationItem.title = titleForNavBar
         notesView.downloadSize.text = "Download Size: " + String(describing: note.noteSize) + " MB"
         notesView.noteDescription.text = note.noteDescription
+        notesView.note = note
         navigationController?.navigationBar.shadowImage = UIImage()
 
     }
@@ -45,10 +46,12 @@ class NotesController: UIViewController {
             } else {
                 self.arrayOfComments.removeAll()
                 for document in (snapshot?.documents)! {
+
                     if let message = document.data()["message"] as? String,
-                        let timeStamp = document.data()["timeStamp"] as? String
+                        let timeStamp = document.data()["timeStamp"] as? String,
+                        let messageOwner = document.data()["messageOwner"] as? String
                     {
-                        self.arrayOfComments.append(Comment(message: message, messageOwner: "Sumit Bhai", timeStamp: timeStamp))
+                        self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp))
                         self.notesView.arrayOfComments = self.arrayOfComments
                         print("number Of Comments:")
                         print(self.arrayOfComments.count)

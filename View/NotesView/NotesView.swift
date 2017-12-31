@@ -7,11 +7,12 @@
 //
 
 import UIKit
-
+import Firebase
 class NotesView: UIView {
 
     let  commentsCollectionViewCellId = "commentsCollectionViewCellId"
     var arrayOfComments = [Comment]()
+    var note: Note!
     fileprivate func setupLabels() {
         addSubview(downloadSize)
         addSubview(uploadedBy)
@@ -41,12 +42,20 @@ class NotesView: UIView {
         setupLabels()
         setupButtons()
         
+        addSubview(newComment)
+        addSubview(sendButton)
+        NSLayoutConstraint.activate([newComment.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), newComment.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -8), newComment.topAnchor.constraint(equalTo: downloadNote.bottomAnchor, constant: 8)])
+        NSLayoutConstraint.activate([sendButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), sendButton.topAnchor.constraint(equalTo: downloadNote.bottomAnchor, constant: 8), sendButton.widthAnchor.constraint(equalToConstant: 32), sendButton.heightAnchor.constraint(equalToConstant: 32)])
+        
         addSubview(commentsCollectionView)
         commentsCollectionView.dataSource = self
         commentsCollectionView.delegate = self
-        commentsCollectionView.register(CommentsCollectionViewCell.self, forCellWithReuseIdentifier: commentsCollectionViewCellId)
+        commentsCollectionView.register(NewCommentsCollectionViewCell.self, forCellWithReuseIdentifier: commentsCollectionViewCellId)
         
-        NSLayoutConstraint.activate([commentsCollectionView.leftAnchor.constraint(equalTo: leftAnchor), commentsCollectionView.rightAnchor.constraint(equalTo: rightAnchor), commentsCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor), commentsCollectionView.topAnchor.constraint(equalTo: downloadNote.bottomAnchor)])
+        NSLayoutConstraint.activate([commentsCollectionView.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), commentsCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), commentsCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor), commentsCollectionView.topAnchor.constraint(equalTo: newComment.bottomAnchor)])
+        
+        
+
         
     }
     
@@ -90,6 +99,24 @@ class NotesView: UIView {
         return ds
     }()
     
+    var newComment: FlexibleTextView = {
+        let ds = FlexibleTextView()
+        ds.translatesAutoresizingMaskIntoConstraints = false
+        ds.text = ""
+        ds.textAlignment = .left
+        ds.textColor = UIColor.gray
+        ds.layer.cornerRadius = 10.0
+        ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
+        ds.font = UIFont.systemFont(ofSize: 14)
+        return ds
+    }()
+    
+    func sendToFirebase() {
+        let dict: [String: Any] = ["message": newComment.text, "messageOwner": "Mr Prato", "timeStamp": "Sun Dec 31 13:12:58 EST 2017"]
+        let comment = Comment(message: newComment.text, messageOwner: "Mr Prato", timeStamp: "Sun Dec 31 13:12:58 EST 2017")
+        let db = Firestore.firestore()
+        db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").document("\(comment)").setData(dict)
+    }
     lazy var downloadNote: UIButton = {
         let dn = UIButton()
         dn.clipsToBounds = true
@@ -97,6 +124,18 @@ class NotesView: UIView {
         dn.setTitle("Download Note", for: .normal)
         dn.backgroundColor = Constants.themeColor
         dn.addTarget(self, action: #selector(onDownloadNoteTapped), for: .touchUpInside)
+        dn.layer.cornerRadius = 10.0
+        return dn
+    }()
+    
+    lazy var sendButton: UIButton = {
+        let dn = UIButton()
+        dn.clipsToBounds = true
+        dn.translatesAutoresizingMaskIntoConstraints = false
+        let titleImage = UIImage(named: "sendIcon")?.withRenderingMode(.alwaysTemplate)
+        dn.setImage(titleImage, for: .normal)
+        dn.tintColor = Constants.themeColor
+        dn.addTarget(self, action: #selector(sendToFirebase), for: .touchUpInside)
         dn.layer.cornerRadius = 10.0
         return dn
     }()
@@ -125,7 +164,7 @@ class NotesView: UIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 1
+        layout.minimumLineSpacing = 0
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
@@ -134,6 +173,7 @@ class NotesView: UIView {
         ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         ma.showsVerticalScrollIndicator = false
         ma.keyboardDismissMode = .onDrag
+        ma.bounces = true
         return ma
     }()
     
@@ -147,18 +187,16 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentsCollectionViewCellId, for: indexPath) as! CommentsCollectionViewCell
-        cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentsCollectionViewCellId, for: indexPath) as! NewCommentsCollectionViewCell
         cell.comment.text = arrayOfComments[indexPath.row].message
         cell.userName.text = arrayOfComments[indexPath.row].messageOwner
-        cell.dateAndTime.text = arrayOfComments[indexPath.row].timeStamp
-        cell.layer.cornerRadius = 10.0
+//        cell.dateAndTime.text = arrayOfComments[indexPath.row].timeStamp
         return cell
         
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 16, height: 80)
+        return CGSize(width: collectionView.frame.width, height: 70)
     }
     
     

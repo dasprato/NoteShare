@@ -27,6 +27,7 @@
 		D2126C521FF91E40001F57B8 /* NotesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C511FF91E40001F57B8 /* NotesController.swift */; };
 		D2126C541FF94848001F57B8 /* FlexibleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C531FF94848001F57B8 /* FlexibleTextView.swift */; };
 		D2126C561FF94FE9001F57B8 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C551FF94FE9001F57B8 /* Comment.swift */; };
+		D2126C581FF95E7A001F57B8 /* NewCommentsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C571FF95E7A001F57B8 /* NewCommentsCollectionViewCell.swift */; };
 		D2206EDC1FBBA275007D7B5A /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2206EDB1FBBA274007D7B5A /* CourseView.swift */; };
 		D27642111F82A95F009A9209 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27642101F82A95F009A9209 /* AppDelegate.swift */; };
 		D27642161F82A95F009A9209 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D27642141F82A95F009A9209 /* Main.storyboard */; };
@@ -93,6 +94,7 @@
 		D2126C511FF91E40001F57B8 /* NotesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesController.swift; sourceTree = "<group>"; };
 		D2126C531FF94848001F57B8 /* FlexibleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleTextView.swift; sourceTree = "<group>"; };
 		D2126C551FF94FE9001F57B8 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		D2126C571FF95E7A001F57B8 /* NewCommentsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCommentsCollectionViewCell.swift; sourceTree = "<group>"; };
 		D2206EDB1FBBA274007D7B5A /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
 		D276420D1F82A95F009A9209 /* NoteShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27642101F82A95F009A9209 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				D2126C4F1FF91E19001F57B8 /* CommentsCollectionViewCell.swift */,
+				D2126C571FF95E7A001F57B8 /* NewCommentsCollectionViewCell.swift */,
 			);
 			path = Subview;
 			sourceTree = "<group>";
@@ -703,6 +706,7 @@
 				D27642191F82A95F009A9209 /* NoteShare.xcdatamodeld in Sources */,
 				D2F4FDD11FBAB1E100EDD593 /* MenuScrollCell.swift in Sources */,
 				D29B27CF1FF09B8F00575DCE /* ImageCollectionViewCell.swift in Sources */,
+				D2126C581FF95E7A001F57B8 /* NewCommentsCollectionViewCell.swift in Sources */,
 				D2F4FDD91FBB49C200EDD593 /* HomePageCollectionViewCellRedundant.swift in Sources */,
 				D2126C4A1FF8748F001F57B8 /* DatabaseGetAdapter.swift in Sources */,
 				D27E42DE1F84198D00153302 /* RegisterPage.swift in Sources */,
