@@ -14,8 +14,11 @@ class AllNotesController: UIViewController {
     let allNotesView = AllNotesView()
     var arrayOfNotes = [Note]()
     var titleForNavBar = ""
+    var listener: ListenerRegistration!
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchNotes()
+        
         view.backgroundColor = UIColor.white
         view.addSubview(allNotesView)
         NSLayoutConstraint.activate([allNotesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), allNotesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), allNotesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), allNotesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
@@ -25,7 +28,7 @@ class AllNotesController: UIViewController {
         navigationItem.title = titleForNavBar
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Constants.themeColor]
         navigationController?.navigationBar.shadowImage = UIImage()
-        fetchNotes()
+
         setupObservers()
     }
     
@@ -52,15 +55,23 @@ class AllNotesController: UIViewController {
         print("Trying to add a Note")
     }
     
-    fileprivate func fetchNotes() {
+                fileprivate func fetchNotes() {
         let db = Firestore.firestore()
-        db.collection("Courses").document(titleForNavBar).collection("Notes").addSnapshotListener { snapshot, error in
+        let settings = FirestoreSettings()
+        settings.isPersistenceEnabled = false
+        db.settings = settings
+        listener = db.collection("Courses").document(titleForNavBar).collection("Notes")
+            .addSnapshotListener { snapshot, error in
             if error != nil {
                 self.arrayOfNotes.removeAll()
-
+                self.allNotesView.arrayOfNotes = self.arrayOfNotes
+                DispatchQueue.main.async {
+                    self.allNotesView.allNotesCollectionView.reloadData()
+                }
                 return
             } else {
                 self.arrayOfNotes.removeAll()
+                
                 for document in (snapshot?.documents)! {
                     if let noteName = document.data()["noteName"] as? String,
                         let lectureInformation = document.data()["lectureInformation"] as? String,
@@ -80,8 +91,6 @@ class AllNotesController: UIViewController {
                 
             }
         }
-
-        
     }
     
     func showError() {
@@ -91,5 +100,12 @@ class AllNotesController: UIViewController {
         print("No notes found")
     }
     
+                override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        if listener != nil {
+        listener.remove()
+        }
+        print("listener removed")
+    }
     
 }

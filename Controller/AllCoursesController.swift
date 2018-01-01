@@ -66,7 +66,6 @@ class AllCoursesController: UIViewController {
                 DispatchQueue.main.async {
                     self.allCoursesView.allCoursesCollectionView.reloadData()
                 }
-                
             } catch let jsonErr {
                 print (jsonErr)
             }

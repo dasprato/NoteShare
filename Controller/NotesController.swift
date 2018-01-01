@@ -10,13 +10,13 @@ import UIKit
 import Firebase
 
 class NotesController: UIViewController {
-
+    
     var note = Note(forCourse: "", lectureInformation: "", noteDescription: "", noteName: "", noteSize: 0, rating: 0, storageReference: "")
     var arrayOfComments = [Comment]()
     var titleForNavBar = ""
     var notesSize = 0
     let notesView = NotesView()
-    
+    var listener: ListenerRegistration!
     
     override func viewDidLoad() {
         fetchComments()
@@ -39,7 +39,10 @@ class NotesController: UIViewController {
        print(titleForNavBar)
         print("Name of note: ")
         print(note.noteName)
-        db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").addSnapshotListener { snapshot, error in
+        let settings = FirestoreSettings()
+        settings.isPersistenceEnabled = false
+        db.settings = settings
+        listener = db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").addSnapshotListener { snapshot, error in
             if error != nil {
                 self.arrayOfComments.removeAll()
                 return
@@ -63,7 +66,14 @@ class NotesController: UIViewController {
                 
             }
         }
+        
 
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        listener.remove()
+        print("listener removed")
     }
 
 
