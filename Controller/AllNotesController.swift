@@ -15,6 +15,7 @@ class AllNotesController: UIViewController {
     var arrayOfNotes = [Note]()
     var titleForNavBar = ""
     var listener: ListenerRegistration!
+    var course: Course!
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchNotes()
@@ -23,7 +24,7 @@ class AllNotesController: UIViewController {
         view.addSubview(allNotesView)
         NSLayoutConstraint.activate([allNotesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), allNotesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), allNotesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), allNotesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
         
-        let addNotesButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNote))
+        let addNotesButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(uploadNote))
         navigationItem.setRightBarButtonItems([addNotesButton], animated: true)
         navigationItem.title = titleForNavBar
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Constants.themeColor]
@@ -51,8 +52,10 @@ class AllNotesController: UIViewController {
 
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }
-    @objc func addNote() {
-        print("Trying to add a Note")
+    @objc func uploadNote() {
+        let viewControllerToPresent = UploadNotesController()
+        viewControllerToPresent.course = self.course
+                self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
     }
     
                 fileprivate func fetchNotes() {
@@ -106,6 +109,10 @@ class AllNotesController: UIViewController {
         listener.remove()
         }
         print("listener removed")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchNotes()
     }
     
 }

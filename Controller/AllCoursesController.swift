@@ -43,6 +43,7 @@ class AllCoursesController: UIViewController {
         let viewControllerToPush = AllNotesController()
         let cell = allCoursesView.allCoursesCollectionView.cellForItem(at: allCoursesView.currentCell!) as! AllCoursesCollectionViewCell
         viewControllerToPush.titleForNavBar = cell.courseTitle.text!
+        viewControllerToPush.course = self.arrayOfCourses[(allCoursesView.currentCell?.row)!]
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }
 

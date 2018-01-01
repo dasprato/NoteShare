@@ -13,6 +13,7 @@ class NotesView: UIView {
     let  commentsCollectionViewCellId = "commentsCollectionViewCellId"
     var arrayOfComments = [Comment]()
     var note: Note!
+
     fileprivate func setupLabels() {
         addSubview(downloadSize)
         addSubview(uploadedBy)

@@ -28,6 +28,8 @@
 		D2126C541FF94848001F57B8 /* FlexibleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C531FF94848001F57B8 /* FlexibleTextView.swift */; };
 		D2126C561FF94FE9001F57B8 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C551FF94FE9001F57B8 /* Comment.swift */; };
 		D2126C581FF95E7A001F57B8 /* NewCommentsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C571FF95E7A001F57B8 /* NewCommentsCollectionViewCell.swift */; };
+		D2126C5A1FFA4BEB001F57B8 /* UploadNotesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C591FFA4BEB001F57B8 /* UploadNotesController.swift */; };
+		D2126C5D1FFA4C04001F57B8 /* UploadNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2126C5C1FFA4C04001F57B8 /* UploadNotesView.swift */; };
 		D2206EDC1FBBA275007D7B5A /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2206EDB1FBBA274007D7B5A /* CourseView.swift */; };
 		D27642111F82A95F009A9209 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27642101F82A95F009A9209 /* AppDelegate.swift */; };
 		D27642161F82A95F009A9209 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D27642141F82A95F009A9209 /* Main.storyboard */; };
@@ -95,6 +97,8 @@
 		D2126C531FF94848001F57B8 /* FlexibleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleTextView.swift; sourceTree = "<group>"; };
 		D2126C551FF94FE9001F57B8 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		D2126C571FF95E7A001F57B8 /* NewCommentsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCommentsCollectionViewCell.swift; sourceTree = "<group>"; };
+		D2126C591FFA4BEB001F57B8 /* UploadNotesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNotesController.swift; sourceTree = "<group>"; };
+		D2126C5C1FFA4C04001F57B8 /* UploadNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNotesView.swift; sourceTree = "<group>"; };
 		D2206EDB1FBBA274007D7B5A /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
 		D276420D1F82A95F009A9209 /* NoteShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27642101F82A95F009A9209 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -251,6 +255,14 @@
 			path = Subview;
 			sourceTree = "<group>";
 		};
+		D2126C5B1FFA4BEF001F57B8 /* UploadNotesView */ = {
+			isa = PBXGroup;
+			children = (
+				D2126C5C1FFA4C04001F57B8 /* UploadNotesView.swift */,
+			);
+			path = UploadNotesView;
+			sourceTree = "<group>";
+		};
 		D27642041F82A95E009A9209 = {
 			isa = PBXGroup;
 			children = (
@@ -326,6 +338,7 @@
 		D2F4FDC11FBA980E00EDD593 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D2126C5B1FFA4BEF001F57B8 /* UploadNotesView */,
 				D2126C4B1FF91C95001F57B8 /* NotesView */,
 				D210C9831FF855EA006E638F /* AllNotesView */,
 				D210C97B1FF82F83006E638F /* AllCoursesView */,
@@ -347,6 +360,7 @@
 				D210C9771FF8167C006E638F /* AllCoursesController.swift */,
 				D210C9811FF855DA006E638F /* AllNotesController.swift */,
 				D2126C511FF91E40001F57B8 /* NotesController.swift */,
+				D2126C591FFA4BEB001F57B8 /* UploadNotesController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -719,6 +733,7 @@
 				D210C9701FF802A0006E638F /* HomePageView.swift in Sources */,
 				D29B27CC1FF0995700575DCE /* AllImagesController.swift in Sources */,
 				D210C9821FF855DA006E638F /* AllNotesController.swift in Sources */,
+				D2126C5D1FFA4C04001F57B8 /* UploadNotesView.swift in Sources */,
 				D210C9741FF8076A006E638F /* HomePage.swift in Sources */,
 				D210C9781FF8167C006E638F /* AllCoursesController.swift in Sources */,
 				D29B27C61FF0807100575DCE /* UploadImageController.swift in Sources */,
@@ -728,6 +743,7 @@
 				D2126C481FF85C76001F57B8 /* Note.swift in Sources */,
 				D210C9851FF85608006E638F /* AllNotesView.swift in Sources */,
 				D210C9801FF8352B006E638F /* AllCoursesCollectionViewCell.swift in Sources */,
+				D2126C5A1FFA4BEB001F57B8 /* UploadNotesController.swift in Sources */,
 				D2126C521FF91E40001F57B8 /* NotesController.swift in Sources */,
 				D210C9721FF805B5006E638F /* HomePageCollectionViewCell.swift in Sources */,
 				D2F4FDD71FBB309D00EDD593 /* Constants.swift in Sources */,
