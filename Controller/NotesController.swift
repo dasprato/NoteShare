@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class NotesController: UIViewController {
+class NotesController: UIViewController, UITextFieldDelegate {
     
     var note = Note(forCourse: "", lectureInformation: "", noteDescription: "", noteName: "", noteSize: 0, rating: 0, storageReference: "")
     var arrayOfComments = [Comment]()
@@ -32,6 +32,9 @@ class NotesController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
 
     }
+
+    
+    
     
     func fetchComments() {
         let db = Firestore.firestore()
@@ -67,6 +70,8 @@ class NotesController: UIViewController {
         
 
     }
+    
+    
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)

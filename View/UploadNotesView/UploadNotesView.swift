@@ -61,7 +61,7 @@ class UploadNotesView: UIView {
 //        nn.isUserInteractionEnabled = false
 //        return nn
 //    }()
-//
+
     
     @objc func onUploadTapped() {
         let courseDict: [String: Any] = ["code": course.code, "department": course.department, "description": course.description, "division": course.division, "level": course.level, "name": course.name]

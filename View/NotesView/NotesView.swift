@@ -4,21 +4,53 @@
 //
 //  Created by Prato Das on 2017-12-31.
 //  Copyright © 2017 Prato Das. All rights reserved.
+
+
+
 //
 
 import UIKit
 import Firebase
-class NotesView: UIView {
+class NotesView: UIView, UITextViewDelegate {
 
     let  commentsCollectionViewCellId = "commentsCollectionViewCellId"
     var arrayOfComments: [Comment]? {
         didSet {
             DispatchQueue.main.async {
                 self.commentsCollectionView.reloadData()
+                self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: true)
             }
         }
     }
     var note: Note!
+    var newCommentBottomAnchor: NSLayoutConstraint!
+    var commentsCollectionViewBottomAnchor: NSLayoutConstraint!
+    
+    func handleKeyboardWillShow(_ notification: Notification) {
+        let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        print("Keyboard Shown")
+        
+        
+            newCommentBottomAnchor.constant = -keyboardFrame!.height
+        UIView.animate(withDuration: keyboardDuration!, animations: {
+                        self.layoutIfNeeded()
+                        self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
+        })
+        
+
+    }
+    
+    func handleKeyboardWillHide(_ notification: Notification) {
+        let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        print("Keyboard Hidden")
+        
+                newCommentBottomAnchor.constant = 0
+        UIView.animate(withDuration: keyboardDuration!, animations: {
+                        self.layoutIfNeeded()
+                                    self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
+        })
+    }
 
     fileprivate func setupLabels() {
         addSubview(downloadSize)
@@ -51,17 +83,22 @@ class NotesView: UIView {
         
         addSubview(newComment)
         addSubview(sendButton)
-        NSLayoutConstraint.activate([newComment.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), newComment.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -8), newComment.topAnchor.constraint(equalTo: downloadNote.bottomAnchor, constant: 8)])
-        NSLayoutConstraint.activate([sendButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), sendButton.topAnchor.constraint(equalTo: downloadNote.bottomAnchor, constant: 8), sendButton.widthAnchor.constraint(equalToConstant: 32), sendButton.heightAnchor.constraint(equalToConstant: 32)])
+        newCommentBottomAnchor = newComment.bottomAnchor.constraint(equalTo: bottomAnchor)
+        NSLayoutConstraint.activate([newComment.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), newComment.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -8), newCommentBottomAnchor])
+        NSLayoutConstraint.activate([sendButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), sendButton.bottomAnchor.constraint(equalTo: newComment.bottomAnchor), sendButton.widthAnchor.constraint(equalToConstant: 32), sendButton.heightAnchor.constraint(equalToConstant: 32)])
         
         addSubview(commentsCollectionView)
         commentsCollectionView.dataSource = self
         commentsCollectionView.delegate = self
         commentsCollectionView.register(NewCommentsCollectionViewCell.self, forCellWithReuseIdentifier: commentsCollectionViewCellId)
         
-        NSLayoutConstraint.activate([commentsCollectionView.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), commentsCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), commentsCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor), commentsCollectionView.topAnchor.constraint(equalTo: newComment.bottomAnchor)])
         
+        commentsCollectionViewBottomAnchor = commentsCollectionView.bottomAnchor.constraint(equalTo: newComment.topAnchor)
+        NSLayoutConstraint.activate([commentsCollectionView.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), commentsCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), commentsCollectionViewBottomAnchor, commentsCollectionView.topAnchor.constraint(equalTo: downloadNote.bottomAnchor)])
         
+        newComment.delegate = self
+        NotificationCenter.default.addObserver(self, selector:#selector(NotesView.handleKeyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(NotesView.handleKeyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
         
     }
@@ -119,10 +156,14 @@ class NotesView: UIView {
     }()
     
     func sendToFirebase() {
-        let dict: [String: Any] = ["message": newComment.text, "messageOwner": "Mr Prato", "timeStamp": "Sun Dec 31 13:12:58 EST 2017"]
-        let comment = Comment(message: newComment.text, messageOwner: "Mr Prato", timeStamp: "Sun Dec 31 13:12:58 EST 2017")
+        let dict: [String: Any] = ["message": newComment.text, "messageOwner": "Mr Prato", "timeStamp":  String(describing: Date().timeIntervalSince1970)]
+        let comment = Comment(message: newComment.text, messageOwner: "Mr Prato", timeStamp: String(describing: Date().timeIntervalSince1970))
         let db = Firestore.firestore()
-        db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").document("\(comment)").setData(dict)
+        db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").document("\(String(describing: Date().timeIntervalSince1970))").setData(dict)
+        newComment.text = ""
+        
+//        IndexPath(row: (arrayOfComments?.count)! - 1, section: 0)
+
     }
     lazy var downloadNote: UIButton = {
         let dn = UIButton()
@@ -200,7 +241,6 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentsCollectionViewCellId, for: indexPath) as! NewCommentsCollectionViewCell
         cell.comment = arrayOfComments?[indexPath.row]
-//        cell.dateAndTime.text = arrayOfComments[indexPath.row].timeStamp
         return cell
         
     }
