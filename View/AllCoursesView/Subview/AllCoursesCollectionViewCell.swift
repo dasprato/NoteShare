@@ -9,6 +9,14 @@
 import UIKit
 
 class AllCoursesCollectionViewCell: UICollectionViewCell {
+    
+    var course: Course? {
+        didSet {
+            courseTitle.text = course?.code
+            courseName.text = course?.name
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +37,7 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
     }
     
     
-    var courseTitle: UILabel = {
+    private var courseTitle: UILabel = {
         let ct = UILabel()
         ct.translatesAutoresizingMaskIntoConstraints = false
         ct.text = "ABP100Y1Y"
@@ -37,7 +45,7 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
         ct.textColor = Constants.themeColor
         return ct
     }()
-    var courseName: UILabel = {
+    private var courseName: UILabel = {
         let cn = UILabel()
         cn.translatesAutoresizingMaskIntoConstraints = false
         cn.numberOfLines = 2
@@ -47,7 +55,7 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
         return cn
     }()
     
-    lazy var starIcon: UIImageView = {
+    private lazy var starIcon: UIImageView = {
         let si = UIImageView()
         si.translatesAutoresizingMaskIntoConstraints = false
         si.image = UIImage(named: "star")?.withRenderingMode(.alwaysTemplate)

@@ -58,9 +58,7 @@ class NotesController: UIViewController {
                         self.notesView.arrayOfComments = self.arrayOfComments
                         print("number Of Comments:")
                         print(self.arrayOfComments.count)
-                        DispatchQueue.main.async {
-                            self.notesView.commentsCollectionView.reloadData()
-                        }
+
                     }
                 }
                 

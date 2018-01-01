@@ -41,8 +41,7 @@ class AllCoursesController: UIViewController {
     
     func openAllNotes() {
         let viewControllerToPush = AllNotesController()
-        let cell = allCoursesView.allCoursesCollectionView.cellForItem(at: allCoursesView.currentCell!) as! AllCoursesCollectionViewCell
-        viewControllerToPush.titleForNavBar = cell.courseTitle.text!
+        viewControllerToPush.titleForNavBar = self.arrayOfCourses[(allCoursesView.currentCell?.row)!].code
         viewControllerToPush.course = self.arrayOfCourses[(allCoursesView.currentCell?.row)!]
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }
@@ -63,10 +62,8 @@ class AllCoursesController: UIViewController {
                     }
                 }
                 self.allCoursesView.arrayOfCourses = self.arrayOfCourses
-                print(self.allCoursesView.arrayOfCourses.count)
-                DispatchQueue.main.async {
-                    self.allCoursesView.allCoursesCollectionView.reloadData()
-                }
+//                print(self.allCoursesView.arrayOfCourses?.count)
+
             } catch let jsonErr {
                 print (jsonErr)
             }

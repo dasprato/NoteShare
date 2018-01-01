@@ -10,16 +10,21 @@ import UIKit
 
 class NewCommentsCollectionViewCell: UICollectionViewCell {
     
-    
-    
+    var comment: Comment? {
+        didSet {
+            print("Single Comment Fetched")
+            commentLabel.text = comment?.message
+            userName.text = comment?.messageOwner
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(comment)
+        addSubview(commentLabel)
         addSubview(userName)
         NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.leftAnchor.constraint(equalTo: leftAnchor)])
-        NSLayoutConstraint.activate([comment.leftAnchor.constraint(equalTo: userName.leftAnchor), comment.topAnchor.constraint(equalTo: userName.bottomAnchor), comment.rightAnchor.constraint(equalTo: rightAnchor)])
+        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: userName.leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.rightAnchor.constraint(equalTo: rightAnchor)])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,7 +32,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
     }
     
     
-    var comment: FlexibleTextView = {
+    private var commentLabel: FlexibleTextView = {
         let ds = FlexibleTextView()
         ds.translatesAutoresizingMaskIntoConstraints = false
         ds.textAlignment = .left
@@ -38,7 +43,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         return ds
     }()
     
-    var userName: FlexibleTextView = {
+    private var userName: FlexibleTextView = {
         let ds = FlexibleTextView()
         ds.translatesAutoresizingMaskIntoConstraints = false
         ds.textAlignment = .left

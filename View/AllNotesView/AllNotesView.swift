@@ -11,7 +11,14 @@ import UIKit
 class AllNotesView: UIView {
     var currentCell: IndexPath?
     let allNotesCollectionViewCellId = "allNotesCollectionViewCellId"
-        var arrayOfNotes = [Note]()
+    
+    var arrayOfNotes: [Note]? {
+        didSet {
+            DispatchQueue.main.async {
+                self.allNotesCollectionView.reloadData()
+            }
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.white
@@ -22,7 +29,7 @@ class AllNotesView: UIView {
         addSubview(allNotesCollectionView)
         NSLayoutConstraint.activate([allNotesCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), allNotesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), allNotesCollectionView.topAnchor.constraint(equalTo: topAnchor), allNotesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)])
         
-        if arrayOfNotes.count == 0 {
+        if arrayOfNotes?.count == 0 {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "noNoteFoundError"), object: nil)
         }
         
@@ -52,18 +59,18 @@ class AllNotesView: UIView {
 
 extension AllNotesView: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayOfNotes.count
+        if arrayOfNotes == nil {
+            return 0
+        } else {
+            return arrayOfNotes!.count
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: allNotesCollectionViewCellId, for: indexPath) as! AllNotesCollectionViewCell
         cell.backgroundColor = UIColor.white
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))
-        cell.starIcon.addGestureRecognizer(tapGesture)
-
-    cell.noteDescription.text = arrayOfNotes[indexPath.row].noteDescription
-        cell.noteName.text = arrayOfNotes[indexPath.row].noteName
+        cell.note = arrayOfNotes![indexPath.row]
         cell.layer.cornerRadius = 10.0
         cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
         return cell

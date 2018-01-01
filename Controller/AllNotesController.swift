@@ -43,9 +43,7 @@ class AllNotesController: UIViewController {
     @objc func showNote() {
         let viewControllerToPush = NotesController()
         guard let unwrappedCurrentCell = allNotesView.currentCell else { return }
-        let cell = allNotesView.allNotesCollectionView.cellForItem(at: unwrappedCurrentCell) as? AllNotesCollectionViewCell
-        guard let unwrappedCell = cell else { return }
-        viewControllerToPush.titleForNavBar = unwrappedCell.noteName.text!
+        viewControllerToPush.titleForNavBar = self.arrayOfNotes[unwrappedCurrentCell.row].noteName
         viewControllerToPush.note = arrayOfNotes[(allNotesView.currentCell?.row)!]
         
 
@@ -86,9 +84,7 @@ class AllNotesController: UIViewController {
                     {
                         self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, storageReference: storageReference))
                         self.allNotesView.arrayOfNotes = self.arrayOfNotes
-                        DispatchQueue.main.async {
-                           self.allNotesView.allNotesCollectionView.reloadData()
-                        }
+
                     }
                 }
                 

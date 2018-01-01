@@ -11,7 +11,13 @@ import Firebase
 class NotesView: UIView {
 
     let  commentsCollectionViewCellId = "commentsCollectionViewCellId"
-    var arrayOfComments = [Comment]()
+    var arrayOfComments: [Comment]? {
+        didSet {
+            DispatchQueue.main.async {
+                self.commentsCollectionView.reloadData()
+            }
+        }
+    }
     var note: Note!
 
     fileprivate func setupLabels() {
@@ -184,13 +190,16 @@ class NotesView: UIView {
 
 extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayOfComments.count
+        if arrayOfComments == nil {
+            return 0
+        } else {
+            return arrayOfComments!.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentsCollectionViewCellId, for: indexPath) as! NewCommentsCollectionViewCell
-        cell.comment.text = arrayOfComments[indexPath.row].message
-        cell.userName.text = arrayOfComments[indexPath.row].messageOwner
+        cell.comment = arrayOfComments?[indexPath.row]
 //        cell.dateAndTime.text = arrayOfComments[indexPath.row].timeStamp
         return cell
         

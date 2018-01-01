@@ -13,8 +13,13 @@ class AllCoursesView: UIView {
     var currentCell: IndexPath?
     let allCoursesCollectionViewCellId = "allCoursesCollectionViewCellId"
     
-    var arrayOfCourses = [Course]()
-    
+    var arrayOfCourses: [Course]? {
+        didSet {
+            DispatchQueue.main.async {
+                self.allCoursesCollectionView.reloadData()
+            }
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.white
@@ -51,7 +56,12 @@ class AllCoursesView: UIView {
 
 extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayOfCourses.count
+        if arrayOfCourses != nil {
+            return arrayOfCourses!.count
+
+        } else {
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -60,9 +70,7 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
 //        cell.layer.borderColor = UIColor.lightGray.cgColor
 //        cell.layer.borderWidth = 0.5
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))
-        cell.starIcon.addGestureRecognizer(tapGesture)
-        cell.courseTitle.text = arrayOfCourses[indexPath.row].code
-        cell.courseName.text = arrayOfCourses[indexPath.row].name
+        cell.course = arrayOfCourses?[indexPath.row]
         cell.layer.cornerRadius = 10.0
         cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
         return cell
