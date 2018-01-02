@@ -24,7 +24,7 @@ class CourseView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         let titleData = allCourses[row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSForegroundColorAttributeName:Constants.themeColor])
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.foregroundColor:Constants.themeColor])
         return myTitle
     }
     
@@ -57,7 +57,7 @@ class CourseView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
         txtSearch.inputAccessoryView = toolbar
     }
     
-    func reloadPickerView() {
+    @objc func reloadPickerView() {
         DispatchQueue.main.async {
         self.pckCourses.reloadAllComponents()
         }
@@ -120,7 +120,7 @@ class CourseView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
         return ts
     }()
     
-    func search() {
+    @objc func search() {
         guard let tempString = txtSearch.text else {return}
         
         if txtSearch.text?.count == 0 {

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import M13PDFKit
 
 class NotesController: UIViewController, UITextFieldDelegate {
     
@@ -18,19 +19,38 @@ class NotesController: UIViewController, UITextFieldDelegate {
     let notesView = NotesView()
     var listener: ListenerRegistration!
     
+    var notesViewBottomAnchorWhenHidden: NSLayoutConstraint!
+    var notesViewBottomAnchorWhenShown: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         fetchComments()
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         view.addSubview(notesView)
-        NSLayoutConstraint.activate([notesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), notesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), notesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), notesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        notesViewBottomAnchorWhenHidden = notesView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        notesViewBottomAnchorWhenShown = notesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        NSLayoutConstraint.activate([notesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), notesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), notesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), notesViewBottomAnchorWhenHidden])
         
         navigationItem.title = titleForNavBar
-        notesView.downloadSize.text = "Download Size: " + String(describing: note.noteSize) + " MB"
+        notesView.downloadSize.text = String(describing: note.noteSize) + " MB"
         notesView.noteDescription.text = note.noteDescription
         notesView.note = note
         navigationController?.navigationBar.shadowImage = UIImage()
-
+        setupObservers()
+    }
+    
+    
+    
+    @objc func keyboardOnChatWindowIsShown() {
+        notesViewBottomAnchorWhenHidden.isActive = false
+        notesViewBottomAnchorWhenShown.isActive = true
+        self.view.layoutIfNeeded()
+    }
+    
+    @objc func keyboardOnChatWindowWentAway() {
+        notesViewBottomAnchorWhenHidden.isActive = true
+        notesViewBottomAnchorWhenShown.isActive = false
+        self.view.layoutIfNeeded()
     }
 
     
@@ -72,6 +92,30 @@ class NotesController: UIViewController, UITextFieldDelegate {
     }
     
     
+    func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onViewNoteTapped), name: NSNotification.Name.init("onViewNoteTapped"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnChatWindowIsShown), name: NSNotification.Name.init("keyboardOnChatWindowIsShown"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnChatWindowWentAway), name: NSNotification.Name.init("keyboardOnChatWindowWentAway"), object: nil)
+    }
+    
+    @objc func onViewNoteTapped() {
+//        let viewControllerToPush = WebNotesController()
+//        viewControllerToPush.stringUrl = self.note.storageReference
+//
+//
+//
+//        self.navigationController?.pushViewController(viewControllerToPush, animated: true)
+//
+        //Create the document for the viewer when the segue is performed.
+//        var viewer: PDFKBasicPDFViewer = PdfViewer() as PDFKBasicPDFViewer
+//
+//        //Load the document (pdfUrl represents the path on the phone of the pdf document you wish to load)
+//        var document: PDFKDocument = PDFKDocument(contentsOfFile: note.storageReference, password: nil)
+//        viewer.loadDocument(document)
+
+        let sUrl = note.storageReference
+        UIApplication.shared.openURL(NSURL(string: sUrl) as! URL)
+    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)

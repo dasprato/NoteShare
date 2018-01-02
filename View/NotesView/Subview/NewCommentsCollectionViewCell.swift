@@ -45,7 +45,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         addSubview(dateLabel)
         NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.leftAnchor.constraint(equalTo: leftAnchor)])
         NSLayoutConstraint.activate([dateLabel.topAnchor.constraint(equalTo: topAnchor), dateLabel.rightAnchor.constraint(equalTo: rightAnchor)])
-        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: userName.leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.rightAnchor.constraint(equalTo: rightAnchor)])
+        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: userName.leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor)])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,7 +58,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         ds.translatesAutoresizingMaskIntoConstraints = false
         ds.textAlignment = .left
         ds.textColor = UIColor.lightGray
-        ds.font = UIFont.systemFont(ofSize: 14)
+        ds.font = UIFont.systemFont(ofSize: 16)
         ds.layer.cornerRadius = 10.0
         ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
         ds.isUserInteractionEnabled = false
@@ -71,7 +71,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         ds.textAlignment = .left
         ds.textColor = UIColor.gray
         ds.text = "Prato Das"
-         ds.font = UIFont.boldSystemFont(ofSize: 14)
+         ds.font = UIFont.boldSystemFont(ofSize: 12)
         ds.layer.cornerRadius = 10.0
         ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
         ds.isUserInteractionEnabled = false
@@ -83,7 +83,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         ds.translatesAutoresizingMaskIntoConstraints = false
         ds.textAlignment = .left
         ds.textColor = UIColor.lightGray
-        ds.font = UIFont.systemFont(ofSize: 14)
+        ds.font = UIFont.systemFont(ofSize: 12)
         ds.layer.cornerRadius = 10.0
         ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
         ds.isUserInteractionEnabled = false

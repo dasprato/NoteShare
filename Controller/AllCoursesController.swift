@@ -39,7 +39,7 @@ class AllCoursesController: UIViewController {
     }
     
     
-    func openAllNotes() {
+    @objc func openAllNotes() {
         let viewControllerToPush = AllNotesController()
         viewControllerToPush.titleForNavBar = self.arrayOfCourses[(allCoursesView.currentCell?.row)!].code
         viewControllerToPush.course = self.arrayOfCourses[(allCoursesView.currentCell?.row)!]
@@ -81,8 +81,11 @@ class AllCoursesController: UIViewController {
         let stf = UITextField()
         stf.translatesAutoresizingMaskIntoConstraints = false
         stf.placeholder = "Search"
-        stf.borderStyle = .roundedRect
+        stf.borderStyle = .none
         stf.addTarget(self, action: #selector(allChangingTextField), for: .allEditingEvents)
+        stf.backgroundColor = UIColor.clear
+        stf.textColor = Constants.themeColor
+        stf.font = UIFont.boldSystemFont(ofSize: (stf.font?.pointSize)!)
         return stf
     }()
     

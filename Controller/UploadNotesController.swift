@@ -7,9 +7,8 @@
 //
 
 import UIKit
-
-
-class UploadNotesController: UIViewController {
+import ImagePicker
+class UploadNotesController: UIViewController, ImagePickerDelegate {
 
     var course: Course!
     var uploadNotesView = UploadNotesView()
@@ -25,11 +24,34 @@ class UploadNotesController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         
   
+        setupObservers()
     }
+    
+    func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(launchImagePicker), name: NSNotification.Name.init("launchImagePicker"), object: nil)
 
+    }
     @objc func closeView(_ viewController: UIViewController) {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
+    let imagePickerController = ImagePickerController()
+    @objc func launchImagePicker() {
+        
+        self.present(imagePickerController, animated: true, completion: nil)
+        imagePickerController.delegate = self
+    }
+    
+    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        
+    }
+    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        uploadNotesView.imagesToSend = images
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
+    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
+
     
 
     

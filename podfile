@@ -12,6 +12,8 @@ pod 'Firebase/Storage'
 pod 'Firebase/Core'
 pod 'Firebase/Firestore'
 pod 'SDWebImage'
+pod 'M13PDFKit', '1.0.2'
+pod 'ImagePicker'
   target 'NoteShareTests' do
     inherit! :search_paths
     # Pods for testing

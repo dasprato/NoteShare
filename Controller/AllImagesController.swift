@@ -138,7 +138,7 @@ class AllImagesController: UIViewController {
         return rcv
     }()
     
-    func closeView() {
+    @objc func closeView() {
         self.navigationController?.popToRootViewController(animated: true)
     }
 }

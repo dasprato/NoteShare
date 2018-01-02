@@ -53,7 +53,7 @@ class CoursesController: UIViewController, LeftMenuDelegate, UINavigationControl
 
     
     
-    func closeView() {
+    @objc func closeView() {
         self.navigationController?.popToRootViewController(animated: true)
     }
     

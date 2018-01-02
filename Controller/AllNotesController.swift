@@ -27,7 +27,7 @@ class AllNotesController: UIViewController {
         let addNotesButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(uploadNote))
         navigationItem.setRightBarButtonItems([addNotesButton], animated: true)
         navigationItem.title = titleForNavBar
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Constants.themeColor]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: Constants.themeColor]
         navigationController?.navigationBar.shadowImage = UIImage()
 
         setupObservers()
@@ -92,7 +92,7 @@ class AllNotesController: UIViewController {
         }
     }
     
-    func showError() {
+    @objc func showError() {
         let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)

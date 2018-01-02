@@ -81,7 +81,7 @@ class UploadImageController: UIViewController, LeftMenuDelegate, UIImagePickerCo
         self.navigationController?.pushViewController(AllImagesController(), animated: true)
     }
 
-    func closeView() {
+    @objc func closeView() {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
@@ -152,7 +152,7 @@ class UploadImageController: UIViewController, LeftMenuDelegate, UIImagePickerCo
     
     }
     
-    func onProfileImageTapped() {
+    @objc func onProfileImageTapped() {
         let picker = UIImagePickerController()
         
         picker.delegate = self
