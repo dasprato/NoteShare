@@ -40,12 +40,12 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(commentLabel)
-        addSubview(userName)
-        addSubview(dateLabel)
+        contentView.addSubview(commentLabel)
+        contentView.addSubview(userName)
+        contentView.addSubview(dateLabel)
         NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.leftAnchor.constraint(equalTo: leftAnchor)])
         NSLayoutConstraint.activate([dateLabel.topAnchor.constraint(equalTo: topAnchor), dateLabel.rightAnchor.constraint(equalTo: rightAnchor)])
-        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: userName.leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor)])
+        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.bottomAnchor.constraint(equalTo: bottomAnchor), commentLabel.rightAnchor.constraint(equalTo: rightAnchor)])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,8 +53,8 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
     }
     
     
-    private var commentLabel: FlexibleTextView = {
-        let ds = FlexibleTextView()
+    private var commentLabel: UITextView = {
+        let ds = UITextView()
         ds.translatesAutoresizingMaskIntoConstraints = false
         ds.textAlignment = .left
         ds.textColor = UIColor.lightGray

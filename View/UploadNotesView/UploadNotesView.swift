@@ -21,11 +21,13 @@ class UploadNotesView: UIView {
         addSubview(noteName)
         addSubview(noteDescription)
         addSubview(selectImageButton)
+        addSubview(progressLabel)
         NSLayoutConstraint.activate([uploadNote.topAnchor.constraint(equalTo: noteDescription.bottomAnchor, constant: 8), uploadNote.centerXAnchor.constraint(equalTo: centerXAnchor)])
         NSLayoutConstraint.activate([selectImageButton.topAnchor.constraint(equalTo: uploadNote.bottomAnchor, constant: 8), selectImageButton.centerXAnchor.constraint(equalTo: centerXAnchor)])
         
         NSLayoutConstraint.activate([noteDescription.topAnchor.constraint(equalTo: noteName.bottomAnchor, constant: 8), noteDescription.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), noteDescription.rightAnchor.constraint(equalTo: rightAnchor, constant: -8)])
-        NSLayoutConstraint.activate([noteName.topAnchor.constraint(equalTo: topAnchor), noteName.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), noteName.rightAnchor.constraint(equalTo: rightAnchor, constant: -8)])
+        NSLayoutConstraint.activate([noteName.topAnchor.constraint(equalTo: topAnchor, constant: 8), noteName.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), noteName.rightAnchor.constraint(equalTo: rightAnchor, constant: -8)])
+        NSLayoutConstraint.activate([progressLabel.leftAnchor.constraint(equalTo: leftAnchor), progressLabel.rightAnchor.constraint(equalTo: rightAnchor), progressLabel.topAnchor.constraint(equalTo: selectImageButton.bottomAnchor, constant: 8)])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -121,7 +123,7 @@ class UploadNotesView: UIView {
         let pdfData = pdfDocument.dataRepresentation()
         
         if let profileImage = UIImage(named: "UofTLogo") {
-            _ = storageRef.putData(pdfData!, metadata: nil, completion: { (metadata, error) in
+            let imageUploadTask = storageRef.putData(pdfData!, metadata: nil, completion: { (metadata, error) in
                 // NOTE for Sumit: This is the completion handler, meaning the code will execute when the process is complete
                 
                 // CHECK for error
@@ -148,10 +150,29 @@ class UploadNotesView: UIView {
 
                 }
             })
+            
+            // Update the progress bar
+            imageUploadTask.observe(.progress, handler: { [weak self] (snapshot) in
+                guard let strongSelf = self else {return}
+                guard let progress = snapshot.progress else { return }
+                self?.progressLabel.text = String((Double(progress.fractionCompleted)  * 100))
+                if self?.noteName.text == "" {
+                    self?.progressLabel.text = "Done"
+                }
+            })
+            
+
         }
         /////
         
     }
     
+    var progressLabel: UILabel = {
+        let progressLabel = UILabel()
+        progressLabel.translatesAutoresizingMaskIntoConstraints = false
+        progressLabel.textColor = Constants.themeColor
+        progressLabel.font = UIFont.boldSystemFont(ofSize: progressLabel.font.pointSize * 2)
+        return progressLabel
+    }()
 
 }

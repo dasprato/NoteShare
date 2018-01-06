@@ -10,6 +10,7 @@
 		01CF120D3F4B43C5513951BA /* Pods_NoteShareTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E43DCAB160B1A76E4059E84F /* Pods_NoteShareTests.framework */; };
 		0947B3963D6C6F6F84E344A0 /* Pods_NoteShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E16B538A299AA30BF236CD59 /* Pods_NoteShare.framework */; };
 		769FAE30A4992FCAE2C3B5B0 /* Pods_NoteShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 875604F4D2330742D16170E3 /* Pods_NoteShareUITests.framework */; };
+		D2062C092000244A000791BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2062C082000244A000791BA /* GoogleService-Info.plist */; };
 		D210C9701FF802A0006E638F /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210C96F1FF802A0006E638F /* HomePageView.swift */; };
 		D210C9721FF805B5006E638F /* HomePageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210C9711FF805B5006E638F /* HomePageCollectionViewCell.swift */; };
 		D210C9741FF8076A006E638F /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210C9731FF8076A006E638F /* HomePage.swift */; };
@@ -43,7 +44,6 @@
 		D27E42E01F8419BA00153302 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27E42DF1F8419BA00153302 /* LoginPage.swift */; };
 		D29B27C61FF0807100575DCE /* UploadImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29B27C51FF0807100575DCE /* UploadImageController.swift */; };
 		D29B27C81FF0809A00575DCE /* UploadImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29B27C71FF0809A00575DCE /* UploadImageView.swift */; };
-		D29B27CA1FF08F8500575DCE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29B27C91FF08F8500575DCE /* GoogleService-Info.plist */; };
 		D29B27CC1FF0995700575DCE /* AllImagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29B27CB1FF0995700575DCE /* AllImagesController.swift */; };
 		D29B27CF1FF09B8F00575DCE /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29B27CE1FF09B8F00575DCE /* ImageCollectionViewCell.swift */; };
 		D2F4FDCD1FBAAB6500EDD593 /* myCoursesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F4FDCC1FBAAB6500EDD593 /* myCoursesCell.swift */; };
@@ -79,6 +79,7 @@
 		875604F4D2330742D16170E3 /* Pods_NoteShareUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NoteShareUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99C649452EA63CED6E07AB13 /* Pods-NoteShareUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NoteShareUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-NoteShareUITests/Pods-NoteShareUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CC86EEE1FCDE5CC78CDB8FBD /* Pods-NoteShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NoteShareTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-NoteShareTests/Pods-NoteShareTests.release.xcconfig"; sourceTree = "<group>"; };
+		D2062C082000244A000791BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D210C96F1FF802A0006E638F /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		D210C9711FF805B5006E638F /* HomePageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageCollectionViewCell.swift; sourceTree = "<group>"; };
 		D210C9731FF8076A006E638F /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
@@ -118,7 +119,6 @@
 		D27E42DF1F8419BA00153302 /* LoginPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
 		D29B27C51FF0807100575DCE /* UploadImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageController.swift; sourceTree = "<group>"; };
 		D29B27C71FF0809A00575DCE /* UploadImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageView.swift; sourceTree = "<group>"; };
-		D29B27C91FF08F8500575DCE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D29B27CB1FF0995700575DCE /* AllImagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllImagesController.swift; sourceTree = "<group>"; };
 		D29B27CE1FF09B8F00575DCE /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		D29B27D31FF0A51A00575DCE /* NoteShare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NoteShare-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -292,7 +292,6 @@
 		D276420F1F82A95F009A9209 /* NoteShare */ = {
 			isa = PBXGroup;
 			children = (
-				D29B27C91FF08F8500575DCE /* GoogleService-Info.plist */,
 				D27642101F82A95F009A9209 /* AppDelegate.swift */,
 				D27642141F82A95F009A9209 /* Main.storyboard */,
 				D276421A1F82A95F009A9209 /* Assets.xcassets */,
@@ -303,6 +302,7 @@
 				D27E42DD1F84198D00153302 /* RegisterPage.swift */,
 				D27E42DF1F8419BA00153302 /* LoginPage.swift */,
 				D2F4FDD61FBB309D00EDD593 /* Constants.swift */,
+				D2062C082000244A000791BA /* GoogleService-Info.plist */,
 				D29B27D31FF0A51A00575DCE /* NoteShare-Bridging-Header.h */,
 			);
 			path = NoteShare;
@@ -464,7 +464,7 @@
 				TargetAttributes = {
 					D276420C1F82A95E009A9209 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 3RWTRYXPAB;
+						DevelopmentTeam = J5QC6PCRHE;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -515,7 +515,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D276421E1F82A95F009A9209 /* LaunchScreen.storyboard in Resources */,
-				D29B27CA1FF08F8500575DCE /* GoogleService-Info.plist in Resources */,
+				D2062C092000244A000791BA /* GoogleService-Info.plist in Resources */,
 				D276421B1F82A95F009A9209 /* Assets.xcassets in Resources */,
 				D27642161F82A95F009A9209 /* Main.storyboard in Resources */,
 			);
@@ -922,11 +922,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 3RWTRYXPAB;
+				DEVELOPMENT_TEAM = J5QC6PCRHE;
 				INFOPLIST_FILE = NoteShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Bitly.NoteShare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adfagfadfadsfadsfads.fadfadsdas.adfadfdsUofTDevs.NoteShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "NoteShare/NoteShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -940,11 +940,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 3RWTRYXPAB;
+				DEVELOPMENT_TEAM = J5QC6PCRHE;
 				INFOPLIST_FILE = NoteShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Bitly.NoteShare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adfagfadfadsfadsfads.fadfadsdas.adfadfdsUofTDevs.NoteShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "NoteShare/NoteShare-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;

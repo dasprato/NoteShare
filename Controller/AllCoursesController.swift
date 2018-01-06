@@ -53,6 +53,9 @@ class AllCoursesController: UIViewController {
         URLSession.shared.dataTask(with: url) { (data, response, err) in
             self.arrayOfCourses.removeAll()
             guard let data = data else { return }
+            if (err != nil) {
+                print("Big big error")
+            }
             do {
                 let courses = try JSONDecoder().decode([Course].self, from: data)
                 
@@ -65,7 +68,7 @@ class AllCoursesController: UIViewController {
 //                print(self.allCoursesView.arrayOfCourses?.count)
 
             } catch let jsonErr {
-                print (jsonErr)
+                print (jsonErr.localizedDescription)
             }
             }.resume()
     }

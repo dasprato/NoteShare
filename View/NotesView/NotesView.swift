@@ -228,7 +228,7 @@ class NotesView: UIView, UITextViewDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
+        layout.minimumLineSpacing = 4
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
@@ -262,7 +262,14 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 70)
+        let approximateWidth = frame.width
+        let size = CGSize(width: approximateWidth, height: 1000000)
+        let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
+        let estimatedFrame = NSString(string: (arrayOfComments?[indexPath.row].message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+        
+        print("estimated height is: ")
+        print(estimatedFrame.height)
+        return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 16 + 32)
     }
     
     
