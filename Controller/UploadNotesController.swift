@@ -8,7 +8,7 @@
 
 import UIKit
 import ImagePicker
-class UploadNotesController: UIViewController, ImagePickerDelegate {
+class UploadNotesController: UIViewController, ImagePickerDelegate, UIDocumentPickerDelegate {
 
     var course: Course!
     var uploadNotesView = UploadNotesView()
@@ -29,6 +29,8 @@ class UploadNotesController: UIViewController, ImagePickerDelegate {
     
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchImagePicker), name: NSNotification.Name.init("launchImagePicker"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(launchDocumentPicker), name: NSNotification.Name.init("launchDocumentPicker"), object: nil)
+        
 
     }
     @objc func closeView(_ viewController: UIViewController) {
@@ -40,6 +42,17 @@ class UploadNotesController: UIViewController, ImagePickerDelegate {
         self.present(imagePickerController, animated: true, completion: nil)
         imagePickerController.delegate = self
     }
+    
+    
+    @objc func launchDocumentPicker() {
+        var documentPicker1: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.pdf"], in: UIDocumentPickerMode.import)
+        var documentPicker = UIDocumentPickerViewController(documentTypes: [""], in: UIDocumentPickerMode.import)
+        documentPicker.delegate = self
+//        documentPicker.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+        self.present(documentPicker, animated: true, completion: nil)
+    }
+
+    
     
     func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
         

@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>787696618219-ms97118dk9815jug2de33ufhoneg6u0r.apps.googleusercontent.com</string>
+	<string>787696618219-829tkuulb035pcggcr75759e0dh4nglo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.787696618219-ms97118dk9815jug2de33ufhoneg6u0r</string>
+	<string>com.googleusercontent.apps.787696618219-829tkuulb035pcggcr75759e0dh4nglo</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCnrcNo1-bQifVeGx-Zh_2Yn_f-HNXELYI</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.adfagfadfadsfadsfads.fadfadsdas.adfadfdsUofTDevs.NoteShare</string>
+	<string>com.das.UofTDevs.NoteShare</string>
 	<key>PROJECT_ID</key>
 	<string>noteshare-7c70f</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:787696618219:ios:50e497f5bf6102b9</string>
+	<string>1:787696618219:ios:02b4fd5c37911d22</string>
 	<key>DATABASE_URL</key>
 	<string>https://noteshare-7c70f.firebaseio.com</string>
 </dict>

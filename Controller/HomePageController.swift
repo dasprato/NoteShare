@@ -38,27 +38,39 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         let barUserImage = UIBarButtonItem(customView: userImage)
         
         let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
+        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
         setupObservers()
+        
+        
+        let barSettings = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(openSettings))
+        let barLogout = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: nil)
+                let barSearch = UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: nil)
+        navigationItem.setRightBarButtonItems([barLogout, barSettings, barSearch], animated: true)
     }
     
+
     
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.post(name: NSNotification.Name.init("reloadHomePageCollectionView"), object: self, userInfo: nil)
+    }
     func showMenu() {
         leftMenu.isHidden = false
     }
     
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(openAllCourses), name: NSNotification.Name(rawValue: "openAllCourses"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(openMyNotes), name: NSNotification.Name(rawValue: "openMyNotes"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(openMyCourses), name: NSNotification.Name(rawValue: "openMyCourses"), object: nil)
     }
     
     
     var userImage: UIImageView = {
         let pp = UIImageView()
         pp.translatesAutoresizingMaskIntoConstraints = false
-        pp.image = UIImage(named: "Prato")
+        pp.sd_setImage(with: URL(string: "https://scontent.fyto1-1.fna.fbcdn.net/v/t1.0-9/26167731_1580968031970582_2119099227383639033_n.jpg?oh=a20c561f3d5402711b7f2e42ef1d1d7d&oe=5AF07D7C"), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
         pp.clipsToBounds = true
-        pp.contentMode = .scaleAspectFit
-        pp.layer.cornerRadius = 20
+        pp.contentMode = .scaleAspectFill
+        pp.layer.cornerRadius = 10
         pp.backgroundColor = UIColor.white
         return pp
     }()
@@ -75,6 +87,21 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     @objc func openAllCourses() {
         self.navigationController?.pushViewController(AllCoursesController(), animated: true)
+    }
+    
+    
+    @objc func openMyNotes() {
+        self.navigationController?.pushViewController(MyNotesController(), animated: true)
+    }
+    
+    
+    @objc func openSettings() {
+        self.navigationController?.pushViewController(SettingsController(), animated: true)
+    }
+    
+    
+    @objc func openMyCourses() {
+        self.navigationController?.pushViewController(MyCoursesController(), animated: true)
     }
     
     

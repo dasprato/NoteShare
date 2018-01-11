@@ -184,6 +184,7 @@ class NotesView: UIView, UITextViewDelegate {
         let db = Firestore.firestore()
         db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").document("\(String(describing: Date().timeIntervalSince1970))").setData(dict)
         newComment.text = ""
+        layoutIfNeeded()
         
 //        IndexPath(row: (arrayOfComments?.count)! - 1, section: 0)
 
@@ -262,7 +263,7 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let approximateWidth = frame.width
+        let approximateWidth = frame.width - 8
         let size = CGSize(width: approximateWidth, height: 1000000)
         let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
         let estimatedFrame = NSString(string: (arrayOfComments?[indexPath.row].message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)

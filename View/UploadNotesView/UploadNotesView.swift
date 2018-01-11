@@ -22,8 +22,10 @@ class UploadNotesView: UIView {
         addSubview(noteDescription)
         addSubview(selectImageButton)
         addSubview(progressLabel)
+        addSubview(selectDocumentPicker)
         NSLayoutConstraint.activate([uploadNote.topAnchor.constraint(equalTo: noteDescription.bottomAnchor, constant: 8), uploadNote.centerXAnchor.constraint(equalTo: centerXAnchor)])
         NSLayoutConstraint.activate([selectImageButton.topAnchor.constraint(equalTo: uploadNote.bottomAnchor, constant: 8), selectImageButton.centerXAnchor.constraint(equalTo: centerXAnchor)])
+                NSLayoutConstraint.activate([selectDocumentPicker.topAnchor.constraint(equalTo: selectImageButton.bottomAnchor, constant: 8), selectDocumentPicker.centerXAnchor.constraint(equalTo: centerXAnchor)])
         
         NSLayoutConstraint.activate([noteDescription.topAnchor.constraint(equalTo: noteName.bottomAnchor, constant: 8), noteDescription.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), noteDescription.rightAnchor.constraint(equalTo: rightAnchor, constant: -8)])
         NSLayoutConstraint.activate([noteName.topAnchor.constraint(equalTo: topAnchor, constant: 8), noteName.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), noteName.rightAnchor.constraint(equalTo: rightAnchor, constant: -8)])
@@ -91,9 +93,27 @@ class UploadNotesView: UIView {
         return un
     }()
     
+
+    
+    
+    lazy var selectDocumentPicker: UIButton = {
+        let un = UIButton()
+        un.translatesAutoresizingMaskIntoConstraints = false
+        un.setTitle("Select Document", for: .normal)
+        un.backgroundColor = Constants.themeColor
+        un.addTarget(self, action: #selector(launchDocumentPicker), for: .touchUpInside)
+        un.layer.cornerRadius = 10.0
+        return un
+    }()
+    
     @objc func launchImagePicker() {
         NotificationCenter.default.post(name: Notification.Name.init("launchImagePicker"), object: nil)
         print("trying to open image picker and notificaiton sent")
+    }
+    
+    @objc func launchDocumentPicker() {
+        NotificationCenter.default.post(name: Notification.Name.init("launchDocumentPicker"), object: nil)
+        print("trying to document picker and notificaiton sent")
     }
     
     @objc func onUploadTapped() {

@@ -19,47 +19,47 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
         arrayOfHomePages.append(HomePage(titleLabel: "My Notes", iconForTitle: ""))
         arrayOfHomePages.append(HomePage(titleLabel: "My Courses", iconForTitle: ""))
         arrayOfHomePages.append(HomePage(titleLabel: "All Courses", iconForTitle: ""))
-        arrayOfHomePages.append(HomePage(titleLabel: "Settings", iconForTitle: ""))
-        arrayOfHomePages.append(HomePage(titleLabel: "Logout", iconForTitle: ""))
     }
     
-    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! HomePageCollectionViewCell
-        if indexPath.row != arrayOfHomePages.count - 1 {
             cell.backgroundColor = UIColor.lightGray
-        } else {
-            cell.backgroundColor = UIColor.red.withAlphaComponent(0.8)
-        }
         tappedOnCell(withTitle: cell.labelForCell.text!)
-        
-        
     }
     
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! HomePageCollectionViewCell
+            cell.backgroundColor = UIColor.white
+    }
+    
+    func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadHomePageCollectionView), name: NSNotification.Name.init("reloadHomePageCollectionView"), object: nil)
+    }
+    
+    @objc func reloadHomePageCollectionView() {
+        DispatchQueue.main.async {
+            self.homePageCollectionView.reloadData()
+        }
+    }
     func tappedOnCell(withTitle title: String) {
         switch title {
         case "My Notes":
-            print(title)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openMyNotes"), object: nil)
         case "My Courses":
-            print(title)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openMyCourses"), object: nil)
         case "All Courses":
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openAllCourses"), object: nil)
-        case "Settings":
-            print(title)
-        case "Logout":
-            print(title)
         default:
             print(title)
         }
+
         
     }
     
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! HomePageCollectionViewCell
-        if indexPath.row != arrayOfHomePages.count - 1 {
         cell.backgroundColor = UIColor.white
-        } else {
-            cell.backgroundColor = UIColor.red
-        }
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return arrayOfHomePages.count
@@ -69,13 +69,8 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePageCollectionViewCellId, for: indexPath) as! HomePageCollectionViewCell
         cell.iconForLabel.image = UIImage(named: arrayOfHomePages[indexPath.row].iconForTitle)
         cell.labelForCell.text = arrayOfHomePages[indexPath.row].titleLabel
-        if indexPath.row == arrayOfHomePages.count - 1 {
-            cell.backgroundColor = UIColor.red
-            cell.labelForCell.textColor = UIColor.white
-        } else {
             cell.backgroundColor = UIColor.white
             cell.labelForCell.textColor = Constants.themeColor
-        }
         cell.labelForCell.font = UIFont.boldSystemFont(ofSize: cell.labelForCell.font.pointSize)
         return cell
     }
@@ -118,8 +113,9 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
         clipsToBounds = true
         backgroundColor = Constants.themeColor
         
-                populateHomePageArray()
+        populateHomePageArray()
         setupHomeCollectionView()
+        setupObservers()
 
     }
     

@@ -22,14 +22,14 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
                 dateFormatter.locale = NSLocale.current
                 dateFormatter.dateFormat = "MMMM-dd HH:mm"
                 let strDate = dateFormatter.string(from: date)
-
+//                 dateLabel.text = strDate
 
 //                let date = Date(timeIntervalSince1970: Double(timeStamp)!)
 //                let dateFormatter = DateFormatter()
 //                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
 //
 //                let textDate = String(describing: date)
-                dateLabel.text = strDate
+               
             }
             
 
@@ -42,9 +42,9 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         
         contentView.addSubview(commentLabel)
         contentView.addSubview(userName)
-        contentView.addSubview(dateLabel)
+//        contentView.addSubview(dateLabel)
         NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.leftAnchor.constraint(equalTo: leftAnchor)])
-        NSLayoutConstraint.activate([dateLabel.topAnchor.constraint(equalTo: topAnchor), dateLabel.rightAnchor.constraint(equalTo: rightAnchor)])
+//        NSLayoutConstraint.activate([dateLabel.topAnchor.constraint(equalTo: topAnchor), dateLabel.rightAnchor.constraint(equalTo: rightAnchor)])
         NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.bottomAnchor.constraint(equalTo: bottomAnchor), commentLabel.rightAnchor.constraint(equalTo: rightAnchor)])
     }
     
@@ -78,16 +78,16 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         return ds
     }()
     
-    private var dateLabel: FlexibleTextView = {
-        let ds = FlexibleTextView()
-        ds.translatesAutoresizingMaskIntoConstraints = false
-        ds.textAlignment = .left
-        ds.textColor = UIColor.lightGray
-        ds.font = UIFont.systemFont(ofSize: 12)
-        ds.layer.cornerRadius = 10.0
-        ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
-        ds.isUserInteractionEnabled = false
-        return ds
-    }()
+//    private var dateLabel: FlexibleTextView = {
+//        let ds = FlexibleTextView()
+//        ds.translatesAutoresizingMaskIntoConstraints = false
+//        ds.textAlignment = .left
+//        ds.textColor = UIColor.lightGray
+//        ds.font = UIFont.systemFont(ofSize: 12)
+//        ds.layer.cornerRadius = 10.0
+//        ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
+//        ds.isUserInteractionEnabled = false
+//        return ds
+//    }()
 }
 
