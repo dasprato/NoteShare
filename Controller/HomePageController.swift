@@ -7,11 +7,25 @@
 //
 
 import UIKit
+import Firebase
 
 class HomePageController: UIViewController, LeftMenuDelegate, UINavigationControllerDelegate {
     
 
     
+    var user: User? {
+        didSet {
+            guard let email = user?.email else { return }
+            userName.text = email
+        }
+    }
+    
+    var firebaseUser: FirebaseUser? {
+        didSet {
+            guard let url = firebaseUser?.profilePictureStorageReference else { return }
+            userImage.sd_setImage(with: URL(string: url), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+        }
+    }
     func leftMenuDidSelectViewController(_ viewController: UIViewController) {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -38,14 +52,19 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         let barUserImage = UIBarButtonItem(customView: userImage)
         
         let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
+        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
         setupObservers()
         
         
         let barSettings = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(openSettings))
-        let barLogout = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: nil)
+        let barLogout = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: #selector(handleLogout))
                 let barSearch = UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: nil)
         navigationItem.setRightBarButtonItems([barLogout, barSettings, barSearch], animated: true)
+    }
+    
+    @objc func handleLogout() {
+        print("Trying to handle logout")
+        self.dismiss(animated: true, completion: nil)
     }
     
 
@@ -67,7 +86,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     var userImage: UIImageView = {
         let pp = UIImageView()
         pp.translatesAutoresizingMaskIntoConstraints = false
-        pp.sd_setImage(with: URL(string: "https://scontent.fyto1-1.fna.fbcdn.net/v/t1.0-9/26167731_1580968031970582_2119099227383639033_n.jpg?oh=a20c561f3d5402711b7f2e42ef1d1d7d&oe=5AF07D7C"), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
         pp.clipsToBounds = true
         pp.contentMode = .scaleAspectFill
         pp.layer.cornerRadius = 10

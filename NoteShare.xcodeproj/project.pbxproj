@@ -56,6 +56,9 @@
 		D2F4FDD51FBB2F5300EDD593 /* HomePageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F4FDD41FBB2F5300EDD593 /* HomePageController.swift */; };
 		D2F4FDD71FBB309D00EDD593 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F4FDD61FBB309D00EDD593 /* Constants.swift */; };
 		D2F4FDD91FBB49C200EDD593 /* HomePageCollectionViewCellRedundant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F4FDD81FBB49C200EDD593 /* HomePageCollectionViewCellRedundant.swift */; };
+		D2FC016F2007B1DB00A1BA45 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FC016E2007B1DB00A1BA45 /* LoginController.swift */; };
+		D2FC01712007B1E600A1BA45 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FC01702007B1E600A1BA45 /* SignUpController.swift */; };
+		D2FC01732007BCF900A1BA45 /* FirebaseUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FC01722007BCF900A1BA45 /* FirebaseUser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +139,9 @@
 		D2F4FDD41FBB2F5300EDD593 /* HomePageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageController.swift; sourceTree = "<group>"; };
 		D2F4FDD61FBB309D00EDD593 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D2F4FDD81FBB49C200EDD593 /* HomePageCollectionViewCellRedundant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageCollectionViewCellRedundant.swift; sourceTree = "<group>"; };
+		D2FC016E2007B1DB00A1BA45 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		D2FC01702007B1E600A1BA45 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
+		D2FC01722007BCF900A1BA45 /* FirebaseUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUser.swift; sourceTree = "<group>"; };
 		D8A94632DEA9121F2317CF76 /* Pods-NoteShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NoteShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-NoteShare/Pods-NoteShare.release.xcconfig"; sourceTree = "<group>"; };
 		E16B538A299AA30BF236CD59 /* Pods_NoteShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NoteShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E43DCAB160B1A76E4059E84F /* Pods_NoteShareTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NoteShareTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -372,6 +378,8 @@
 				D2062C9A20038004000791BA /* SettingsController.swift */,
 				D2062C9C20038012000791BA /* MyNotesController.swift */,
 				D2062C9E2003801E000791BA /* MyCoursesController.swift */,
+				D2FC016E2007B1DB00A1BA45 /* LoginController.swift */,
+				D2FC01702007B1E600A1BA45 /* SignUpController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -384,6 +392,7 @@
 				D2126C471FF85C76001F57B8 /* Note.swift */,
 				D2126C491FF8748F001F57B8 /* DatabaseGetAdapter.swift */,
 				D2126C551FF94FE9001F57B8 /* Comment.swift */,
+				D2FC01722007BCF900A1BA45 /* FirebaseUser.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -758,6 +767,7 @@
 				D210C97A1FF823AF006E638F /* Course.swift in Sources */,
 				D27642111F82A95F009A9209 /* AppDelegate.swift in Sources */,
 				D210C9701FF802A0006E638F /* HomePageView.swift in Sources */,
+				D2FC01712007B1E600A1BA45 /* SignUpController.swift in Sources */,
 				D29B27CC1FF0995700575DCE /* AllImagesController.swift in Sources */,
 				D210C9821FF855DA006E638F /* AllNotesController.swift in Sources */,
 				D2126C5D1FFA4C04001F57B8 /* UploadNotesView.swift in Sources */,
@@ -769,12 +779,14 @@
 				D2126C501FF91E19001F57B8 /* CommentsCollectionViewCell.swift in Sources */,
 				D2126C481FF85C76001F57B8 /* Note.swift in Sources */,
 				D210C9851FF85608006E638F /* AllNotesView.swift in Sources */,
+				D2FC016F2007B1DB00A1BA45 /* LoginController.swift in Sources */,
 				D210C9801FF8352B006E638F /* AllCoursesCollectionViewCell.swift in Sources */,
 				D2126C5A1FFA4BEB001F57B8 /* UploadNotesController.swift in Sources */,
 				D2062C9B20038004000791BA /* SettingsController.swift in Sources */,
 				D2126C521FF91E40001F57B8 /* NotesController.swift in Sources */,
 				D210C9721FF805B5006E638F /* HomePageCollectionViewCell.swift in Sources */,
 				D2F4FDD71FBB309D00EDD593 /* Constants.swift in Sources */,
+				D2FC01732007BCF900A1BA45 /* FirebaseUser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
