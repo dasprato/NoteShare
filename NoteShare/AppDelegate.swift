@@ -30,14 +30,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if launchedBefore {
             window = UIWindow(frame: UIScreen.main.bounds)
             window?.makeKeyAndVisible()
-            window?.rootViewController = UINavigationController(rootViewController: LoginController())
+            window?.rootViewController = UINavigationController(rootViewController: HomePageController())
             
         } else {
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             UserDefaults.standard.synchronize()
             window = UIWindow(frame: UIScreen.main.bounds)
             window?.makeKeyAndVisible()
-            window?.rootViewController = UINavigationController(rootViewController: LoginController())
+            window?.rootViewController = UINavigationController(rootViewController: HomePageController())
         }
         
         UINavigationBar.appearance().tintColor = Constants.themeColor

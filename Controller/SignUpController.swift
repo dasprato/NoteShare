@@ -18,10 +18,16 @@ class SignUpController: UIViewController {
         view.addSubview(passwordField)
         view.addSubview(signUpButton)
         
-        NSLayoutConstraint.activate([signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), signUpButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)])
+        NSLayoutConstraint.activate([signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), signUpButton.centerYAnchor.constraint(equalTo: view.centerYAnchor), signUpButton.heightAnchor.constraint(equalToConstant: 40)])
         NSLayoutConstraint.activate([passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor), passwordField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), passwordField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), passwordField.bottomAnchor.constraint(equalTo: signUpButton.topAnchor, constant: -8), passwordField.heightAnchor.constraint(equalToConstant: 40)])
         
         NSLayoutConstraint.activate([emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor), emailField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), emailField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), emailField.bottomAnchor.constraint(equalTo: passwordField.topAnchor, constant: -8), emailField.heightAnchor.constraint(equalToConstant: 40)])
+        // to completely get rid of the nav bar and status bar
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
+        self.navigationController?.navigationBar.tintColor = UIColor.white
     }
 
     
@@ -68,12 +74,11 @@ class SignUpController: UIViewController {
             print("added to user list" + "\(String(describing: User?.uid))" + "\(String(describing: User?.email))")
             print("Trying to handle login")
             self.dismiss(animated: true, completion: nil)
-            let viewControllerToPresent = HomePageController()
-            viewControllerToPresent.user = User
             
-            self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
-            self.navigationController?.popToRootViewController(animated: true)
-            
+//            self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
+//            self.navigationController?.popToRootViewController(animated: true)
+            HomePageController.userEmail =  (Auth.auth().currentUser?.email)!
+            self.dismiss(animated: true, completion: nil)
         })
         
     }

@@ -14,12 +14,26 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = Constants.themeColor
         view.addSubview(loginButton)
         view.addSubview(signUpButton)
+        view.addSubview(emailField)
+        view.addSubview(passwordField)
         NSLayoutConstraint.activate([loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor), loginButton.widthAnchor.constraint(equalToConstant: 40), loginButton.heightAnchor.constraint(equalToConstant: 40)])
         
         NSLayoutConstraint.activate([signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor)])
+        
+        
+        NSLayoutConstraint.activate([passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor), passwordField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), passwordField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), passwordField.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -8), passwordField.heightAnchor.constraint(equalToConstant: 40)])
+        
+        NSLayoutConstraint.activate([emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor), emailField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), emailField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), emailField.bottomAnchor.constraint(equalTo: passwordField.topAnchor, constant: -8), emailField.heightAnchor.constraint(equalToConstant: 40)])
+        navigationController?.navigationItem.title = ""
+        navigationItem.title = ""
+        // to completely get rid of the nav bar and status bar
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
     }
     
     
@@ -28,7 +42,7 @@ class LoginController: UIViewController {
         lb.translatesAutoresizingMaskIntoConstraints = false
         let imageForLogin = UIImage(named: "login")?.withRenderingMode(.alwaysTemplate)
         lb.setImage(imageForLogin, for: .normal)
-        lb.tintColor = Constants.themeColor
+        lb.tintColor = UIColor.white
         lb.contentMode = .scaleAspectFit
         lb.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return lb
@@ -39,11 +53,37 @@ class LoginController: UIViewController {
         let lb = UIButton()
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.setTitle("Have not signed up? Sign Up", for: .normal)
-        lb.setTitleColor(Constants.themeColor, for: .normal)
+        lb.setTitleColor(UIColor.white, for: .normal)
         lb.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return lb
     }()
     
+    
+    var emailField: UITextField = {
+        let ef = UITextField()
+        ef.translatesAutoresizingMaskIntoConstraints = false
+        ef.placeholder = "Your email"
+        ef.layer.cornerRadius = 5.0
+        ef.backgroundColor = UIColor.white
+        ef.textColor = Constants.themeColor
+        ef.contentMode = .center
+        ef.textAlignment = .center
+        return ef
+    }()
+    
+    
+    var passwordField: UITextField = {
+        let ef = UITextField()
+        ef.translatesAutoresizingMaskIntoConstraints = false
+        ef.placeholder = "Your password"
+        ef.layer.cornerRadius = 5.0
+        ef.backgroundColor = UIColor.white
+        ef.textColor = Constants.themeColor
+        ef.contentMode = .center
+        ef.textAlignment = .center
+        ef.isSecureTextEntry = true
+        return ef
+    }()
     
     @objc func handleSignUp() {
         
@@ -55,9 +95,8 @@ class LoginController: UIViewController {
         
         print("Trying to handle login")
         
-        let email = "pratodas@ymail.com"
-        let password = "1234567"
-        
+        guard let email = emailField.text else { return }
+        guard let password = passwordField.text else { return }
         if email == "" || password == "" {
             self.createAlert(title: "Empty, Empty", message: "Looks like one of the text fields are empty")
             return
@@ -90,11 +129,11 @@ class LoginController: UIViewController {
             
             let firebaseUser = FirebaseUser(emailAddress: user?.email, fieldOfStudy: "", yearOfStudy: 0, profilePictureStorageReference: "https://scontent.fyto1-1.fna.fbcdn.net/v/t1.0-9/26167731_1580968031970582_2119099227383639033_n.jpg?oh=a20c561f3d5402711b7f2e42ef1d1d7d&oe=5AF07D7C", name: "Prato Das")
             
-            let viewControllerToPresent = HomePageController()
-            viewControllerToPresent.user = user
-            viewControllerToPresent.firebaseUser = firebaseUser
-            
-            self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
+//            HomePageController.user = user
+//            HomePageController.firebaseUser = firebaseUser
+            HomePageController.userEmail =  (Auth.auth().currentUser?.email)!
+            self.dismiss(animated: true, completion: nil)
+
 
             
             

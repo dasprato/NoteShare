@@ -13,8 +13,11 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
 
     
+    static var userEmail: String = ""
+    
     var user: User? {
         didSet {
+
             guard let email = user?.email else { return }
             userName.text = email
         }
@@ -32,10 +35,12 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     let homePageView = HomePageView()
     
     let leftMenu = LeftMenu()
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        checkIfUserIsLoggedIn()
+        
         view.backgroundColor = Constants.themeColor
         view.addSubview(homePageView)
 //        view.addSubview(leftMenu)
@@ -48,6 +53,10 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 //        leftMenu.isHidden = true
         
         self.hideKeyboardWhenTappedAround()
+        if HomePageController.userEmail != "" {
+            userName.text = HomePageController.userEmail
+        }
+        
         NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
         let barUserImage = UIBarButtonItem(customView: userImage)
         
@@ -60,20 +69,37 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         let barLogout = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: #selector(handleLogout))
                 let barSearch = UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: nil)
         navigationItem.setRightBarButtonItems([barLogout, barSettings, barSearch], animated: true)
+        
+        
+
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        if HomePageController.userEmail != "" {
+            userName.text = HomePageController.userEmail
+        }
+        NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
+        let barUserImage = UIBarButtonItem(customView: userImage)
+        
+        let barUserName = UIBarButtonItem(customView: userName)
+        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
+    }
     @objc func handleLogout() {
         print("Trying to handle logout")
-        self.dismiss(animated: true, completion: nil)
+        do {
+            try Auth.auth().signOut()
+        } catch let logoutError {
+            print(logoutError)
+        }
+        let viewControllerToPresent = LoginController()
+        
+        self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
     }
     
 
     
     override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.post(name: NSNotification.Name.init("reloadHomePageCollectionView"), object: self, userInfo: nil)
-    }
-    func showMenu() {
-        leftMenu.isHidden = false
     }
     
     func setupObservers() {
@@ -96,7 +122,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     var userName: UILabel = {
         let lfc = UILabel()
         lfc.translatesAutoresizingMaskIntoConstraints = false
-        lfc.text = "Prato Das"
         lfc.font = UIFont.boldSystemFont(ofSize: lfc.font.pointSize)
         lfc.textColor = Constants.themeColor
         return lfc
@@ -122,6 +147,13 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         self.navigationController?.pushViewController(MyCoursesController(), animated: true)
     }
     
+    func checkIfUserIsLoggedIn() {
+        if Auth.auth().currentUser?.uid == nil {
+            perform(#selector(handleLogout), with: nil, afterDelay: 0)
+        } else {
+            userName.text =  Auth.auth().currentUser?.email
+        }
+    }
     
     
 
