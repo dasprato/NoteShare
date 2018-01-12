@@ -8,8 +8,11 @@
 
 import UIKit
 import Firebase
+import FBSDKLoginKit
 
-class SignUpController: UIViewController {
+class SignUpController: UIViewController, FBSDKLoginButtonDelegate {
+
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,8 +20,11 @@ class SignUpController: UIViewController {
         view.addSubview(emailField)
         view.addSubview(passwordField)
         view.addSubview(signUpButton)
+        view.addSubview(facebookSignUp)
+        facebookSignUp.delegate = self
         
         NSLayoutConstraint.activate([signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), signUpButton.centerYAnchor.constraint(equalTo: view.centerYAnchor), signUpButton.heightAnchor.constraint(equalToConstant: 40)])
+        NSLayoutConstraint.activate([facebookSignUp.centerXAnchor.constraint(equalTo: view.centerXAnchor), facebookSignUp.bottomAnchor.constraint(equalTo: emailField.topAnchor, constant: -8), facebookSignUp.heightAnchor.constraint(equalToConstant: 40), facebookSignUp.widthAnchor.constraint(equalTo: emailField.widthAnchor)])
         NSLayoutConstraint.activate([passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor), passwordField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), passwordField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), passwordField.bottomAnchor.constraint(equalTo: signUpButton.topAnchor, constant: -8), passwordField.heightAnchor.constraint(equalToConstant: 40)])
         
         NSLayoutConstraint.activate([emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor), emailField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), emailField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), emailField.bottomAnchor.constraint(equalTo: passwordField.topAnchor, constant: -8), emailField.heightAnchor.constraint(equalToConstant: 40)])
@@ -38,6 +44,12 @@ class SignUpController: UIViewController {
         lb.setTitleColor(UIColor.white, for: .normal)
         lb.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return lb
+    }()
+    
+    var facebookSignUp: FBSDKLoginButton = {
+        let fsu = FBSDKLoginButton()
+        fsu.translatesAutoresizingMaskIntoConstraints = false
+        return fsu
     }()
     
     
@@ -80,6 +92,20 @@ class SignUpController: UIViewController {
             HomePageController.userEmail =  (Auth.auth().currentUser?.email)!
             self.dismiss(animated: true, completion: nil)
         })
+        
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+        print("Did log out of facebook")
+    }
+    
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        if error != nil {
+            print(error)
+            return
+        }
+        
+        print("Successfully logged in")
         
     }
     var emailField: UITextField = {
