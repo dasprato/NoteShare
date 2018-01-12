@@ -61,9 +61,9 @@ class NotesView: UIView, UITextViewDelegate {
         })
 
         NotificationCenter.default.post(name: NSNotification.Name.init("keyboardOnChatWindowWentAway"), object: nil)
-        if self.arrayOfComments != nil {
-            self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
-        }
+//        if self.arrayOfComments != nil {
+//            self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
+//        }
     }
 
     fileprivate func setupLabels() {
@@ -71,7 +71,6 @@ class NotesView: UIView, UITextViewDelegate {
         addSubview(uploadedBy)
         addSubview(noteDescription)
         addSubview(viewNote)
-        
         
         NSLayoutConstraint.activate([viewNote.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), viewNote.topAnchor.constraint(equalTo: downloadSize.topAnchor), viewNote.heightAnchor.constraint(equalToConstant: 30)])
         
@@ -114,7 +113,7 @@ class NotesView: UIView, UITextViewDelegate {
         newComment.delegate = self
         NotificationCenter.default.addObserver(self, selector:#selector(NotesView.handleKeyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(NotesView.handleKeyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-
+// NotificationCenter.default.addObserver(self, selector: #selector(UITextInputDelegate.textDidChange(_:)), name: Notification.Name.UITextViewTextDidChange, object: self)
         
     }
     
@@ -169,7 +168,14 @@ class NotesView: UIView, UITextViewDelegate {
         ds.font = UIFont.systemFont(ofSize: 16)
         return ds
     }()
+
     
+    func textViewDidChange(_ textView: UITextView) {
+                if self.arrayOfComments != nil {
+                    self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
+                }
+        layoutIfNeeded()
+    }
     var commentBackground: UIView = {
         let cb = UIView()
         cb.translatesAutoresizingMaskIntoConstraints = false
@@ -239,6 +245,7 @@ class NotesView: UIView, UITextViewDelegate {
         ma.showsVerticalScrollIndicator = false
         ma.keyboardDismissMode = .onDrag
         ma.bounces = true
+        ma.bouncesZoom = true
         return ma
     }()
     
@@ -263,14 +270,14 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let approximateWidth = frame.width - 8
+        let approximateWidth = collectionView.frame.width - 8
         let size = CGSize(width: approximateWidth, height: 1000000)
         let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
         let estimatedFrame = NSString(string: (arrayOfComments?[indexPath.row].message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
         
         print("estimated height is: ")
         print(estimatedFrame.height)
-        return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 16 + 32)
+        return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 16 + 28)
     }
     
     

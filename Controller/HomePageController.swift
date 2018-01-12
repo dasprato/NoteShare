@@ -41,7 +41,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         
         checkIfUserIsLoggedIn()
         
-        view.backgroundColor = Constants.themeColor
+        view.backgroundColor = UIColor.white
         view.addSubview(homePageView)
 //        view.addSubview(leftMenu)
         
@@ -58,19 +58,31 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         }
         
         NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
-        let barUserImage = UIBarButtonItem(customView: userImage)
-        
+//        let barUserImage = UIBarButtonItem(customView: userImage)
+        let barUserImage = UIBarButtonItem(image: userImage.image, style: .plain, target: self, action: #selector(openSettings))
         let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
+        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
         setupObservers()
         
         
-        let barSettings = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(openSettings))
-        let barLogout = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: #selector(handleLogout))
-                let barSearch = UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: nil)
+        let barSettings = UIBarButtonItem(image: UIImage(named: "settings")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openSettings))
+        let barLogout = UIBarButtonItem(image: UIImage(named: "logout")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLogout))
+                let barSearch = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openAllCourses))
         navigationItem.setRightBarButtonItems([barLogout, barSettings, barSearch], animated: true)
         
+//        self.navigationController?.navigationBar.shadowImage = UIImage()
+//        navigationController?.navigationBar.backgroundColor = UIColor.darkGray
+//        navigationController?.navigationBar.isTranslucent = false
+
+//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.backgroundColor = UIColor.white
         
+        self.navigationController?.navigationBar.layer.shadowColor = UIColor.lightGray.cgColor
+        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
+        self.navigationController?.navigationBar.layer.masksToBounds = false
 
     }
     
@@ -79,10 +91,10 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
             userName.text = HomePageController.userEmail
         }
         NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
-        let barUserImage = UIBarButtonItem(customView: userImage)
-        
+        //        let barUserImage = UIBarButtonItem(customView: userImage)
+        let barUserImage = UIBarButtonItem(image: UIImage(named: "profileIcon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openSettings))
         let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
+        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
     }
     @objc func handleLogout() {
         print("Trying to handle logout")
@@ -103,7 +115,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     }
     
     func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(openAllCourses), name: NSNotification.Name(rawValue: "openAllCourses"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(openMyNotes), name: NSNotification.Name(rawValue: "openMyNotes"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(openMyCourses), name: NSNotification.Name(rawValue: "openMyCourses"), object: nil)
     }

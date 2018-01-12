@@ -40,7 +40,7 @@ class LoginController: UIViewController {
     var loginButton: UIButton = {
         let lb = UIButton()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        let imageForLogin = UIImage(named: "login")?.withRenderingMode(.alwaysTemplate)
+        let imageForLogin = UIImage(named: "login")?.withRenderingMode(.alwaysOriginal)
         lb.setImage(imageForLogin, for: .normal)
         lb.tintColor = UIColor.white
         lb.contentMode = .scaleAspectFit

@@ -18,7 +18,6 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
     func populateHomePageArray() {
         arrayOfHomePages.append(HomePage(titleLabel: "My Notes", iconForTitle: ""))
         arrayOfHomePages.append(HomePage(titleLabel: "My Courses", iconForTitle: ""))
-        arrayOfHomePages.append(HomePage(titleLabel: "All Courses", iconForTitle: ""))
     }
     
     
@@ -30,7 +29,7 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! HomePageCollectionViewCell
-            cell.backgroundColor = UIColor.white
+            cell.backgroundColor = UIColor.lightGray
     }
     
     func setupObservers() {
@@ -48,8 +47,6 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openMyNotes"), object: nil)
         case "My Courses":
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openMyCourses"), object: nil)
-        case "All Courses":
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openAllCourses"), object: nil)
         default:
             print(title)
         }
@@ -69,7 +66,7 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePageCollectionViewCellId, for: indexPath) as! HomePageCollectionViewCell
         cell.iconForLabel.image = UIImage(named: arrayOfHomePages[indexPath.row].iconForTitle)
         cell.labelForCell.text = arrayOfHomePages[indexPath.row].titleLabel
-            cell.backgroundColor = UIColor.white
+            cell.backgroundColor = UIColor.lightGray
             cell.labelForCell.textColor = Constants.themeColor
         cell.labelForCell.font = UIFont.boldSystemFont(ofSize: cell.labelForCell.font.pointSize)
         return cell
@@ -88,7 +85,7 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
-        ma.backgroundColor = Constants.themeColor
+        ma.backgroundColor = UIColor.white
         ma.layer.masksToBounds = true
         ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         return ma
@@ -111,7 +108,7 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
-        backgroundColor = Constants.themeColor
+        backgroundColor = UIColor.white
         
         populateHomePageArray()
         setupHomeCollectionView()

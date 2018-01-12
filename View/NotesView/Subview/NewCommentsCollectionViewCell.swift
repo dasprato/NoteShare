@@ -57,7 +57,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         let ds = UITextView()
         ds.translatesAutoresizingMaskIntoConstraints = false
         ds.textAlignment = .left
-        ds.textColor = UIColor.lightGray
+        ds.textColor = UIColor.gray
         ds.font = UIFont.systemFont(ofSize: 16)
         ds.layer.cornerRadius = 10.0
         ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
@@ -69,11 +69,10 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         let ds = FlexibleTextView()
         ds.translatesAutoresizingMaskIntoConstraints = false
         ds.textAlignment = .left
-        ds.textColor = UIColor.gray
+        ds.textColor = UIColor.lightGray
         ds.text = "Prato Das"
-         ds.font = UIFont.boldSystemFont(ofSize: 12)
+         ds.font = UIFont.boldSystemFont(ofSize: 8)
         ds.layer.cornerRadius = 10.0
-        ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
         ds.isUserInteractionEnabled = false
         return ds
     }()

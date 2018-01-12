@@ -27,6 +27,7 @@ class NotesController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         view.addSubview(notesView)
+
         notesViewBottomAnchorWhenHidden = notesView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         notesViewBottomAnchorWhenShown = notesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         NSLayoutConstraint.activate([notesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), notesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), notesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), notesViewBottomAnchorWhenHidden])
