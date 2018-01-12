@@ -23,13 +23,14 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! HomePageCollectionViewCell
-            cell.backgroundColor = UIColor.lightGray
+            cell.backgroundColor = UIColor(red: 135/255, green: 190/255, blue: 242/255, alpha: 1)
         tappedOnCell(withTitle: cell.labelForCell.text!)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! HomePageCollectionViewCell
-            cell.backgroundColor = UIColor.lightGray
+            cell.backgroundColor = UIColor(red: 152/255, green: 204/255, blue: 232/255, alpha: 1)
     }
     
     func setupObservers() {
@@ -56,7 +57,7 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! HomePageCollectionViewCell
-        cell.backgroundColor = UIColor.white
+        cell.backgroundColor = UIColor(red: 152/255, green: 204/255, blue: 232/255, alpha: 1)
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return arrayOfHomePages.count
@@ -66,9 +67,11 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePageCollectionViewCellId, for: indexPath) as! HomePageCollectionViewCell
         cell.iconForLabel.image = UIImage(named: arrayOfHomePages[indexPath.row].iconForTitle)
         cell.labelForCell.text = arrayOfHomePages[indexPath.row].titleLabel
-            cell.backgroundColor = UIColor.lightGray
-            cell.labelForCell.textColor = Constants.themeColor
+            cell.backgroundColor = UIColor(red: 152/255, green: 204/255, blue: 232/255, alpha: 1)
+            cell.labelForCell.textColor = UIColor.white
         cell.labelForCell.font = UIFont.boldSystemFont(ofSize: cell.labelForCell.font.pointSize)
+        cell.layer.borderColor = UIColor(red: 135/255, green: 190/255, blue: 242/255, alpha: 1).cgColor
+        cell.layer.borderWidth = 3.0
         return cell
     }
     

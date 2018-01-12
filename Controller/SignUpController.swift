@@ -10,90 +10,107 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 
-class SignUpController: UIViewController, FBSDKLoginButtonDelegate {
+
+class SignUpController: UIViewController {
 
     
-
+    var userEmail: String? {
+        didSet {
+            let viewControllerToPush = SignUpPasswordViewController()
+            viewControllerToPush.emailAddress = userEmail
+            if userEmail != "" {
+                viewControllerToPush.emailField.isUserInteractionEnabled = false
+                viewControllerToPush.emailField.backgroundColor = UIColor(red: 152/255, green: 204/255, blue: 232/255, alpha: 1)
+            }
+            self.navigationController?.pushViewController(viewControllerToPush, animated: true)
+        }
+    }
+    
+    let arrayOfUIImages = [UIImage(named: "facebook"), UIImage(named: "gmail"), UIImage(named: "github"), UIImage(named: "twitter"), UIImage(named: "phone"), UIImage(named: "email")]
+    let arrayOfMediaNames = ["Facebook", "Gmail", "GitHub", "Twitter", "Phone", "Email"]
+    let signUpCollectionViewCellId = "signUpCollectionViewCellId"
     override func viewDidLoad() {
+
         super.viewDidLoad()
         view.backgroundColor = Constants.themeColor
-        view.addSubview(emailField)
-        view.addSubview(passwordField)
-        view.addSubview(signUpButton)
-        view.addSubview(facebookSignUp)
-        facebookSignUp.delegate = self
+
+        view.addSubview(signUpCollectionView)
         
-        NSLayoutConstraint.activate([signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), signUpButton.centerYAnchor.constraint(equalTo: view.centerYAnchor), signUpButton.heightAnchor.constraint(equalToConstant: 40)])
-        NSLayoutConstraint.activate([facebookSignUp.centerXAnchor.constraint(equalTo: view.centerXAnchor), facebookSignUp.bottomAnchor.constraint(equalTo: emailField.topAnchor, constant: -8), facebookSignUp.heightAnchor.constraint(equalToConstant: 40), facebookSignUp.widthAnchor.constraint(equalTo: emailField.widthAnchor)])
-        NSLayoutConstraint.activate([passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor), passwordField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), passwordField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), passwordField.bottomAnchor.constraint(equalTo: signUpButton.topAnchor, constant: -8), passwordField.heightAnchor.constraint(equalToConstant: 40)])
+
         
-        NSLayoutConstraint.activate([emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor), emailField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), emailField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), emailField.bottomAnchor.constraint(equalTo: passwordField.topAnchor, constant: -8), emailField.heightAnchor.constraint(equalToConstant: 40)])
+        
+        NSLayoutConstraint.activate([signUpCollectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), signUpCollectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), signUpCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), signUpCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        
+        
+        
+        signUpCollectionView.delegate = self
+        signUpCollectionView.dataSource = self
+        signUpCollectionView.register(SignUpCollectionViewCell.self, forCellWithReuseIdentifier: signUpCollectionViewCellId)
         // to completely get rid of the nav bar and status bar
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         self.navigationController?.navigationBar.tintColor = UIColor.white
-    }
-
-    
-    var signUpButton: UIButton = {
-        let lb = UIButton()
-        lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.setTitle("Sign Up", for: .normal)
-        lb.setTitleColor(UIColor.white, for: .normal)
-        lb.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
-        return lb
-    }()
-    
-    var facebookSignUp: FBSDKLoginButton = {
-        let fsu = FBSDKLoginButton()
-        fsu.translatesAutoresizingMaskIntoConstraints = false
-        return fsu
-    }()
-    
-    
-    @objc func handleSignUp() {
-        print("Trying to sign up and send data to firebase")
-        guard let email = emailField.text else { return }
-        guard let password = passwordField.text else { return }
-        Auth.auth().createUser(withEmail: email, password: password, completion: { (User, error) in
-            
-            if error != nil {
-                print(error ?? "")
-                return
-            }
-//            let userref =  String(Int(Date().timeIntervalSince1970)) + userid
-//            let ref = Database.database().reference(fromURL: "https://noteshare-7c70f.firebaseio.com/")
-//
-//            let usersReference = ref.child("users").child(userref)
-//            let values = ["name": name, "userid": userid, "email": email]
-//            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-//                if err != nil {
-//                    print (err)
-//                    err
-//                }
-//            })
-            
-            let firebaseUserDict: [String: Any?] = ["emailAddress": email, "fieldOfStudy": nil, "name": nil, "profilePictureStorageReference": nil, "yearOfStudy": 0]
-            let db = Firestore.firestore()
-            db.collection("Users").document(User!.uid).setData(firebaseUserDict)
-            
-            
-            
-            
-            //successfully authenticated
-            print("added to user list" + "\(String(describing: User?.uid))" + "\(String(describing: User?.email))")
-            print("Trying to handle login")
-            self.dismiss(animated: true, completion: nil)
-            
-//            self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
-//            self.navigationController?.popToRootViewController(animated: true)
-            HomePageController.userEmail =  (Auth.auth().currentUser?.email)!
-            self.dismiss(animated: true, completion: nil)
-        })
+        
         
     }
+
+    var signUpCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 8
+        let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        ma.translatesAutoresizingMaskIntoConstraints = false
+        ma.backgroundColor = Constants.themeColor
+        ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        ma.bounces = true
+        ma.bouncesZoom = true
+        ma.alwaysBounceVertical = true
+        return ma
+    }()
+    
+    
+
+}
+
+extension SignUpController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrayOfUIImages.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: signUpCollectionViewCellId, for: indexPath) as! SignUpCollectionViewCell
+        cell.image = arrayOfUIImages[indexPath.row]
+        cell.title = arrayOfMediaNames[indexPath.row]
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width - 16, height: 40)
+    }
+    
+    
+}
+
+
+extension SignUpController {
+    func handleEmailLogin() {
+        self.userEmail = ""
+    }
+}
+extension SignUpController: FBSDKLoginButtonDelegate {
+    @objc func handleFacebookLogin() {
+        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, err) in
+            if err != nil {
+                print("Custom FB Login failed:", err ?? "")
+                return
+            }
+            self.showEmailAddress()
+        }
+    }
+    
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         print("Did log out of facebook")
@@ -104,35 +121,47 @@ class SignUpController: UIViewController, FBSDKLoginButtonDelegate {
             print(error)
             return
         }
-        
-        print("Successfully logged in")
-        
+        showEmailAddress()
     }
-    var emailField: UITextField = {
-        let ef = UITextField()
-        ef.translatesAutoresizingMaskIntoConstraints = false
-        ef.placeholder = "Your email"
-        ef.layer.cornerRadius = 5.0
-        ef.backgroundColor = UIColor.white
-        ef.textColor = Constants.themeColor
-        ef.contentMode = .center
-        ef.textAlignment = .center
-        return ef
-    }()
     
     
-    var passwordField: UITextField = {
-        let ef = UITextField()
-        ef.translatesAutoresizingMaskIntoConstraints = false
-        ef.placeholder = "Your password"
-        ef.layer.cornerRadius = 5.0
-        ef.backgroundColor = UIColor.white
-        ef.textColor = Constants.themeColor
-        ef.contentMode = .center
-        ef.textAlignment = .center
-        ef.isSecureTextEntry = true
-        return ef
-    }()
     
-
+    func showEmailAddress() {
+        let accessToken = FBSDKAccessToken.current()
+        guard let accessTokenString = accessToken?.tokenString else { return }
+        let credintials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+//
+//        Auth.auth().signIn(with: credintials) { (user, error) in
+//            if error != nil {
+//                print("Something went wrong with our facebook user:", error ?? "")
+//                return
+//            }
+//            print("Successfully logged in user: ", user ?? "")
+//        }
+        
+        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start {
+            (connection, result, err) in
+            if err != nil {
+                print("Failed to start graph request:", err ?? "")
+                return
+            }
+            
+            guard let unwrappedResult = result as? [String: String] else { return }
+            self.userEmail = unwrappedResult["email"]!
+            
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            handleFacebookLogin()
+        case 1:
+            break
+        case 5:
+            handleEmailLogin()
+        default:
+            break
+        }
+    }
 }

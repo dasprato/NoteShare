@@ -19,7 +19,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         didSet {
 
             guard let email = user?.email else { return }
-            userName.text = email
+//            userName.text = email
         }
     }
     
@@ -61,7 +61,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 //        let barUserImage = UIBarButtonItem(customView: userImage)
         let barUserImage = UIBarButtonItem(image: userImage.image, style: .plain, target: self, action: #selector(openSettings))
         let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
+        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
         setupObservers()
         
         
@@ -89,12 +89,16 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     override func viewDidAppear(_ animated: Bool) {
         if HomePageController.userEmail != "" {
             userName.text = HomePageController.userEmail
+        } else {
+            guard let unwrappedEmail = Auth.auth().currentUser?.email else {return}
+            userName.text = unwrappedEmail
+            print("The email address is:", userName.text)
         }
         NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
         //        let barUserImage = UIBarButtonItem(customView: userImage)
         let barUserImage = UIBarButtonItem(image: UIImage(named: "profileIcon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openSettings))
         let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
+        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
     }
     @objc func handleLogout() {
         print("Trying to handle logout")
@@ -162,7 +166,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         if Auth.auth().currentUser?.uid == nil {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
-            userName.text =  Auth.auth().currentUser?.email
+//            userName.text =  Auth.auth().currentUser?.email
         }
     }
     

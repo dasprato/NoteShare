@@ -32,7 +32,6 @@ class NotesView: UIView, UITextViewDelegate {
     @objc func handleKeyboardWillShow(_ notification: Notification) {
         let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
-        print("Keyboard Shown")
         
         
             newCommentBottomAnchor.constant = -keyboardFrame!.height
@@ -52,7 +51,6 @@ class NotesView: UIView, UITextViewDelegate {
     
     @objc func handleKeyboardWillHide(_ notification: Notification) {
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
-        print("Keyboard Hidden")
         
                 newCommentBottomAnchor.constant = 0
         UIView.animate(withDuration: keyboardDuration!, animations: {
@@ -221,13 +219,12 @@ class NotesView: UIView, UITextViewDelegate {
     }()
     
     @objc func onViewNoteTapped() {
-        print("trying to view note")
         NotificationCenter.default.post(name: NSNotification.Name.init("onViewNoteTapped"), object: nil)
         
     }
     
     @objc func onDownloadNoteTapped() {
-        print("trying to donwloadNote")
+
     }
     
     
@@ -274,9 +271,7 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         let size = CGSize(width: approximateWidth, height: 1000000)
         let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
         let estimatedFrame = NSString(string: (arrayOfComments?[indexPath.row].message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-        
-        print("estimated height is: ")
-        print(estimatedFrame.height)
+
         return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 16 + 28)
     }
     

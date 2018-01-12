@@ -13,16 +13,17 @@ class LoginController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = Constants.themeColor
         view.addSubview(loginButton)
         view.addSubview(signUpButton)
         view.addSubview(emailField)
         view.addSubview(passwordField)
+
         NSLayoutConstraint.activate([loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor), loginButton.widthAnchor.constraint(equalToConstant: 40), loginButton.heightAnchor.constraint(equalToConstant: 40)])
         
         NSLayoutConstraint.activate([signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor)])
-        
+
         
         NSLayoutConstraint.activate([passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor), passwordField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8), passwordField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8), passwordField.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -8), passwordField.heightAnchor.constraint(equalToConstant: 40)])
         
@@ -38,7 +39,7 @@ class LoginController: UIViewController {
     
     
     var loginButton: UIButton = {
-        let lb = UIButton()
+        let lb = UIButton(type: .system)
         lb.translatesAutoresizingMaskIntoConstraints = false
         let imageForLogin = UIImage(named: "login")?.withRenderingMode(.alwaysOriginal)
         lb.setImage(imageForLogin, for: .normal)
@@ -49,8 +50,36 @@ class LoginController: UIViewController {
     }()
     
     
+
+    
+    var customFacebookButton: UIButton = {
+        let lb = UIButton(type: .system)
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        lb.setTitle("Custom Facebook Login", for: .normal)
+        lb.setTitleColor(UIColor.white, for: .normal)
+        lb.backgroundColor = UIColor(red: 152/255, green: 204/255, blue: 232/255, alpha: 1)
+        lb.contentMode = .scaleAspectFit
+        lb.addTarget(self, action: #selector(handleFacebookLogin), for: .touchUpInside)
+        lb.layer.cornerRadius = 5.0
+        return lb
+    }()
+    
+    @objc func handleFacebookLogin() {
+//        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, err) in
+//            if err != nil {
+//                print("Custom FB Login failed:")
+//                return
+//            }
+//            self.showEmailAddress()
+//        }
+    }
+    
+    
+    
+    
+    
     var signUpButton: UIButton = {
-        let lb = UIButton()
+        let lb = UIButton(type: .system)
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.setTitle("Have not signed up? Sign Up", for: .normal)
         lb.setTitleColor(UIColor.white, for: .normal)
@@ -96,8 +125,11 @@ class LoginController: UIViewController {
         print("Trying to handle login")
         
         guard let email = emailField.text else { return }
-        guard let password = passwordField.text else { return }
-        if email == "" || password == "" {
+        var password = ""
+        if passwordField.text != "" {
+            password = passwordField.text!
+        }
+        if email == "" {
             self.createAlert(title: "Empty, Empty", message: "Looks like one of the text fields are empty")
             return
         }
@@ -142,6 +174,8 @@ class LoginController: UIViewController {
         
 
     }
+    
+
     
     func createAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)

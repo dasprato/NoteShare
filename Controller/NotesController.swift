@@ -59,10 +59,7 @@ class NotesController: UIViewController, UITextFieldDelegate {
     
     func fetchComments() {
         let db = Firestore.firestore()
-        print("Tehe title is: ")
-       print(titleForNavBar)
-        print("Name of note: ")
-        print(note.noteName)
+
         let settings = FirestoreSettings()
         settings.isPersistenceEnabled = false
         db.settings = settings
@@ -80,8 +77,7 @@ class NotesController: UIViewController, UITextFieldDelegate {
                     {
                         self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp))
                         self.notesView.arrayOfComments = self.arrayOfComments
-                        print("number Of Comments:")
-                        print(self.arrayOfComments.count)
+
 
                     }
                 }
@@ -121,7 +117,6 @@ class NotesController: UIViewController, UITextFieldDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         listener.remove()
-        print("listener removed")
     }
 
 
