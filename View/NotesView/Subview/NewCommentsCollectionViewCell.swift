@@ -7,14 +7,26 @@
 //
 
 import UIKit
-
+import Firebase
 class NewCommentsCollectionViewCell: UICollectionViewCell {
     
+    
+    var commentLabelTieToWidth: NSLayoutConstraint!
+    var commentLabelTieToEstimate: NSLayoutConstraint!
     var comment: Comment? {
         didSet {
             print("Single Comment Fetched")
             commentLabel.text = comment?.message
             userName.text = comment?.messageOwner
+            if comment?.messageOwner == Auth.auth().currentUser?.email {
+                commentLabel.backgroundColor = UIColor.lightGray
+                commentLabel.textColor = Constants.themeColor
+            }
+            if comment?.messageOwner != Auth.auth().currentUser?.email {
+                commentLabel.backgroundColor = Constants.themeColor
+                commentLabel.textColor = UIColor.white
+            }
+            
             if let timeStamp = comment?.timeStamp {
                 let date = Date(timeIntervalSince1970: Double(timeStamp)!)
                 let dateFormatter = DateFormatter()
@@ -29,12 +41,44 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
 //                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
 //
 //                let textDate = String(describing: date)
-               
+                
+                let size = CGSize(width: frame.width - 8, height: frame.height - 15 - 16)
+                let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
+                let estimatedFrame = NSString(string: (comment?.message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+                if estimatedFrame.width + 11 > frame.width {
+                    commentLabel.widthAnchor.constraint(equalToConstant: frame.width).isActive = true
+                    layoutIfNeeded()
+                    contentView.layoutIfNeeded()
+                    commentLabelTieToWidth = commentLabel.widthAnchor.constraint(equalToConstant: frame.width)
+                    commentLabelTieToWidth.isActive = true
+                                    }
+                else {
+                    commentLabelTieToEstimate = commentLabel.widthAnchor.constraint(equalToConstant: estimatedFrame.width + 11)
+                    commentLabelTieToEstimate.isActive = true
+                    layoutIfNeeded()
+                    contentView.layoutIfNeeded()
+                }
+                
             }
             
 
             
         }
+    }
+    
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        if commentLabelTieToEstimate != nil {
+            commentLabelTieToEstimate.isActive = false
+        }
+        if commentLabelTieToWidth != nil {
+            commentLabelTieToWidth.isActive = false
+        }
+        
+
+        
+        
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,9 +87,9 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(commentLabel)
         contentView.addSubview(userName)
 //        contentView.addSubview(dateLabel)
-        NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.leftAnchor.constraint(equalTo: leftAnchor)])
+        NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.leftAnchor.constraint(equalTo: leftAnchor), userName.heightAnchor.constraint(equalToConstant: 16)])
 //        NSLayoutConstraint.activate([dateLabel.topAnchor.constraint(equalTo: topAnchor), dateLabel.rightAnchor.constraint(equalTo: rightAnchor)])
-        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.bottomAnchor.constraint(equalTo: bottomAnchor), commentLabel.rightAnchor.constraint(equalTo: rightAnchor)])
+        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.bottomAnchor.constraint(equalTo: bottomAnchor)])
     }
     
     required init?(coder aDecoder: NSCoder) {

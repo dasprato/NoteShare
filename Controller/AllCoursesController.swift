@@ -63,12 +63,11 @@ class AllCoursesController: UIViewController {
                 for eachitem in courses {
                     if eachitem.code.lowercased().hasPrefix(self.courseCode.lowercased()) {
                     self.arrayOfCourses.append(eachitem)
-                    self.allCoursesView.arrayOfCourses = self.arrayOfCourses
+                    
                     }
                     
                 }
-                
-//                print(self.allCoursesView.arrayOfCourses?.count)
+                self.allCoursesView.arrayOfCourses = self.arrayOfCourses
 
             } catch let jsonErr {
                 print (jsonErr.localizedDescription)

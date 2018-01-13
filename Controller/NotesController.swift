@@ -61,7 +61,6 @@ class NotesController: UIViewController, UITextFieldDelegate {
         let db = Firestore.firestore()
 
         let settings = FirestoreSettings()
-        settings.isPersistenceEnabled = false
         db.settings = settings
         listener = db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").addSnapshotListener { snapshot, error in
             if error != nil {
@@ -75,12 +74,20 @@ class NotesController: UIViewController, UITextFieldDelegate {
                         let timeStamp = document.data()["timeStamp"] as? String,
                         let messageOwner = document.data()["messageOwner"] as? String
                     {
-                        self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp))
-                        self.notesView.arrayOfComments = self.arrayOfComments
-
+                        if self.arrayOfComments.count == 0 {
+                        self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: false))
+                        }
+                        else {
+                            if messageOwner == self.arrayOfComments[self.arrayOfComments.count - 1].messageOwner {
+                            self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: true))
+                            } else {
+                                self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: false))
+                            }
+                        }
 
                     }
                 }
+                self.notesView.arrayOfComments = self.arrayOfComments
                 
             }
         }
@@ -118,6 +125,7 @@ class NotesController: UIViewController, UITextFieldDelegate {
         super.viewDidDisappear(true)
         listener.remove()
     }
+    
 
 
 

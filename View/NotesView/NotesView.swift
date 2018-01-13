@@ -14,18 +14,32 @@ import Firebase
 class NotesView: UIView, UITextViewDelegate {
 
     let  commentsCollectionViewCellId = "commentsCollectionViewCellId"
+    var firstTime = true
     var arrayOfComments: [Comment]? {
         didSet {
             DispatchQueue.main.async {
                 self.commentsCollectionView.reloadData()
+                if (self.arrayOfComments?.count)! > 0 {
+                if self.firstTime {
                 self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
                 self.commentsCollectionView.alpha = 0
                 UIView.animate(withDuration: 0.3, animations: {
                     self.commentsCollectionView.alpha = 1
+
                 })
+                    self.firstTime = false
+
+                } else {
+                    if (self.arrayOfComments?.count)! > 0 {
+                    self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: true)
+                    }
+                }
+            }
             }
         }
     }
+    
+    
     var note: Note!
     var newCommentBottomAnchor: NSLayoutConstraint!
     var commentsCollectionViewBottomAnchor: NSLayoutConstraint!
@@ -33,6 +47,10 @@ class NotesView: UIView, UITextViewDelegate {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    
+    
+    
     @objc func handleKeyboardWillShow(_ notification: Notification) {
         let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
@@ -46,7 +64,9 @@ class NotesView: UIView, UITextViewDelegate {
         })
         
         NotificationCenter.default.post(name: NSNotification.Name.init("keyboardOnChatWindowIsShown"), object: nil)
-        if self.arrayOfComments != nil {
+        
+        
+        if (self.arrayOfComments?.count)! > 0 {
             self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
         }
         
@@ -63,9 +83,10 @@ class NotesView: UIView, UITextViewDelegate {
         })
 
         NotificationCenter.default.post(name: NSNotification.Name.init("keyboardOnChatWindowWentAway"), object: nil)
-//        if self.arrayOfComments != nil {
-//            self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
-//        }
+        
+        if (self.arrayOfComments?.count)! > 0 && self.commentsCollectionView.isDragging == false {
+            self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
+        }
     }
 
     fileprivate func setupLabels() {
@@ -173,10 +194,10 @@ class NotesView: UIView, UITextViewDelegate {
 
     
     func textViewDidChange(_ textView: UITextView) {
-                if self.arrayOfComments != nil {
-                    self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
-                }
-        layoutIfNeeded()
+//        if (self.arrayOfComments?.count)! > 0 {
+//            self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
+//        }
+//        layoutIfNeeded()
     }
     var commentBackground: UIView = {
         let cb = UIView()
@@ -187,8 +208,7 @@ class NotesView: UIView, UITextViewDelegate {
     }()
     
     @objc func sendToFirebase() {
-        let dict: [String: Any] = ["message": newComment.text, "messageOwner": "Mr Prato", "timeStamp":  String(describing: Date().timeIntervalSince1970)]
-        let comment = Comment(message: newComment.text, messageOwner: "Mr Prato", timeStamp: String(describing: Date().timeIntervalSince1970))
+        let dict: [String: Any] = ["message": newComment.text, "messageOwner": Auth.auth().currentUser?.email , "timeStamp":  String(describing: Date().timeIntervalSince1970)]
         let db = Firestore.firestore()
         db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").document("\(String(describing: Date().timeIntervalSince1970))").setData(dict)
         newComment.text = ""
@@ -199,7 +219,7 @@ class NotesView: UIView, UITextViewDelegate {
     }
     
     lazy var sendButton: UIButton = {
-        let dn = UIButton()
+        let dn = UIButton(type: .system)
         dn.clipsToBounds = true
         dn.translatesAutoresizingMaskIntoConstraints = false
         let titleImage = UIImage(named: "sendIcon")?.withRenderingMode(.alwaysTemplate)
@@ -236,17 +256,17 @@ class NotesView: UIView, UITextViewDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 4
+        layout.minimumLineSpacing = 0
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
         ma.backgroundColor = UIColor.white
         ma.layer.masksToBounds = true
-        ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
         ma.showsVerticalScrollIndicator = false
         ma.keyboardDismissMode = .onDrag
         ma.bounces = true
-        ma.bouncesZoom = true
+        ma.alwaysBounceVertical = true
         return ma
     }()
     
@@ -276,7 +296,7 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
         let estimatedFrame = NSString(string: (arrayOfComments?[indexPath.row].message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
 
-        return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 16 + 28)
+        return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 15 + 16)
     }
     
     

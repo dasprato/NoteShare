@@ -11,14 +11,13 @@ import Firebase
 
 class AllNotesController: UIViewController {
 
-    let allNotesView = AllNotesView()
+    var allNotesView = AllNotesView()
     var arrayOfNotes = [Note]()
     var titleForNavBar = ""
     var listener: ListenerRegistration!
     var course: Course!
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchNotes()
         
         view.backgroundColor = UIColor.white
         view.addSubview(allNotesView)
@@ -58,9 +57,9 @@ class AllNotesController: UIViewController {
     
     fileprivate func fetchNotes() {
         let db = Firestore.firestore()
-        let settings = FirestoreSettings()
-        settings.isPersistenceEnabled = false
-        db.settings = settings
+//        let settings = FirestoreSettings()
+//        settings.isPersistenceEnabled = false
+//        db.settings = settings
         listener = db.collection("Courses").document(titleForNavBar).collection("Notes")
             .addSnapshotListener { snapshot, error in
             if error != nil {
@@ -83,19 +82,17 @@ class AllNotesController: UIViewController {
                         let rating = document.data()["rating"] as? Int
                     {
                         self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, storageReference: storageReference))
-                        self.allNotesView.arrayOfNotes = self.arrayOfNotes
+                        
 
                     }
                 }
+                self.allNotesView.arrayOfNotes = self.arrayOfNotes
                 
             }
         }
+        
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.arrayOfNotes.removeAll()
-        self.allNotesView.arrayOfNotes = self.arrayOfNotes
-    }
+
     
     @objc func showError() {
         let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: UIAlertControllerStyle.alert)
@@ -104,12 +101,14 @@ class AllNotesController: UIViewController {
         print("No notes found")
     }
     
-                override func viewDidDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         if listener != nil {
-        listener.remove()
+            listener.remove()
         }
-        print("listener removed")
+        print("listener removed from this course")
+        self.arrayOfNotes.removeAll()
+        self.allNotesView.arrayOfNotes = self.arrayOfNotes
     }
     
     override func viewWillAppear(_ animated: Bool) {
