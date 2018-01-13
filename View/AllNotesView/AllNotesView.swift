@@ -16,10 +16,13 @@ class AllNotesView: UIView {
         didSet {
             DispatchQueue.main.async {
                 self.allNotesCollectionView.reloadData()
-//                self.allNotesCollectionView.alpha = 0
-//                UIView.animate(withDuration: 0.3, animations: {
-//                    self.allNotesCollectionView.alpha = 1
-//                })
+                self.allNotesCollectionView.alpha = 0
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 20, options: .curveEaseOut, animations: {
+                    self.allNotesCollectionView.alpha = 1
+                }, completion: { (_) in
+                    return
+                })
+
             }
 
         }
@@ -38,6 +41,17 @@ class AllNotesView: UIView {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "noNoteFoundError"), object: nil)
         }
         
+
+        
+    }
+    
+    override func didAddSubview(_ subview: UIView) {
+        self.allNotesCollectionView.alpha = 0
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 5, options: .curveEaseOut, animations: {
+            self.allNotesCollectionView.alpha = 1
+        }, completion: { (_) in
+            return
+        })
     }
     
     required init?(coder aDecoder: NSCoder) {

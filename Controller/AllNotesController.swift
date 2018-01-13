@@ -18,7 +18,7 @@ class AllNotesController: UIViewController {
     var course: Course!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                fetchNotes()
         view.backgroundColor = UIColor.white
         view.addSubview(allNotesView)
         NSLayoutConstraint.activate([allNotesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), allNotesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), allNotesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), allNotesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
@@ -57,6 +57,7 @@ class AllNotesController: UIViewController {
     
     fileprivate func fetchNotes() {
         let db = Firestore.firestore()
+
 //        let settings = FirestoreSettings()
 //        settings.isPersistenceEnabled = false
 //        db.settings = settings
@@ -107,12 +108,12 @@ class AllNotesController: UIViewController {
             listener.remove()
         }
         print("listener removed from this course")
-        self.arrayOfNotes.removeAll()
-        self.allNotesView.arrayOfNotes = self.arrayOfNotes
+//        self.arrayOfNotes.removeAll()
+//        self.allNotesView.arrayOfNotes = self.arrayOfNotes
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchNotes()
+
+    override func viewDidAppear(_ animated: Bool) {
+
     }
     
 }

@@ -11,9 +11,11 @@
 
 import UIKit
 import Firebase
+
 class NotesView: UIView, UITextViewDelegate {
 
     let  commentsCollectionViewCellId = "commentsCollectionViewCellId"
+    let ownCommentCollectionViewCellId = "ownCommentCollectionViewCellId"
     var firstTime = true
     var arrayOfComments: [Comment]? {
         didSet {
@@ -23,9 +25,10 @@ class NotesView: UIView, UITextViewDelegate {
                 if self.firstTime {
                 self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
                 self.commentsCollectionView.alpha = 0
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 20, options: .curveEaseOut, animations: {
                     self.commentsCollectionView.alpha = 1
-
+                }, completion: { (_) in
+                    return
                 })
                     self.firstTime = false
 
@@ -95,7 +98,7 @@ class NotesView: UIView, UITextViewDelegate {
         addSubview(noteDescription)
         addSubview(viewNote)
         
-        NSLayoutConstraint.activate([viewNote.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), viewNote.topAnchor.constraint(equalTo: downloadSize.topAnchor), viewNote.heightAnchor.constraint(equalToConstant: 30)])
+        NSLayoutConstraint.activate([viewNote.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), viewNote.topAnchor.constraint(equalTo: downloadSize.topAnchor), viewNote.heightAnchor.constraint(equalToConstant: 30), viewNote.widthAnchor.constraint(equalToConstant: 30)])
         
         NSLayoutConstraint.activate([downloadSize.topAnchor.constraint(equalTo: topAnchor, constant: 8), downloadSize.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), downloadSize.heightAnchor.constraint(equalTo: viewNote.heightAnchor)])
         NSLayoutConstraint.activate([uploadedBy.topAnchor.constraint(equalTo: downloadSize.topAnchor), uploadedBy.leftAnchor.constraint(equalTo: downloadSize.rightAnchor, constant: 8), uploadedBy.heightAnchor.constraint(equalTo: viewNote.heightAnchor)])
@@ -128,6 +131,7 @@ class NotesView: UIView, UITextViewDelegate {
         commentsCollectionView.dataSource = self
         commentsCollectionView.delegate = self
         commentsCollectionView.register(NewCommentsCollectionViewCell.self, forCellWithReuseIdentifier: commentsCollectionViewCellId)
+        commentsCollectionView.register(OwnCommentCollectionViewCell.self, forCellWithReuseIdentifier: ownCommentCollectionViewCellId)
         
         
         commentsCollectionViewBottomAnchor = commentsCollectionView.bottomAnchor.constraint(equalTo: newComment.topAnchor)
@@ -232,12 +236,11 @@ class NotesView: UIView, UITextViewDelegate {
     }()
     
     lazy var viewNote: UIButton = {
-        let vn = UIButton()
+        let vn = UIButton(type: .system)
         vn.clipsToBounds = true
         vn.translatesAutoresizingMaskIntoConstraints = false
-        vn.setTitle("->", for: .normal)
-        vn.backgroundColor = Constants.themeColor
-        vn.layer.cornerRadius = 10.0
+        vn.setImage(UIImage(named: "download")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
         vn.addTarget(self, action: #selector(onViewNoteTapped), for: .touchUpInside)
         return vn
     }()
@@ -284,6 +287,11 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if arrayOfComments![indexPath.row].messageOwner == Auth.auth().currentUser?.email {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ownCommentCollectionViewCellId, for: indexPath) as! OwnCommentCollectionViewCell
+        cell.comment = arrayOfComments?[indexPath.row]
+        return cell
+        }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentsCollectionViewCellId, for: indexPath) as! NewCommentsCollectionViewCell
         cell.comment = arrayOfComments?[indexPath.row]
         return cell

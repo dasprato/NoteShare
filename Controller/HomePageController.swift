@@ -59,7 +59,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         
         NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
 //        let barUserImage = UIBarButtonItem(customView: userImage)
-        let barUserImage = UIBarButtonItem(image: userImage.image, style: .plain, target: self, action: #selector(openSettings))
+        let barUserImage = UIBarButtonItem(image: userImage.image, style: .plain, target: self, action: #selector(openProfile))
         let barUserName = UIBarButtonItem(customView: userName)
         navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
         setupObservers()
@@ -84,6 +84,8 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
         self.navigationController?.navigationBar.layer.masksToBounds = false
 
+        navigationController?.navigationItem.title = ""
+        navigationItem.title = ""
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -100,9 +102,11 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         }
         NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
         //        let barUserImage = UIBarButtonItem(customView: userImage)
-        let barUserImage = UIBarButtonItem(image: UIImage(named: "profileIcon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openSettings))
+        let barUserImage = UIBarButtonItem(image: UIImage(named: "profileIcon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openProfile))
         let barUserName = UIBarButtonItem(customView: userName)
         navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
+        
+                    CurrentSessionUser.user = FirebaseUser(emailAddress: Auth.auth().currentUser?.email, fieldOfStudy: "Computer Science", yearOfStudy: 2, profilePictureStorageReference: "https://scontent.fyyz1-1.fna.fbcdn.net/v/t1.0-9/26167731_1580968031970582_2119099227383639033_n.jpg?oh=a20c561f3d5402711b7f2e42ef1d1d7d&oe=5AF07D7C", name: "Prato Das")
     }
     @objc func handleLogout() {
         print("Trying to handle logout")
@@ -147,6 +151,11 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     }()
     
     
+    @objc func openProfile() {
+        self.navigationController?.pushViewController(ProfileController(), animated: true)
+    }
+    
+    
     @objc func openAllCourses() {
         self.navigationController?.pushViewController(AllCoursesController(), animated: true)
     }
@@ -173,6 +182,8 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 //            userName.text =  Auth.auth().currentUser?.email
         }
     }
+    
+    
     
     
 

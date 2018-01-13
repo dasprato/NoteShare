@@ -19,8 +19,10 @@ class AllCoursesView: UIView {
                 self.allCoursesCollectionView.reloadData()
                 if (self.firstTime) {
                 self.allCoursesCollectionView.alpha = 0
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 20, options: .curveEaseOut, animations: {
                     self.allCoursesCollectionView.alpha = 1
+                }, completion: { (_) in
+                    return
                 })
                 self.firstTime = false
                 }
