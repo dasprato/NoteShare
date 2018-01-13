@@ -40,7 +40,6 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
     private var courseTitle: UILabel = {
         let ct = UILabel()
         ct.translatesAutoresizingMaskIntoConstraints = false
-        ct.text = "ABP100Y1Y"
         ct.font = UIFont.systemFont(ofSize: ct.font.pointSize + 4)
         ct.textColor = Constants.themeColor
         return ct

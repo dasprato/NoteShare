@@ -56,7 +56,7 @@ class AllNotesController: UIViewController {
                 self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
     }
     
-                fileprivate func fetchNotes() {
+    fileprivate func fetchNotes() {
         let db = Firestore.firestore()
         let settings = FirestoreSettings()
         settings.isPersistenceEnabled = false
@@ -90,6 +90,11 @@ class AllNotesController: UIViewController {
                 
             }
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.arrayOfNotes.removeAll()
+        self.allNotesView.arrayOfNotes = self.arrayOfNotes
     }
     
     @objc func showError() {

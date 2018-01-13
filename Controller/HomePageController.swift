@@ -87,6 +87,10 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     }
     
     override func viewDidAppear(_ animated: Bool) {
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         if HomePageController.userEmail != "" {
             userName.text = HomePageController.userEmail
         } else {

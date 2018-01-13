@@ -18,7 +18,11 @@ class NotesView: UIView, UITextViewDelegate {
         didSet {
             DispatchQueue.main.async {
                 self.commentsCollectionView.reloadData()
-                self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: true)
+                self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
+                self.commentsCollectionView.alpha = 0
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.commentsCollectionView.alpha = 1
+                })
             }
         }
     }

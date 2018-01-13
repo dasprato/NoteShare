@@ -16,7 +16,12 @@ class AllNotesView: UIView {
         didSet {
             DispatchQueue.main.async {
                 self.allNotesCollectionView.reloadData()
+                self.allNotesCollectionView.alpha = 0
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.allNotesCollectionView.alpha = 1
+                })
             }
+
         }
     }
     override init(frame: CGRect) {

@@ -19,7 +19,7 @@ class AllCoursesController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchCourses()
+        
         view.backgroundColor = UIColor.white
         view.addSubview(allCoursesView)
         NSLayoutConstraint.activate([allCoursesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), allCoursesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), allCoursesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), allCoursesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
@@ -31,6 +31,7 @@ class AllCoursesController: UIViewController {
         navigationItem.title = ""
         navigationController?.navigationBar.shadowImage = UIImage()
         setupObservers()
+        fetchCourses()
         
     }
     
@@ -62,9 +63,11 @@ class AllCoursesController: UIViewController {
                 for eachitem in courses {
                     if eachitem.code.lowercased().hasPrefix(self.courseCode.lowercased()) {
                     self.arrayOfCourses.append(eachitem)
+                    self.allCoursesView.arrayOfCourses = self.arrayOfCourses
                     }
+                    
                 }
-                self.allCoursesView.arrayOfCourses = self.arrayOfCourses
+                
 //                print(self.allCoursesView.arrayOfCourses?.count)
 
             } catch let jsonErr {

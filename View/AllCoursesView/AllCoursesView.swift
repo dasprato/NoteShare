@@ -12,12 +12,20 @@ class AllCoursesView: UIView {
 
     var currentCell: IndexPath?
     let allCoursesCollectionViewCellId = "allCoursesCollectionViewCellId"
-    
+    var firstTime = true
     var arrayOfCourses: [Course]? {
         didSet {
             DispatchQueue.main.async {
                 self.allCoursesCollectionView.reloadData()
+                if (self.firstTime) {
+                self.allCoursesCollectionView.alpha = 0
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.allCoursesCollectionView.alpha = 1
+                })
+                self.firstTime = false
+                }
             }
+
         }
     }
     override init(frame: CGRect) {
@@ -66,7 +74,6 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: allCoursesCollectionViewCellId, for: indexPath) as! AllCoursesCollectionViewCell
-        cell.backgroundColor = UIColor.white
 //        cell.layer.borderColor = UIColor.lightGray.cgColor
 //        cell.layer.borderWidth = 0.5
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))

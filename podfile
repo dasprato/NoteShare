@@ -21,6 +21,7 @@ pod 'FBSDKCoreKit'
 pod 'FBSDKShareKit'
 pod 'FBSDKLoginKit'
   target 'NoteShareTests' do
+pod 'GoogleSignIn'
     inherit! :search_paths
     # Pods for testing
   end

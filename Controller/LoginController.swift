@@ -157,7 +157,6 @@ class LoginController: UIViewController {
             }
             
             //successfully logged in our user
-            self.dismiss(animated: true, completion: nil)
             
             let firebaseUser = FirebaseUser(emailAddress: user?.email, fieldOfStudy: "", yearOfStudy: 0, profilePictureStorageReference: "https://scontent.fyto1-1.fna.fbcdn.net/v/t1.0-9/26167731_1580968031970582_2119099227383639033_n.jpg?oh=a20c561f3d5402711b7f2e42ef1d1d7d&oe=5AF07D7C", name: "Prato Das")
             

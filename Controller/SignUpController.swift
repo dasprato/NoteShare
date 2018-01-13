@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FBSDKLoginKit
+import GoogleToolboxForMac
 
 
 class SignUpController: UIViewController {
