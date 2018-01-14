@@ -18,13 +18,16 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
             print("Single Comment Fetched")
             commentLabel.text = comment?.message
             userName.text = comment?.messageOwner
-            if comment?.messageOwner == Auth.auth().currentUser?.email {
-                commentLabel.backgroundColor = UIColor.lightGray
-                commentLabel.textColor = Constants.themeColor
+            guard let unwrappedUrlImage = comment?.profilePictureStorageReference else { return }
+            profileImageView.sd_setImage(with: URL(string: unwrappedUrlImage), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+            
+            if comment?.messageOwnerEmail == Auth.auth().currentUser?.email {
+//                commentLabel.backgroundColor = UIColor.lightGray
+                commentLabel.textColor = UIColor.darkText
             }
-            if comment?.messageOwner != Auth.auth().currentUser?.email {
-                commentLabel.backgroundColor = Constants.themeColor
-                commentLabel.textColor = UIColor.white
+            if comment?.messageOwnerEmail != Auth.auth().currentUser?.email {
+//                commentLabel.backgroundColor = Constants.themeColor
+                commentLabel.textColor = UIColor.darkText
             }
             
             if let timeStamp = comment?.timeStamp {
@@ -42,16 +45,16 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
 //
 //                let textDate = String(describing: date)
                 
-                let size = CGSize(width: frame.width - 8, height: frame.height - 15 - 16)
+                let size = CGSize(width: frame.width - 8 - 40 - 8, height: frame.height - 2 - 16)
                 let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
                 let estimatedFrame = NSString(string: (comment?.message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-                if estimatedFrame.width + 11 > frame.width {
+                if estimatedFrame.width + 11 > frame.width - 40 - 8 {
                     commentLabel.widthAnchor.constraint(equalToConstant: frame.width).isActive = true
                     layoutIfNeeded()
                     contentView.layoutIfNeeded()
-                    commentLabelTieToWidth = commentLabel.widthAnchor.constraint(equalToConstant: frame.width)
+                    commentLabelTieToWidth = commentLabel.widthAnchor.constraint(equalToConstant: frame.width - 40 - 8)
                     commentLabelTieToWidth.isActive = true
-                                    }
+                }
                 else {
                     commentLabelTieToEstimate = commentLabel.widthAnchor.constraint(equalToConstant: estimatedFrame.width + 11)
                     commentLabelTieToEstimate.isActive = true
@@ -65,7 +68,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
             
         }
     }
-    
+
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -86,10 +89,14 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         
         contentView.addSubview(commentLabel)
         contentView.addSubview(userName)
+        contentView.addSubview(profileImageView)
 //        contentView.addSubview(dateLabel)
-        NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.leftAnchor.constraint(equalTo: leftAnchor), userName.heightAnchor.constraint(equalToConstant: 16)])
+        NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8), userName.heightAnchor.constraint(equalToConstant: 22)])
 //        NSLayoutConstraint.activate([dateLabel.topAnchor.constraint(equalTo: topAnchor), dateLabel.rightAnchor.constraint(equalTo: rightAnchor)])
-        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: leftAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.bottomAnchor.constraint(equalTo: bottomAnchor)])
+        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.bottomAnchor.constraint(equalTo: bottomAnchor)])
+        
+        NSLayoutConstraint.activate([profileImageView.leftAnchor.constraint(equalTo: leftAnchor), profileImageView.topAnchor.constraint(equalTo: topAnchor), profileImageView.heightAnchor.constraint(equalToConstant: 40), profileImageView.widthAnchor.constraint(equalToConstant: 40)])
+        profileImageView.layer.cornerRadius = 10.0
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -109,18 +116,24 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         return ds
     }()
     
-    private var userName: FlexibleTextView = {
-        let ds = FlexibleTextView()
+    private var userName: UILabel = {
+        let ds = UILabel()
         ds.translatesAutoresizingMaskIntoConstraints = false
         ds.textAlignment = .left
         ds.textColor = UIColor.lightGray
-        ds.text = "Prato Das"
-         ds.font = UIFont.boldSystemFont(ofSize: 8)
+         ds.font = UIFont.boldSystemFont(ofSize: 15)
         ds.layer.cornerRadius = 10.0
         ds.isUserInteractionEnabled = false
         return ds
     }()
     
+    var profileImageView: UIImageView = {
+        let tom = UIImageView()
+        tom.translatesAutoresizingMaskIntoConstraints = false
+        tom.backgroundColor = UIColor.red
+        tom.clipsToBounds = true
+        return tom
+    }()
 //    private var dateLabel: FlexibleTextView = {
 //        let ds = FlexibleTextView()
 //        ds.translatesAutoresizingMaskIntoConstraints = false

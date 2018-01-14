@@ -11,4 +11,6 @@ import Foundation
 final public class CurrentSessionUser {
     private init() {}
     static var user: FirebaseUser?
+    static var gmailEmail: String?
+    static var profileImageUrl: String = ""
 }

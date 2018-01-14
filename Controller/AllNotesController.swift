@@ -18,7 +18,7 @@ class AllNotesController: UIViewController {
     var course: Course!
     override func viewDidLoad() {
         super.viewDidLoad()
-                fetchNotes()
+
         view.backgroundColor = UIColor.white
         view.addSubview(allNotesView)
         NSLayoutConstraint.activate([allNotesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), allNotesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), allNotesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), allNotesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
@@ -112,8 +112,8 @@ class AllNotesController: UIViewController {
 //        self.allNotesView.arrayOfNotes = self.arrayOfNotes
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-
+    override func viewWillAppear(_ animated: Bool) {
+                fetchNotes()
     }
     
 }

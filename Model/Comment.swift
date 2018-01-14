@@ -13,4 +13,6 @@ struct Comment {
     let messageOwner: String
     let timeStamp: String
     let sameOwner: Bool
+    let profilePictureStorageReference: String?
+    let messageOwnerEmail: String?
 }

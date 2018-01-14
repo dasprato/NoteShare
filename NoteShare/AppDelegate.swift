@@ -13,10 +13,24 @@ import UserNotifications
 import Firebase
 import FBSDKCoreKit
 import FirebaseMessaging
+import GoogleSignIn
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSignInDelegate {
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let err = error {
+            print("Failed to log into Google", err ?? "")
+            return
+        }
+        CurrentSessionUser.gmailEmail = user.profile.email
+        guard let url = user.profile.imageURL(withDimension: 300) else { return }
+        CurrentSessionUser.profileImageUrl = String(describing: url)
+        
+        NotificationCenter.default.post(name: NSNotification.Name.init("didSignIntoGoogle"), object: nil)
+  
+    }
+    
 
     var window: UIWindow?
 
@@ -25,8 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-//        GIDSignIn
         FirebaseApp.configure() // setting up firebase sdk
+        
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions) // setting up facebook sdk
         
         
@@ -85,6 +101,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         let handled = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+        
+        GIDSignIn.sharedInstance().handle(url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as! String)
         return handled
     }
 

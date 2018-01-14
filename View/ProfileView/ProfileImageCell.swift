@@ -11,8 +11,15 @@ import UIKit
 class ProfileImageCell: UICollectionViewCell {
     var urlOfImage: String? {
         didSet {
+            guard let unwrappedUrlImage = urlOfImage else { return }
+            profileImageView.sd_setImage(with: URL(string: unwrappedUrlImage), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
             
-            profileImageView.sd_setImage(with: URL(string: urlOfImage!), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+        }
+    }
+    
+    var galleryImage: UIImage? {
+        didSet {
+            profileImageView.image = galleryImage
             
         }
     }

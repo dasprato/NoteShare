@@ -14,6 +14,10 @@ class ProfileTextAttributesCell: UICollectionViewCell {
         didSet {
             titleOfMenu.text = titleOfMenuString
             textCell.placeholder = titleOfMenuString
+            if titleOfMenuString == "Email" {
+                textCell.isUserInteractionEnabled = false
+            }
+            
         }
     }
     
@@ -27,7 +31,7 @@ class ProfileTextAttributesCell: UICollectionViewCell {
         super.init(frame: frame)
 //        contentView.translatesAutoresizingMaskIntoConstraints = false
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = Constants.lightColor
+        backgroundColor = Constants.themeColor.withAlphaComponent(0.2)
         layer.cornerRadius = 5.0
         addSubview(titleOfMenu)
         addSubview(textCell)
@@ -54,8 +58,8 @@ class ProfileTextAttributesCell: UICollectionViewCell {
     var textCell: UITextField = {
         let tom = UITextField()
         tom.translatesAutoresizingMaskIntoConstraints = false
-        tom.font = UIFont.boldSystemFont(ofSize: 14)
-        tom.textColor = UIColor.darkGray
+        tom.font = UIFont.systemFont(ofSize: 14)
+        tom.textColor = UIColor.gray
         tom.clipsToBounds = true
         tom.textAlignment = .right
         return tom

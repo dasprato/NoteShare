@@ -14,7 +14,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 
     
     static var userEmail: String = ""
-    
+    var listener: ListenerRegistration?
     var user: User? {
         didSet {
 
@@ -60,8 +60,8 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
 //        let barUserImage = UIBarButtonItem(customView: userImage)
         let barUserImage = UIBarButtonItem(image: userImage.image, style: .plain, target: self, action: #selector(openProfile))
-        let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
+//        let barUserName = UIBarButtonItem(customView: userName)
+        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
         setupObservers()
         
         
@@ -103,11 +103,46 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
         //        let barUserImage = UIBarButtonItem(customView: userImage)
         let barUserImage = UIBarButtonItem(image: UIImage(named: "profileIcon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openProfile))
-        let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage, barUserName], animated: true)
+//        let barUserName = UIBarButtonItem(customView: userName)
+        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
+        fetchUser()
         
-                    CurrentSessionUser.user = FirebaseUser(emailAddress: Auth.auth().currentUser?.email, fieldOfStudy: "Computer Science", yearOfStudy: 2, profilePictureStorageReference: "https://scontent.fyyz1-1.fna.fbcdn.net/v/t1.0-9/26167731_1580968031970582_2119099227383639033_n.jpg?oh=a20c561f3d5402711b7f2e42ef1d1d7d&oe=5AF07D7C", name: "Prato Das")
     }
+    
+    func fetchUser() {
+        let db = Firestore.firestore()
+        
+        let settings = FirestoreSettings()
+        db.settings = settings
+        listener = db.collection("Users").document((Auth.auth().currentUser?.uid)!).addSnapshotListener { snapshot, error in
+            if error != nil {
+                return
+            } else {
+                if (snapshot?.exists)! {
+                var emailAddress = ""
+                var fieldOfStudy = ""
+                var name = ""
+                var profilePictureStorageReference = ""
+                var yearOfStudy = 0
+                var dict = snapshot?.data()
+                
+                emailAddress = (dict!["emailAddress"] as? String)!
+                fieldOfStudy = (dict!["fieldOfStudy"]  as? String)!
+                name = (dict!["name"]  as? String)!
+                profilePictureStorageReference = (dict!["profilePictureStorageReference"] as? String)!
+                yearOfStudy = (dict!["yearOfStudy"] as? Int)!
+                
+                CurrentSessionUser.user = FirebaseUser(emailAddress: emailAddress, fieldOfStudy: fieldOfStudy, yearOfStudy: yearOfStudy, profilePictureStorageReference: profilePictureStorageReference, name: name)
+                print("The user for the current sessoin is:")
+                print("---------------")
+                print(dict)
+                print()
+                print("---------------")
+            }
+            }
+        }
+    }
+    
     @objc func handleLogout() {
         print("Trying to handle logout")
         do {

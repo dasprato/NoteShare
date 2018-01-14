@@ -74,14 +74,12 @@ class SignUpPasswordViewController: UIViewController {
                 self.createAlert(title: title, message: message)
                 return
             }
-            
-            let firebaseUserDict: [String: Any?] = ["emailAddress": email, "fieldOfStudy": nil, "name": nil, "profilePictureStorageReference": nil, "yearOfStudy": 0]
+
+            let firebaseUserDict: [String: Any] = ["emailAddress": email, "fieldOfStudy": "", "name": "", "profilePictureStorageReference": CurrentSessionUser.profileImageUrl, "yearOfStudy": 0]
             let db = Firestore.firestore()
             db.collection("Users").document(User!.uid).setData(firebaseUserDict)
             
             //successfully authenticated
-            print("added to user list" + "\(String(describing: User?.uid))" + "\(String(describing: User?.email))")
-            print("Trying to handle login")
             
             HomePageController.userEmail =  (Auth.auth().currentUser?.email)!
             self.dismiss(animated: true, completion: nil)

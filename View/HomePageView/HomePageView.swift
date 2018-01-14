@@ -76,21 +76,21 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: collectionView.frame.width, height: 60)
+            return CGSize(width: collectionView.frame.width / 2, height: collectionView.frame.height)
     }
     
     
     var homePageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 5
+        layout.minimumLineSpacing = 0
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
         ma.backgroundColor = UIColor.white
         ma.layer.masksToBounds = true
-        ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        ma.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return ma
     }()
     
@@ -104,7 +104,7 @@ class HomePageView: UIView, UICollectionViewDelegateFlowLayout, UICollectionView
         homePageCollectionView.dataSource = self
         homePageCollectionView.register(HomePageCollectionViewCell.self, forCellWithReuseIdentifier: homePageCollectionViewCellId)
         
-        NSLayoutConstraint.activate([homePageCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), homePageCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), homePageCollectionView.centerYAnchor.constraint(equalTo: centerYAnchor), homePageCollectionView.heightAnchor.constraint(equalTo: heightAnchor)])
+        NSLayoutConstraint.activate([homePageCollectionView.leftAnchor.constraint(equalTo: leftAnchor), homePageCollectionView.rightAnchor.constraint(equalTo: rightAnchor), homePageCollectionView.topAnchor.constraint(equalTo: topAnchor), homePageCollectionView.heightAnchor.constraint(equalToConstant: 50)])
     }
     
     override init(frame: CGRect) {

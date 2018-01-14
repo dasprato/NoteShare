@@ -14,8 +14,8 @@ import Firebase
 
 class NotesView: UIView, UITextViewDelegate {
 
-    let  commentsCollectionViewCellId = "commentsCollectionViewCellId"
-    let ownCommentCollectionViewCellId = "ownCommentCollectionViewCellId"
+    let commentsCollectionViewCellId = "commentsCollectionViewCellId"
+    let sameUserCommentCollectionViewCellId = "sameUserCommentCollectionViewCellId"
     var firstTime = true
     var arrayOfComments: [Comment]? {
         didSet {
@@ -131,7 +131,7 @@ class NotesView: UIView, UITextViewDelegate {
         commentsCollectionView.dataSource = self
         commentsCollectionView.delegate = self
         commentsCollectionView.register(NewCommentsCollectionViewCell.self, forCellWithReuseIdentifier: commentsCollectionViewCellId)
-        commentsCollectionView.register(OwnCommentCollectionViewCell.self, forCellWithReuseIdentifier: ownCommentCollectionViewCellId)
+        commentsCollectionView.register(SameUserCommentCollectionViewCell.self, forCellWithReuseIdentifier: sameUserCommentCollectionViewCellId)
         
         
         commentsCollectionViewBottomAnchor = commentsCollectionView.bottomAnchor.constraint(equalTo: newComment.topAnchor)
@@ -212,7 +212,7 @@ class NotesView: UIView, UITextViewDelegate {
     }()
     
     @objc func sendToFirebase() {
-        let dict: [String: Any] = ["message": newComment.text, "messageOwner": Auth.auth().currentUser?.email , "timeStamp":  String(describing: Date().timeIntervalSince1970)]
+        let dict: [String: Any] = ["message": newComment.text, "messageOwner": CurrentSessionUser.user?.name, "timeStamp":  String(describing: Date().timeIntervalSince1970), "profilePictureStorageReference": CurrentSessionUser.user?.profilePictureStorageReference, "messageOwnerEmail": CurrentSessionUser.user?.emailAddress]
         let db = Firestore.firestore()
         db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").document("\(String(describing: Date().timeIntervalSince1970))").setData(dict)
         newComment.text = ""
@@ -259,7 +259,7 @@ class NotesView: UIView, UITextViewDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
+        layout.minimumLineSpacing = 2
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
@@ -287,8 +287,8 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if arrayOfComments![indexPath.row].messageOwner == Auth.auth().currentUser?.email {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ownCommentCollectionViewCellId, for: indexPath) as! OwnCommentCollectionViewCell
+        if arrayOfComments![indexPath.row].sameOwner == true {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sameUserCommentCollectionViewCellId, for: indexPath) as! SameUserCommentCollectionViewCell
         cell.comment = arrayOfComments?[indexPath.row]
         return cell
         }
@@ -299,12 +299,17 @@ extension NotesView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let approximateWidth = collectionView.frame.width - 8
+        
+        let approximateWidth = collectionView.frame.width - 8 - 40 - 8
         let size = CGSize(width: approximateWidth, height: 1000000)
         let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
         let estimatedFrame = NSString(string: (arrayOfComments?[indexPath.row].message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
 
-        return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 15 + 16)
+        if arrayOfComments![indexPath.row].sameOwner == false {
+        return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 22 + 16)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: estimatedFrame.height + 15)
+        }
     }
     
     

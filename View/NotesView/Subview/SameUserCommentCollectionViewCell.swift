@@ -10,7 +10,7 @@
 
 import UIKit
 import Firebase
-class OwnCommentCollectionViewCell: UICollectionViewCell {
+class SameUserCommentCollectionViewCell: UICollectionViewCell {
     
     
     var commentLabelTieToWidth: NSLayoutConstraint!
@@ -19,14 +19,13 @@ class OwnCommentCollectionViewCell: UICollectionViewCell {
         didSet {
             print("Single Comment Fetched")
             commentLabel.text = comment?.message
-            userName.text = comment?.messageOwner
-            if comment?.messageOwner == Auth.auth().currentUser?.email {
-                commentLabel.backgroundColor = UIColor.lightGray
-                commentLabel.textColor = Constants.themeColor
+            if comment?.messageOwnerEmail == Auth.auth().currentUser?.email {
+//                commentLabel.backgroundColor = UIColor.lightGray
+                commentLabel.textColor = UIColor.darkText
             }
-            if comment?.messageOwner != Auth.auth().currentUser?.email {
-                commentLabel.backgroundColor = Constants.themeColor
-                commentLabel.textColor = UIColor.white
+            if comment?.messageOwnerEmail != Auth.auth().currentUser?.email {
+//                commentLabel.backgroundColor = Constants.themeColor
+                commentLabel.textColor = UIColor.darkText
             }
             
             if let timeStamp = comment?.timeStamp {
@@ -44,14 +43,14 @@ class OwnCommentCollectionViewCell: UICollectionViewCell {
                 //
                 //                let textDate = String(describing: date)
                 
-                let size = CGSize(width: frame.width - 8, height: frame.height - 15 - 16)
+                let size = CGSize(width: frame.width - 8 - 40 - 8, height: frame.height - 15)
                 let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)]
                 let estimatedFrame = NSString(string: (comment?.message)!).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-                if estimatedFrame.width + 11 > frame.width {
+                if estimatedFrame.width + 11 > frame.width - 40 - 8 {
                     commentLabel.widthAnchor.constraint(equalToConstant: frame.width).isActive = true
                     layoutIfNeeded()
                     contentView.layoutIfNeeded()
-                    commentLabelTieToWidth = commentLabel.widthAnchor.constraint(equalToConstant: frame.width)
+                    commentLabelTieToWidth = commentLabel.widthAnchor.constraint(equalToConstant: frame.width - 40 - 11)
                     commentLabelTieToWidth.isActive = true
                 }
                 else {
@@ -87,11 +86,8 @@ class OwnCommentCollectionViewCell: UICollectionViewCell {
         translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(commentLabel)
-        contentView.addSubview(userName)
-        //        contentView.addSubview(dateLabel)
-        NSLayoutConstraint.activate([userName.topAnchor.constraint(equalTo: topAnchor), userName.rightAnchor.constraint(equalTo: rightAnchor), userName.heightAnchor.constraint(equalToConstant: 16)])
-        //        NSLayoutConstraint.activate([dateLabel.topAnchor.constraint(equalTo: topAnchor), dateLabel.rightAnchor.constraint(equalTo: rightAnchor)])
-        NSLayoutConstraint.activate([commentLabel.rightAnchor.constraint(equalTo: rightAnchor), commentLabel.topAnchor.constraint(equalTo: userName.bottomAnchor), commentLabel.bottomAnchor.constraint(equalTo: bottomAnchor)])
+
+        NSLayoutConstraint.activate([commentLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 48), commentLabel.topAnchor.constraint(equalTo: topAnchor), commentLabel.bottomAnchor.constraint(equalTo: bottomAnchor)])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -111,17 +107,7 @@ class OwnCommentCollectionViewCell: UICollectionViewCell {
         return ds
     }()
     
-    private var userName: FlexibleTextView = {
-        let ds = FlexibleTextView()
-        ds.translatesAutoresizingMaskIntoConstraints = false
-        ds.textAlignment = .left
-        ds.textColor = UIColor.lightGray
-        ds.text = "Prato Das"
-        ds.font = UIFont.boldSystemFont(ofSize: 8)
-        ds.layer.cornerRadius = 10.0
-        ds.isUserInteractionEnabled = false
-        return ds
-    }()
+
     
     //    private var dateLabel: FlexibleTextView = {
     //        let ds = FlexibleTextView()
