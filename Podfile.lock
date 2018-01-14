@@ -122,6 +122,7 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - NWPusher (0.7.5)
   - Protobuf (3.5.0)
   - SDWebImage (4.2.2):
     - SDWebImage/Core (= 4.2.2)
@@ -143,6 +144,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - ImagePicker
   - M13PDFKit (= 1.0.2)
+  - NWPusher (~> 0.7.0)
   - SDWebImage
 
 SPEC CHECKSUMS:
@@ -172,10 +174,11 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   M13PDFKit: bc121a55ccb8ddfcf3982f1a5a8592b9f492cd73
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  NWPusher: 9b29a44754d88cb02c28a1e9bc8750845506123e
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
   TTOpenInAppActivity: c2218fe419d03ddd4ffb1f07d52d66e0d213d0d4
 
-PODFILE CHECKSUM: de0f67f7bf4f5212a77639ea23ae5ccf1424c364
+PODFILE CHECKSUM: 9116d0dd200e7088075b71a566d04b9a2e471320
 
 COCOAPODS: 1.3.1

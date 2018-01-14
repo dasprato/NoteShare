@@ -20,8 +20,9 @@ pod 'Bolts'
 pod 'FBSDKCoreKit'
 pod 'FBSDKShareKit'
 pod 'FBSDKLoginKit'
-  target 'NoteShareTests' do
+pod 'NWPusher', '~> 0.7.0'
 pod 'GoogleSignIn'
+  target 'NoteShareTests' do
     inherit! :search_paths
     # Pods for testing
   end

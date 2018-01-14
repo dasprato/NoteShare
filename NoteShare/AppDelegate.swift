@@ -226,7 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     // the FCM registration token.
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("APNS token: \(deviceToken.base64EncodedString())")
-        
+        InstanceID.instanceID().setAPNSToken(deviceToken, type: .prod)
         //Oyw9Vry1469j+50rvmg49czkCbSf2uBHNA2GQF6DnrM=
         //Oyw9Vry1469j+50rvmg49czkCbSf2uBHNA2GQF6DnrM=
         
