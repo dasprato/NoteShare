@@ -75,7 +75,7 @@ class SignUpPasswordViewController: UIViewController {
                 return
             }
 
-            let firebaseUserDict: [String: Any] = ["emailAddress": email, "fieldOfStudy": "", "name": "", "profilePictureStorageReference": CurrentSessionUser.profileImageUrl, "yearOfStudy": 0]
+            let firebaseUserDict: [String: Any] = ["emailAddress": email, "fieldOfStudy": "", "name": CurrentSessionUser.name, "profilePictureStorageReference": CurrentSessionUser.profileImageUrl, "yearOfStudy": 0]
             let db = Firestore.firestore()
             db.collection("Users").document(User!.uid).setData(firebaseUserDict)
             

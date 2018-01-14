@@ -24,8 +24,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSig
             return
         }
         CurrentSessionUser.gmailEmail = user.profile.email
-        guard let url = user.profile.imageURL(withDimension: 300) else { return }
-        CurrentSessionUser.profileImageUrl = String(describing: url)
+//        guard let else { return }
+        let name = user.profile.name ?? ""
+        if  user.profile.imageURL(withDimension: 300) != nil {
+            guard let url = user.profile.imageURL(withDimension: 300) else {return}
+            CurrentSessionUser.profileImageUrl = String(describing: url)
+        }
+        CurrentSessionUser.name = name
+        
         
         NotificationCenter.default.post(name: NSNotification.Name.init("didSignIntoGoogle"), object: nil)
   

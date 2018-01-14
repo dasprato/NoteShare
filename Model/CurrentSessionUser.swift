@@ -13,4 +13,5 @@ final public class CurrentSessionUser {
     static var user: FirebaseUser?
     static var gmailEmail: String?
     static var profileImageUrl: String = ""
+    static var name: String = ""
 }

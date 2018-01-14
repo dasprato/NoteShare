@@ -167,8 +167,16 @@ extension SignUpController: FBSDKLoginButtonDelegate {
                 return
             }
             
+            
             guard let unwrappedResult = result as? [String: String] else { return }
+            CurrentSessionUser.name = unwrappedResult["name"]!
+            let url = "https://graph.facebook.com/\(unwrappedResult["id"]!)/picture?type=large&return_ssl_resources=1"
+            print("The url for the profiel picture from facebook is:")
+            print(url)
+            CurrentSessionUser.profileImageUrl = url
             self.userEmail = unwrappedResult["email"]!
+
+            
             
         }
     }
@@ -179,6 +187,8 @@ extension SignUpController: FBSDKLoginButtonDelegate {
             handleFacebookLogin()
         case 1:
             handleGoogleSingIn()
+        case 3:
+            break
         case 5:
             handleEmailLogin()
         default:
