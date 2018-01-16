@@ -19,7 +19,18 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
             commentLabel.text = comment?.message
             userName.text = comment?.messageOwner
             guard let unwrappedUrlImage = comment?.profilePictureStorageReference else { return }
-            profileImageView.sd_setImage(with: URL(string: unwrappedUrlImage), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+            var url = ""
+            let db = Firestore.firestore()
+            db.document(unwrappedUrlImage).getDocument(completion: { (imageUrlSnapShot, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    guard let unwrappedUrl = imageUrlSnapShot?.data()["profilePictureStorageReference"] else { return }
+                    url = unwrappedUrl as! String
+                    self.profileImageView.sd_setImage(with: URL(string: url), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+                }
+            })
+            
             
             if comment?.messageOwnerEmail == Auth.auth().currentUser?.email {
 //                commentLabel.backgroundColor = UIColor.lightGray
