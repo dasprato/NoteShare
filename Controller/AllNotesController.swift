@@ -42,10 +42,10 @@ class AllNotesController: UIViewController {
     @objc func showNote() {
         let viewControllerToPush = NotesController()
         guard let unwrappedCurrentCell = allNotesView.currentCell else { return }
+        
         viewControllerToPush.titleForNavBar = self.arrayOfNotes[unwrappedCurrentCell.row].noteName
         viewControllerToPush.note = arrayOfNotes[(allNotesView.currentCell?.row)!]
         
-
 
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }
@@ -80,14 +80,16 @@ class AllNotesController: UIViewController {
                         let forCourse = document.data()["forCourse"] as? String,
                         let storageReference = document.data()["storageReference"] as? String,
                         let noteSize = document.data()["noteSize"] as? Int,
-                        let rating = document.data()["rating"] as? Int
+                        let rating = document.data()["rating"] as? Int,
+                        let referencePath = document.data()["referencePath"] as? String,
+                        let timeStamp = document.documentID as? String
                     {
-                        self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, storageReference: storageReference))
+                        self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp))
                         
 
                     }
                 }
-                self.allNotesView.arrayOfNotes = self.arrayOfNotes
+                self.allNotesView.arrayOfNotes = self.arrayOfNotes.reversed()
                 
             }
         }

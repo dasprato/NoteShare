@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,27 +21,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UofTLogo" translatesAutoresizingMaskIntoConstraints="NO" id="k3o-Rp-XNE">
-                                <rect key="frame" x="0.0" y="318.66666666666669" width="375" height="175"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UofTLogo" translatesAutoresizingMaskIntoConstraints="NO" id="k3o-Rp-XNE">
+                                <rect key="frame" x="-68.666666666666686" y="150.66666666666663" width="512.33333333333337" height="512"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="175" id="r86-Em-AS1"/>
-                                    <constraint firstAttribute="width" constant="375" id="sir-FO-gDV"/>
+                                    <constraint firstAttribute="width" secondItem="k3o-Rp-XNE" secondAttribute="height" multiplier="1:1" id="ED1-9x-Kff"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="k3o-Rp-XNE" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TJR-ee-3t5"/>
-                            <constraint firstItem="k3o-Rp-XNE" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="yV6-uF-Byq"/>
+                            <constraint firstItem="k3o-Rp-XNE" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Hyk-gp-fUq"/>
+                            <constraint firstItem="k3o-Rp-XNE" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ZtW-nD-uwV"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-394.39999999999998" y="197.45127436281859"/>
+            <point key="canvasLocation" x="-394.39999999999998" y="197.29064039408868"/>
         </scene>
     </scenes>
     <resources>
-        <image name="UofTLogo" width="1280" height="598"/>
+        <image name="UofTLogo" width="512" height="512"/>
     </resources>
 </document>

@@ -13,6 +13,10 @@ class AllCoursesView: UIView {
     var currentCell: IndexPath?
     let allCoursesCollectionViewCellId = "allCoursesCollectionViewCellId"
     var firstTime = true
+    
+    override var description: String {
+        return(self.allCoursesCollectionViewCellId)
+    }
     var arrayOfCourses: [Course]? {
         didSet {
             DispatchQueue.main.async {
@@ -27,7 +31,6 @@ class AllCoursesView: UIView {
                 self.firstTime = false
                 }
             }
-
         }
     }
     override init(frame: CGRect) {
@@ -59,6 +62,7 @@ class AllCoursesView: UIView {
         ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         ma.showsVerticalScrollIndicator = false
         ma.keyboardDismissMode = .onDrag
+        ma.alwaysBounceVertical = true
         return ma
     }()
 }

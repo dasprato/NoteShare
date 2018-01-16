@@ -30,4 +30,3 @@ struct MeetingSection: Decodable {
     let enrolment: Int
     let instructors: [String]
 }
-

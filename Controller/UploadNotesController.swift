@@ -14,6 +14,7 @@ class UploadNotesController: UIViewController, ImagePickerDelegate, UIDocumentPi
     var uploadNotesView = UploadNotesView()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         uploadNotesView.course = course
         view.backgroundColor = UIColor.white
         view.addSubview(uploadNotesView)
@@ -21,7 +22,14 @@ class UploadNotesController: UIViewController, ImagePickerDelegate, UIDocumentPi
         
         let closeButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(closeView(_:)))
         navigationItem.setLeftBarButtonItems([closeButton], animated: true)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backgroundColor = UIColor.white
+        navigationController?.navigationBar.isTranslucent = false
+        
+        self.navigationController?.navigationBar.layer.shadowColor = UIColor.lightGray.cgColor
+        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
+        self.navigationController?.navigationBar.layer.masksToBounds = false
         
   
         setupObservers()
@@ -30,6 +38,7 @@ class UploadNotesController: UIViewController, ImagePickerDelegate, UIDocumentPi
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchImagePicker), name: NSNotification.Name.init("launchImagePicker"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(launchDocumentPicker), name: NSNotification.Name.init("launchDocumentPicker"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(closeView(_:)), name: NSNotification.Name.init("closeNoteUpload"), object: nil)
         
 
     }

@@ -47,7 +47,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         
         
 //        leftMenu.delegate = self
-        NSLayoutConstraint.activate([homePageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), homePageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), homePageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor), homePageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)])
+        NSLayoutConstraint.activate([homePageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), homePageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), homePageView.bottomAnchor.constraint(equalTo: view.bottomAnchor), homePageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)])
         
 //        NSLayoutConstraint.activate([leftMenu.leftAnchor.constraint(equalTo: view.leftAnchor), leftMenu.topAnchor.constraint(equalTo: view.topAnchor), leftMenu.heightAnchor.constraint(equalTo: view.heightAnchor), leftMenu.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)])
 //        leftMenu.isHidden = true
@@ -76,13 +76,13 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 
 //        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.backgroundColor = UIColor.white
+        navigationController?.navigationBar.backgroundColor = UIColor.white
+        navigationController?.navigationBar.isTranslucent = false
         
-        self.navigationController?.navigationBar.layer.shadowColor = UIColor.lightGray.cgColor
-        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
-        self.navigationController?.navigationBar.layer.masksToBounds = false
+//        self.navigationController?.navigationBar.layer.shadowColor = UIColor.lightGray.cgColor
+//        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+//        self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
+//        self.navigationController?.navigationBar.layer.masksToBounds = false
 
         navigationController?.navigationItem.title = ""
         navigationItem.title = ""
@@ -92,6 +92,11 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+
+        addShadow()
+    }
     override func viewWillAppear(_ animated: Bool) {
         if HomePageController.userEmail != "" {
             userName.text = HomePageController.userEmail
@@ -106,6 +111,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 //        let barUserName = UIBarButtonItem(customView: userName)
         navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
         fetchUser()
+        removeShadow()
         
     }
     
@@ -220,6 +226,48 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     
     
+    
+    
+    @objc func addShadow() {
+        print("Attempting to Add Shadow")
+        
+        let changeColor = CATransition()
+        changeColor.type = kCATransitionFade
+        changeColor.duration = 0.2
+        
+        
+        CATransaction.begin()
+        self.navigationController?.navigationBar.layer.shadowColor = UIColor.lightGray.cgColor
+        self.navigationController?.navigationBar.layer.add(changeColor, forKey: nil)
+        CATransaction.setCompletionBlock {
+        }
+        CATransaction.commit()
+
+        
+        
+        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
+        self.navigationController?.navigationBar.layer.masksToBounds = false
+    }
+    
+    @objc func removeShadow() {
+        
+        let changeColor = CATransition()
+        changeColor.type = kCATransitionFade
+        changeColor.duration = 0.2
+        
+        
+        CATransaction.begin()
+        self.navigationController?.navigationBar.layer.shadowColor = UIColor.white.cgColor
+        self.navigationController?.navigationBar.layer.add(changeColor, forKey: nil)
+        CATransaction.setCompletionBlock {
+        }
+        CATransaction.commit()
+
+        self.navigationController?.navigationBar.layer.shadowOpacity = 0.0
+        self.navigationController?.navigationBar.layer.masksToBounds = false
+
+    }
     
 
 

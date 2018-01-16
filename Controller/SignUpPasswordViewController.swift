@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 
+
 class SignUpPasswordViewController: UIViewController {
     
     var emailAddress: String? {
@@ -119,3 +120,4 @@ class SignUpPasswordViewController: UIViewController {
     }
     
 }
+

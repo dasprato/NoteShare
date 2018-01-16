@@ -13,6 +13,7 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         didSet {
             self.noteName.text = note?.noteName
             self.noteDescription.text = note?.noteDescription
+            self.lectureDescription.text = note?.lectureInformation
         }
     }
     override init(frame: CGRect) {
@@ -22,11 +23,14 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         addSubview(noteName)
         addSubview(starIcon)
         addSubview(noteDescription)
+        addSubview(lectureDescription)
         NSLayoutConstraint.activate([noteName.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), noteName.topAnchor.constraint(equalTo: topAnchor, constant: 8)])
         
         NSLayoutConstraint.activate([starIcon.centerYAnchor.constraint(equalTo: centerYAnchor), starIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), starIcon.heightAnchor.constraint(equalToConstant: 30), starIcon.widthAnchor.constraint(equalToConstant: 30)])
         
         NSLayoutConstraint.activate([noteDescription.leftAnchor.constraint(equalTo: noteName.leftAnchor), noteDescription.rightAnchor.constraint(equalTo: starIcon.leftAnchor, constant: 8), noteDescription.topAnchor.constraint(equalTo: noteName.bottomAnchor)])
+        
+                NSLayoutConstraint.activate([lectureDescription.leftAnchor.constraint(equalTo: noteName.leftAnchor), lectureDescription.rightAnchor.constraint(equalTo: starIcon.leftAnchor, constant: 8), lectureDescription.topAnchor.constraint(equalTo: noteDescription.bottomAnchor)])
         
     }
     
@@ -43,6 +47,15 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         return ct
     }()
     private var noteDescription: UILabel = {
+        let cn = UILabel()
+        cn.translatesAutoresizingMaskIntoConstraints = false
+        cn.numberOfLines = 2
+        cn.font = UIFont.systemFont(ofSize: cn.font.pointSize - 4)
+        cn.textColor = UIColor.gray
+        return cn
+    }()
+    
+    private var lectureDescription: UILabel = {
         let cn = UILabel()
         cn.translatesAutoresizingMaskIntoConstraints = false
         cn.numberOfLines = 2

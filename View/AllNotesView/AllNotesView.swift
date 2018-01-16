@@ -98,10 +98,11 @@ extension AllNotesView: UICollectionViewDelegateFlowLayout, UICollectionViewDele
         return CGSize(width: collectionView.frame.width, height: 80)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         currentCell = indexPath
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showNote"), object: nil)
     }
+
     @objc func changeColor() {
         
     }

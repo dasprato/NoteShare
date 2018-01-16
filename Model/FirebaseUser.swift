@@ -11,6 +11,6 @@ struct FirebaseUser {
     let emailAddress: String?
     let fieldOfStudy: String?
     let yearOfStudy: Int?
-    let profilePictureStorageReference: String?
+    let profilePictureStorageReference: String
     let name: String?
 }

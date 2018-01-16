@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
+import TwitterKit
 
 
 class SignUpController: UIViewController {
@@ -27,8 +28,8 @@ class SignUpController: UIViewController {
         }
     }
     
-    let arrayOfUIImages = [UIImage(named: "facebook"), UIImage(named: "gmail"), UIImage(named: "github"), UIImage(named: "twitter"), UIImage(named: "phone"), UIImage(named: "email")]
-    let arrayOfMediaNames = ["Facebook", "Google", "GitHub", "Twitter", "Phone", "Email"]
+    let arrayOfUIImages = [UIImage(named: "facebook"), UIImage(named: "gmail"), UIImage(named: "email")]
+    let arrayOfMediaNames = ["Facebook", "Gmail", "Email"]
     let signUpCollectionViewCellId = "signUpCollectionViewCellId"
     override func viewDidLoad() {
 
@@ -40,9 +41,12 @@ class SignUpController: UIViewController {
 
         
         
-        NSLayoutConstraint.activate([signUpCollectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), signUpCollectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), signUpCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), signUpCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -view.frame.height / 2)])
+        NSLayoutConstraint.activate([signUpCollectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), signUpCollectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), signUpCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), signUpCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor)])
 //
-//        NSLayoutConstraint.activate([googleSingnInButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), googleSingnInButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), googleSingnInButton.topAnchor.constraint(equalTo: signUpCollectionView.bottomAnchor), googleSingnInButton.heightAnchor.constraint(equalToConstant: 40)])
+        
+        
+
+        
 //
         
         
@@ -60,6 +64,10 @@ class SignUpController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(didSignIntoGoogle), name: NSNotification.Name.init("didSignIntoGoogle"), object: nil)
         GIDSignIn.sharedInstance().uiDelegate = self
+        
+
+        
+
     }
 
     var signUpCollectionView: UICollectionView = {
@@ -187,9 +195,7 @@ extension SignUpController: FBSDKLoginButtonDelegate {
             handleFacebookLogin()
         case 1:
             handleGoogleSingIn()
-        case 3:
-            break
-        case 5:
+        case 2:
             handleEmailLogin()
         default:
             break

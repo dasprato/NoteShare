@@ -15,5 +15,7 @@ struct Note {
     let noteName: String
     let noteSize: Int
     let rating: Int
+    let referencePath: String
     let storageReference: String
+    let timeStamp: String
 }

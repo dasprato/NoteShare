@@ -12,7 +12,7 @@ import M13PDFKit
 
 class NotesController: UIViewController, UITextFieldDelegate {
     
-    var note = Note(forCourse: "", lectureInformation: "", noteDescription: "", noteName: "", noteSize: 0, rating: 0, storageReference: "")
+    var note = Note(forCourse: "", lectureInformation: "", noteDescription: "", noteName: "", noteSize: 0, rating: 0, referencePath: "", storageReference: "", timeStamp: "")
     var arrayOfComments = [Comment]()
     var titleForNavBar = ""
     var notesSize = 0
@@ -62,7 +62,7 @@ class NotesController: UIViewController, UITextFieldDelegate {
 
         let settings = FirestoreSettings()
         db.settings = settings
-        listener = db.collection("Courses").document(note.forCourse).collection("Notes").document(note.noteName).collection("Comments").addSnapshotListener { snapshot, error in
+        listener = db.collection("Courses").document(note.forCourse).collection("Notes").document(note.timeStamp).collection("Comments").addSnapshotListener { snapshot, error in
             if error != nil {
                 self.arrayOfComments.removeAll()
                 return
@@ -76,20 +76,43 @@ class NotesController: UIViewController, UITextFieldDelegate {
                         let profilePictureStorageReference = document.data()["profilePictureStorageReference"] as? String,
                         let messageOwnerEmail = document.data()["messageOwnerEmail"] as? String
                     {
+                        
+//                        db.document("profilePictureStorageReference").getDocuments() { (querySnapshot, err) in
+//                            if let err = err {
+//                                print("Error getting documents: \(err)")
+//                            } else {
+//                                for document in querySnapshot!.documents {
+//                                    print("\(document.documentID) => \(document.data())")
+//                                }
+//                            }
+//                        }
+                        var url = ""
+                        db.document(profilePictureStorageReference).getDocument(completion: { (imageUrlSnapShot, error) in
+                                if let err = error {
+                                    print("Error getting documents: \(err)")
+                                } else {
+                                    guard let unwrappedUrl = imageUrlSnapShot?.data()["profilePictureStorageReference"] else { return }
+                                    url = unwrappedUrl as! String
+                                }
+                        })
+                        
                         if self.arrayOfComments.count == 0 {
-                            self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: false,  profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
+                            self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: false,  profilePictureStorageReference: url, messageOwnerEmail: messageOwnerEmail))
                         }
                         else {
                             if messageOwner == self.arrayOfComments[self.arrayOfComments.count - 1].messageOwner {
-                                self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: true, profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
+                                self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: true, profilePictureStorageReference: url, messageOwnerEmail: messageOwnerEmail))
                             } else {
-                                self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: false, profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
+                                self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: false, profilePictureStorageReference: url, messageOwnerEmail: messageOwnerEmail))
                             }
                         }
 
+                        
                     }
                 }
+                
                 self.notesView.arrayOfComments = self.arrayOfComments
+                
                 
             }
         }

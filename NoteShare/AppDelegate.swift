@@ -14,6 +14,8 @@ import Firebase
 import FBSDKCoreKit
 import FirebaseMessaging
 import GoogleSignIn
+import Fabric
+
 
 
 @UIApplicationMain
@@ -23,8 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSig
             print("Failed to log into Google", err ?? "")
             return
         }
+        
+
         CurrentSessionUser.gmailEmail = user.profile.email
-//        guard let else { return }
         let name = user.profile.name ?? ""
         if  user.profile.imageURL(withDimension: 300) != nil {
             guard let url = user.profile.imageURL(withDimension: 300) else {return}
@@ -46,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSig
         // Override point for customization after application launch.
 
         FirebaseApp.configure() // setting up firebase sdk
-        
+//        Twitter.sharedInstance().start(withConsumerKey:"hTpkPVU4pThkM0", consumerSecret:"ovEqziMzLpUOF163Qg2mj")
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions) // setting up facebook sdk

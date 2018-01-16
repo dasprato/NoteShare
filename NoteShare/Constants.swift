@@ -11,7 +11,7 @@ import UIKit
 
 
 struct Constants {
-    static let themeColor = UIColor(red: 0, green: 45/255, blue: 103/255, alpha: 1)
+    static let themeColor = UIColor(red: 0, green: 47/255, blue: 101/255, alpha: 1)
     static let lightColor = UIColor(red: 152/255, green: 204/255, blue: 232/255, alpha: 1)
 }
 

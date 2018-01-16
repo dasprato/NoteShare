@@ -35,6 +35,14 @@ class LoginController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
+        
+
+    }
+        override func viewDidAppear(_ animated: Bool) {
+        CurrentSessionUser.gmailEmail = ""
+        
+        CurrentSessionUser.profileImageUrl = ""
+        CurrentSessionUser.name = ""
     }
     
     
