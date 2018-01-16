@@ -54,8 +54,9 @@ class UploadNotesController: UIViewController, ImagePickerDelegate, UIDocumentPi
     
     
     @objc func launchDocumentPicker() {
-        var documentPicker1: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.pdf"], in: UIDocumentPickerMode.import)
-        var documentPicker = UIDocumentPickerViewController(documentTypes: [""], in: UIDocumentPickerMode.import)
+        var documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.pdf"], in: UIDocumentPickerMode.import)
+//        var documentPicker = UIDocumentPickerViewController(documentTypes: [""], in: UIDocumentPickerMode.import)
+        //var documentPicker = UIDocumentPickerViewController(documentTypes: [".pdf"], in: UIDocumentPickerMode)
         documentPicker.delegate = self
 //        documentPicker.modalPresentationStyle = UIModalPresentationStyle.fullScreen
         self.present(documentPicker, animated: true, completion: nil)

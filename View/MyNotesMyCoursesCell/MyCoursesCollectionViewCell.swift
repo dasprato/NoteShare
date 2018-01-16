@@ -1,5 +1,5 @@
 //
-//  AllCoursesCollectionViewCell.swift
+//  MyCoursesCollectionViewCell.swift
 //  NoteShare
 //
 //  Created by Prato Das on 2017-12-30.
@@ -8,12 +8,13 @@
 
 import UIKit
 
-class AllCoursesCollectionViewCell: UICollectionViewCell {
+class MyCoursesCollectionViewCell: UICollectionViewCell {
     
     var course: Course? {
         didSet {
             courseTitle.text = course?.code
             courseName.text = course?.name
+            self.starIcon.tintColor = UIColor.red
         }
     }
     
@@ -42,6 +43,7 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
         ct.translatesAutoresizingMaskIntoConstraints = false
         ct.font = UIFont.systemFont(ofSize: ct.font.pointSize + 4)
         ct.textColor = Constants.themeColor
+        ct.text = "CSC148H1"
         return ct
     }()
     private var courseName: UILabel = {
@@ -58,7 +60,8 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
         let si = UIButton(type: .system)
         si.translatesAutoresizingMaskIntoConstraints = false
         si.setImage(UIImage(named: "star")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        si.tintColor = UIColor.lightGray
+        si.tintColor = UIColor.red
         return si
     }()
 }
+

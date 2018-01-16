@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class AllNotesView: UIView {
     var currentCell: IndexPath?
@@ -22,9 +23,16 @@ class AllNotesView: UIView {
                 }, completion: { (_) in
                     return
                 })
-
+                
             }
 
+        }
+    }
+    
+    var reversedArrayOfNotes: [Note]? {
+        didSet {
+
+            
         }
     }
     override init(frame: CGRect) {
@@ -89,21 +97,51 @@ extension AllNotesView: UICollectionViewDelegateFlowLayout, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: allNotesCollectionViewCellId, for: indexPath) as! AllNotesCollectionViewCell
         cell.backgroundColor = UIColor.white
-        cell.note = arrayOfNotes![indexPath.row]
+        cell.note = self.arrayOfNotes?.reversed()[indexPath.row]
         cell.layer.cornerRadius = 10.0
         cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))
+        let tapOnNote = UITapGestureRecognizer(target: self, action: #selector(showNote))
+        cell.addGestureRecognizer(tapOnNote)
+        cell.starIcon.addGestureRecognizer(tapGesture)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 80)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        currentCell = indexPath
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showNote"), object: nil)
-    }
 
-    @objc func changeColor() {
+
+
+    @objc func showNote(sender: UITapGestureRecognizer) {
+        if let indexPath = self.allNotesCollectionView.indexPathForItem(at: sender.location(in: self.allNotesCollectionView)) {
+            
+            self.currentCell = indexPath
+            NotificationCenter.default.post(name: NSNotification.Name.init("showNote"), object: nil)
+        } else {
+            print("collection view was tapped")
+        }
+    }
+    
+    
+    @objc func changeColor(sender: UITapGestureRecognizer) {
+        if let indexPath = self.allNotesCollectionView.indexPathForItem(at: sender.location(in: self.allNotesCollectionView)) {
+            print("you can do something with the cell or index path here")
+            let cell = allNotesCollectionView.cellForItem(at: indexPath) as! AllNotesCollectionViewCell
+            if cell.starIcon.tintColor == UIColor.lightGray {
+                cell.starIcon.tintColor = UIColor.red
+            } else {
+                cell.starIcon.tintColor = UIColor.lightGray
+            }
+            
+            
+            let dict: [String: Any] = ["referencePath": "\(self.arrayOfNotes!.reversed()[indexPath.row].referencePath)"]
+            let db = Firestore.firestore()
+            db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteNotes").document((self.arrayOfNotes?.reversed()[indexPath.row].timeStamp)!).setData(dict)
+        } else {
+            print("collection view was tapped")
+        }
+        
         
     }
 }

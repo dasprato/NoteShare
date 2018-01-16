@@ -23,13 +23,16 @@ class UploadNotesView: UIView {
         addSubview(noteName)
         addSubview(noteDescription)
         addSubview(selectImageButton)
+        addSubview(selectDocumentButton)
         addSubview(uploadMediaContentNote)
         addSubview(progressView)
         addSubview(lectureProfessorDescription)
 //        addSubview(progressLabel)
 //        addSubview(selectDocumentPicker)
 //        NSLayoutConstraint.activate([uploadNote.topAnchor.constraint(equalTo: noteDescription.bottomAnchor, constant: 8), uploadNote.centerXAnchor.constraint(equalTo: centerXAnchor)])
-        NSLayoutConstraint.activate([selectImageButton.topAnchor.constraint(equalTo: topAnchor, constant: 8), selectImageButton.centerXAnchor.constraint(equalTo: centerXAnchor)])
+        NSLayoutConstraint.activate([selectImageButton.topAnchor.constraint(equalTo: topAnchor, constant: 8), selectImageButton.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -20)])
+        
+        NSLayoutConstraint.activate([selectDocumentButton.topAnchor.constraint(equalTo: topAnchor, constant: 8), selectDocumentButton.leftAnchor.constraint(equalTo: selectImageButton.rightAnchor, constant: 8)])
         
                 NSLayoutConstraint.activate([uploadMediaContentNote.topAnchor.constraint(equalTo: lectureProfessorDescription.bottomAnchor, constant: 8), uploadMediaContentNote.centerXAnchor.constraint(equalTo: centerXAnchor)])
         
@@ -123,6 +126,14 @@ class UploadNotesView: UIView {
     }()
     
 
+    
+    lazy var selectDocumentButton: UIButton = {
+        let un = UIButton(type: .system)
+        un.translatesAutoresizingMaskIntoConstraints = false
+        un.setImage(UIImage(named: "documents")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        un.addTarget(self, action: #selector(launchDocumentPicker), for: .touchUpInside)
+        return un
+    }()
     
     
     lazy var selectDocumentPicker: UIButton = {

@@ -1,17 +1,15 @@
 //
-//  NotesController.swift
+//  MyNotesNoteController.swift
 //  NoteShare
 //
-//  Created by Prato Das on 2017-12-31.
-//  Copyright © 2017 Prato Das. All rights reserved.
+//  Created by Prato Das on 2018-01-16.
+//  Copyright © 2018 Prato Das. All rights reserved.
 //
 
 import UIKit
 import Firebase
-import M13PDFKit
+class MyNotesNoteController: UIViewController {
 
-class NotesController: UIViewController, UITextFieldDelegate {
-    
     var note = Note(forCourse: "", lectureInformation: "", noteDescription: "", noteName: "", noteSize: 0, rating: 0, referencePath: "", storageReference: "", timeStamp: "")
     var arrayOfComments = [Comment]()
     var titleForNavBar = ""
@@ -23,11 +21,11 @@ class NotesController: UIViewController, UITextFieldDelegate {
     var notesViewBottomAnchorWhenShown: NSLayoutConstraint!
     
     override func viewDidLoad() {
-        fetchComments()
+//        fetchComments()
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         view.addSubview(notesView)
-
+        
         notesViewBottomAnchorWhenHidden = notesView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         notesViewBottomAnchorWhenShown = notesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         NSLayoutConstraint.activate([notesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), notesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), notesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), notesViewBottomAnchorWhenHidden])
@@ -53,13 +51,13 @@ class NotesController: UIViewController, UITextFieldDelegate {
         notesViewBottomAnchorWhenShown.isActive = false
         self.view.layoutIfNeeded()
     }
-
+    
     
     
     
     func fetchComments() {
         let db = Firestore.firestore()
-
+        
         let settings = FirestoreSettings()
         db.settings = settings
         listener = db.collection("Courses").document(note.forCourse).collection("Notes").document(note.timeStamp).collection("Comments").addSnapshotListener { snapshot, error in
@@ -69,14 +67,14 @@ class NotesController: UIViewController, UITextFieldDelegate {
             } else {
                 self.arrayOfComments.removeAll()
                 for document in (snapshot?.documents)! {
-
+                    
                     if let message = document.data()["message"] as? String,
                         let timeStamp = document.data()["timeStamp"] as? String,
                         let profilePictureStorageReference = document.data()["profilePictureStorageReference"] as? String,
                         let messageOwnerEmail = document.data()["messageOwnerEmail"] as? String
                     {
                         
-
+                        
                         
                         if self.arrayOfComments.count == 0 {
                             self.arrayOfComments.append(Comment(message: message, timeStamp: timeStamp, sameOwner: false,  profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
@@ -88,7 +86,7 @@ class NotesController: UIViewController, UITextFieldDelegate {
                                 self.arrayOfComments.append(Comment(message: message, timeStamp: timeStamp, sameOwner: false, profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
                             }
                         }
-
+                        
                         
                     }
                 }
@@ -99,7 +97,7 @@ class NotesController: UIViewController, UITextFieldDelegate {
             }
         }
         
-
+        
     }
     
     
@@ -110,8 +108,8 @@ class NotesController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func onViewNoteTapped() {
-
-
+        
+        
         let sUrl = note.storageReference
         UIApplication.shared.openURL(NSURL(string: sUrl) as! URL)
     }
@@ -121,6 +119,7 @@ class NotesController: UIViewController, UITextFieldDelegate {
         listener.remove()
     }
     
+
 
 
 

@@ -137,6 +137,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
          ds.font = UIFont.boldSystemFont(ofSize: 15)
         ds.layer.cornerRadius = 10.0
         ds.isUserInteractionEnabled = false
+        ds.text = " " 
         return ds
     }()
     

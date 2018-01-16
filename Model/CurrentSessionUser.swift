@@ -14,4 +14,6 @@ final public class CurrentSessionUser {
     static var gmailEmail: String?
     static var profileImageUrl: String = ""
     static var name: String = ""
+    static var favoriteCourses: [String]?
+    static var favoriteNotes: [String]?
 }

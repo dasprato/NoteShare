@@ -14,6 +14,8 @@ class HomePageView: UIView {
     
     let myNotesMyCoursesCollectionViewCellId = "myNotesMyCoursesCollectionViewCellId"
     let mainCollectionViewCellId = "mainCollectionViewCellId"
+    let myNotesCollectionViewCellId = "myNotesCollectionViewCellId"
+    let myCoursesCollectionViewCellId = "myCoursesCollectionViewCellId"
     var arrayOfHomePages = [HomePage]()
     var currentCarNumber: Int = 0
     var previousCarNumber: Int = 0
@@ -48,6 +50,40 @@ class HomePageView: UIView {
     
 
     
+    
+    var myNotesCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 1
+        let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        ma.translatesAutoresizingMaskIntoConstraints = false
+        ma.clipsToBounds = true
+        ma.backgroundColor = UIColor.white
+        ma.layer.masksToBounds = true
+        ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        ma.tag = 3
+        ma.alwaysBounceVertical = true
+        ma.showsVerticalScrollIndicator = false
+        return ma
+    }()
+    
+    var myCoursesCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 1
+        let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        ma.translatesAutoresizingMaskIntoConstraints = false
+        ma.clipsToBounds = true
+        ma.backgroundColor = UIColor.white
+        ma.layer.masksToBounds = true
+        ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        ma.tag = 4
+        ma.alwaysBounceVertical = true
+        ma.showsVerticalScrollIndicator = false
+        return ma
+    }()
     
     var myNotesMyCoursesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -114,6 +150,16 @@ class HomePageView: UIView {
         myNotesMyCoursesCollectionView.register(HomePageCollectionViewCell.self, forCellWithReuseIdentifier: myNotesMyCoursesCollectionViewCellId)
         
         NSLayoutConstraint.activate([myNotesMyCoursesCollectionView.leftAnchor.constraint(equalTo: leftAnchor), myNotesMyCoursesCollectionView.rightAnchor.constraint(equalTo: rightAnchor), myNotesMyCoursesCollectionView.topAnchor.constraint(equalTo: topAnchor), myNotesMyCoursesCollectionView.heightAnchor.constraint(equalToConstant: 40)])
+        
+        
+        myNotesCollectionView.delegate = self
+        myNotesCollectionView.dataSource = self
+        myNotesCollectionView.register(MyNotesCollectionViewCell.self, forCellWithReuseIdentifier: myNotesCollectionViewCellId)
+        
+        myCoursesCollectionView.delegate = self
+        myCoursesCollectionView.dataSource = self
+        myCoursesCollectionView.register(MyCoursesCollectionViewCell.self, forCellWithReuseIdentifier: myCoursesCollectionViewCellId)
+        
     }
     
     override init(frame: CGRect) {
@@ -139,12 +185,15 @@ class HomePageView: UIView {
 extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     // collectionView.tag == 0 for the toggle and 1 for the main page itself
+    // 3 is for myNotes and 4 is for myCourses
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0 {
             return arrayOfHomePages.count
-        } else {
+        } else if collectionView.tag == 1 {
             return 2
+        } else {
+            return 10
         }
     }
     
@@ -163,26 +212,52 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
             cell.labelForCell.font = UIFont.boldSystemFont(ofSize: cell.labelForCell.font.pointSize)
             return cell
         }
-        else {
+        else if collectionView.tag == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mainCollectionViewCellId, for: indexPath)
             switch indexPath.row {
             case 0:
-                cell.backgroundColor = UIColor.white
+                cell.contentView.addSubview(myNotesCollectionView)
+
+                NSLayoutConstraint.activate([myNotesCollectionView.leftAnchor.constraint(equalTo: cell.leftAnchor), myNotesCollectionView.rightAnchor.constraint(equalTo: cell.rightAnchor), myNotesCollectionView.bottomAnchor.constraint(equalTo: cell.bottomAnchor), myNotesCollectionView.topAnchor.constraint(equalTo: cell.topAnchor)])
             case 1:
-                cell.backgroundColor = UIColor.blue.withAlphaComponent(0.1)
+                cell.contentView.addSubview(myCoursesCollectionView)
+                NSLayoutConstraint.activate([myCoursesCollectionView.leftAnchor.constraint(equalTo: cell.leftAnchor), myCoursesCollectionView.rightAnchor.constraint(equalTo: cell.rightAnchor), myCoursesCollectionView.bottomAnchor.constraint(equalTo: cell.bottomAnchor), myCoursesCollectionView.topAnchor.constraint(equalTo: cell.topAnchor)])
             default:
                 break
             }
+
             return cell
         }
-
+        else if collectionView.tag == 3 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: myNotesCollectionViewCellId, for: indexPath) as! MyNotesCollectionViewCell
+            cell.layer.cornerRadius = 10.0
+            cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
+            cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openMyNotesNoteController)))
+            
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: myCoursesCollectionViewCellId, for: indexPath) as! MyCoursesCollectionViewCell
+            cell.layer.cornerRadius = 10.0
+            cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openMyCoursesNotes)))
+            cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
+            return cell
+        }
+    }
+    
+    @objc func openMyCoursesNotes() {
+        NotificationCenter.default.post(name: NSNotification.Name.init("openMyCoursesNotes"), object: nil)
+    }
+    @objc func openMyNotesNoteController() {
+        NotificationCenter.default.post(name: NSNotification.Name.init("openMyNotesNoteController"), object: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView.tag == 0 {
             return CGSize(width: collectionView.frame.width / 2, height: collectionView.frame.height)
-        } else {
+        } else if collectionView.tag == 1 {
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+        } else {
+            return CGSize(width: collectionView.frame.width - 16, height: 80)
         }
     }
     

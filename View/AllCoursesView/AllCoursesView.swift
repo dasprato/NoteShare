@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class AllCoursesView: UIView {
 
@@ -83,6 +84,10 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
 //        cell.layer.borderColor = UIColor.lightGray.cgColor
 //        cell.layer.borderWidth = 0.5
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))
+        cell.starIcon.addGestureRecognizer(tapGesture)
+        
+        let tapGestureForAllNoteView = UITapGestureRecognizer(target: self, action: #selector(tappedOnCourse))
+        cell.addGestureRecognizer(tapGestureForAllNoteView)
         cell.course = arrayOfCourses?[indexPath.row]
         cell.layer.cornerRadius = 10.0
         cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
@@ -92,17 +97,39 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
         return CGSize(width: collectionView.frame.width, height: 80)
     }
 
-    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        currentCell = indexPath
-//        let cell = allCoursesCollectionView.cellForItem(at: currentCell!) as! AllCoursesCollectionViewCell
-//        if cell.starIcon.tintColor == UIColor.lightGray {
-//            cell.starIcon.tintColor = UIColor.red
-//        } else {
-//            cell.starIcon.tintColor = UIColor.lightGray
-//        }
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openAllNotes"), object: nil)
-    }
-    @objc func changeColor() {
 
+    
+    
+    @objc func tappedOnCourse(sender: UITapGestureRecognizer) {
+        if let indexPath = self.allCoursesCollectionView.indexPathForItem(at: sender.location(in: self.allCoursesCollectionView)) {
+
+            self.currentCell = indexPath
+            NotificationCenter.default.post(name: NSNotification.Name.init("openAllNotes"), object: nil)
+        } else {
+            print("collection view was tapped")
+        }
     }
+    
+    @objc func changeColor(sender: UITapGestureRecognizer) {
+        if let indexPath = self.allCoursesCollectionView.indexPathForItem(at: sender.location(in: self.allCoursesCollectionView)) {
+            print("you can do something with the cell or index path here")
+                let cell = allCoursesCollectionView.cellForItem(at: indexPath) as! AllCoursesCollectionViewCell
+                if cell.starIcon.tintColor == UIColor.lightGray {
+                    cell.starIcon.tintColor = UIColor.red
+                } else {
+                    cell.starIcon.tintColor = UIColor.lightGray
+                }
+            
+            
+            let dict: [String: Any] = ["referencePath": "Courses/" + "\(self.arrayOfCourses![indexPath.row].code)"]
+            let db = Firestore.firestore()
+            db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code).setData(dict)
+        } else {
+            print("collection view was tapped")
+        }
+        
+        
+    }
+    
+
 }

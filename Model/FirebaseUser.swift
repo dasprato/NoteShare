@@ -13,4 +13,5 @@ struct FirebaseUser {
     let yearOfStudy: Int?
     let profilePictureStorageReference: String
     let name: String?
+
 }

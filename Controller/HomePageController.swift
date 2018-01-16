@@ -170,6 +170,8 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(openMyNotes), name: NSNotification.Name(rawValue: "openMyNotes"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(openMyCourses), name: NSNotification.Name(rawValue: "openMyCourses"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(openMyCoursesNotes), name: NSNotification.Name(rawValue: "openMyCoursesNotes"), object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(openMyNotesNoteController), name: NSNotification.Name(rawValue: "openMyNotesNoteController"), object: nil)
     }
     
     
@@ -214,6 +216,14 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     @objc func openMyCourses() {
         self.navigationController?.pushViewController(MyCoursesController(), animated: true)
+    }
+    
+    @objc func openMyCoursesNotes() {
+        self.navigationController?.pushViewController(MyCoursesAllNotesController(), animated: true)
+    }
+    
+    @objc func openMyNotesNoteController() {
+        self.navigationController?.pushViewController(MyNotesNoteController(), animated: true)
     }
     
     func checkIfUserIsLoggedIn() {

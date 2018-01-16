@@ -61,11 +61,24 @@ class AllCoursesController: UIViewController {
             }
             do {
                 let courses = try JSONDecoder().decode([Course].self, from: data)
-                
+                var alreadyExists = false
                 for eachitem in courses {
-                    if eachitem.code.lowercased().hasPrefix(self.courseCode.lowercased()) {
-                    self.arrayOfCourses.append(eachitem)
+                    alreadyExists = false
+                    for eachCourse in self.arrayOfCourses {
+                        if eachCourse.code.lowercased() == eachitem.code.lowercased() {
+                            print("++++")
+                            print(eachCourse.code.lowercased())
+                            print(eachitem.code.lowercased())
+                            print("++++")
+                            alreadyExists = true
+                            break
+                        }
+                    }
                     
+                    if alreadyExists == false {
+                        if eachitem.code.lowercased().hasPrefix(self.courseCode.lowercased()) {
+                            self.arrayOfCourses.append(eachitem)
+                        }
                     }
                     
                 }

@@ -1,5 +1,5 @@
 //
-//  AllNotesCollectionViewCell.swift
+//  MyNotesCollectionViewCell.swift
 //  NoteShare
 //
 //  Created by Prato Das on 2017-12-30.
@@ -8,12 +8,13 @@
 
 import UIKit
 
-class AllNotesCollectionViewCell: UICollectionViewCell {
+class MyNotesCollectionViewCell: UICollectionViewCell {
     var note: Note? {
         didSet {
             self.noteName.text = note?.noteName
             self.noteDescription.text = note?.noteDescription
             self.lectureDescription.text = note?.lectureInformation
+            self.starIcon.tintColor = UIColor.red
         }
     }
     override init(frame: CGRect) {
@@ -30,7 +31,7 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([noteDescription.leftAnchor.constraint(equalTo: noteName.leftAnchor), noteDescription.rightAnchor.constraint(equalTo: starIcon.leftAnchor, constant: 8), noteDescription.topAnchor.constraint(equalTo: noteName.bottomAnchor)])
         
-                NSLayoutConstraint.activate([lectureDescription.leftAnchor.constraint(equalTo: noteName.leftAnchor), lectureDescription.rightAnchor.constraint(equalTo: starIcon.leftAnchor, constant: 8), lectureDescription.topAnchor.constraint(equalTo: noteDescription.bottomAnchor)])
+        NSLayoutConstraint.activate([lectureDescription.leftAnchor.constraint(equalTo: noteName.leftAnchor), lectureDescription.rightAnchor.constraint(equalTo: starIcon.leftAnchor, constant: 8), lectureDescription.topAnchor.constraint(equalTo: noteDescription.bottomAnchor)])
         
     }
     
@@ -44,6 +45,7 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         ct.translatesAutoresizingMaskIntoConstraints = false
         ct.font = UIFont.systemFont(ofSize: ct.font.pointSize + 4)
         ct.textColor = Constants.themeColor
+         ct.text = "Self.Note Title"
         return ct
     }()
     private var noteDescription: UILabel = {
@@ -52,6 +54,7 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         cn.numberOfLines = 2
         cn.font = UIFont.systemFont(ofSize: cn.font.pointSize - 4)
         cn.textColor = UIColor.gray
+        cn.text = "Self.Note Description"
         return cn
     }()
     
@@ -61,6 +64,7 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         cn.numberOfLines = 2
         cn.font = UIFont.systemFont(ofSize: cn.font.pointSize - 4)
         cn.textColor = UIColor.gray
+        cn.text = "Lecture Description/ Professor Description"
         return cn
     }()
     
@@ -68,7 +72,8 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
         let si = UIButton(type: .system)
         si.translatesAutoresizingMaskIntoConstraints = false
         si.setImage(UIImage(named: "star")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        si.tintColor = UIColor.lightGray
+        si.tintColor = UIColor.red
         return si
     }()
 }
+
