@@ -10,7 +10,6 @@ import Foundation
 
 struct Comment {
     let message: String
-    let messageOwner: String
     let timeStamp: String
     let sameOwner: Bool
     let profilePictureStorageReference: String?

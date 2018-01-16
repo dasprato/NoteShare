@@ -72,7 +72,6 @@ class NotesController: UIViewController, UITextFieldDelegate {
 
                     if let message = document.data()["message"] as? String,
                         let timeStamp = document.data()["timeStamp"] as? String,
-                        let messageOwner = document.data()["messageOwner"] as? String,
                         let profilePictureStorageReference = document.data()["profilePictureStorageReference"] as? String,
                         let messageOwnerEmail = document.data()["messageOwnerEmail"] as? String
                     {
@@ -80,13 +79,13 @@ class NotesController: UIViewController, UITextFieldDelegate {
 
                         
                         if self.arrayOfComments.count == 0 {
-                            self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: false,  profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
+                            self.arrayOfComments.append(Comment(message: message, timeStamp: timeStamp, sameOwner: false,  profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
                         }
                         else {
-                            if messageOwner == self.arrayOfComments[self.arrayOfComments.count - 1].messageOwner {
-                                self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: true, profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
+                            if messageOwnerEmail == self.arrayOfComments[self.arrayOfComments.count - 1].messageOwnerEmail {
+                                self.arrayOfComments.append(Comment(message: message, timeStamp: timeStamp, sameOwner: true, profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
                             } else {
-                                self.arrayOfComments.append(Comment(message: message, messageOwner: messageOwner, timeStamp: timeStamp, sameOwner: false, profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
+                                self.arrayOfComments.append(Comment(message: message, timeStamp: timeStamp, sameOwner: false, profilePictureStorageReference: profilePictureStorageReference, messageOwnerEmail: messageOwnerEmail))
                             }
                         }
 

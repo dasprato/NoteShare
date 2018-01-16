@@ -17,7 +17,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         didSet {
             print("Single Comment Fetched")
             commentLabel.text = comment?.message
-            userName.text = comment?.messageOwner
+
             guard let unwrappedUrlImage = comment?.profilePictureStorageReference else { return }
             var url = ""
             let db = Firestore.firestore()
@@ -26,9 +26,11 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
                     print("Error getting documents: \(err)")
                 } else {
                     guard let unwrappedUrl = imageUrlSnapShot?.data()["profilePictureStorageReference"] else { return }
-                    url = unwrappedUrl as! String
-                    self.profileImageView.sd_setImage(with: URL(string: url), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+                    guard let unwrappedName = imageUrlSnapShot?.data()["name"] else { return }
+                    self.profileImageView.sd_setImage(with: URL(string: unwrappedUrl as! String), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+                    self.userName.text = unwrappedName as! String
                 }
+                
             })
             
             
