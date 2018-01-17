@@ -63,7 +63,7 @@ class HomePageView: UIView {
             print("did set arrayOfCoursesReferencePath")
             print("number of courses:")
             print(arrayOfCourses.count)
-            print(arrayOfCoursesReferencePath?.count)
+
             
             for eachReference in arrayOfCoursesReferencePath! {
                 let db = Firestore.firestore()
@@ -88,6 +88,8 @@ class HomePageView: UIView {
                     }
                     print("Actual number of courses")
                     print(self.arrayOfCourses.count)
+                    print("numebr of courses")
+                    print(self.arrayOfCoursesReferencePath?.count)
                     DispatchQueue.main.async {
                         self.myCoursesCollectionView.reloadData()
                     }
