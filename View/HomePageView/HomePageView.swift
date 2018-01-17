@@ -22,9 +22,11 @@ class HomePageView: UIView {
     var previousCarNumber: Int = 0
     var listenerForCourses: ListenerRegistration?
     var listenerForNotes: ListenerRegistration?
+    var arrayOfCoursesToDisplay = [FirebaseCourse]()
     var arrayOfNotesReferencePath: [String]? {
         didSet {
             self.arrayOfNotes.removeAll()
+            self.myNotesCollectionView.reloadData()
 
             for eachReference in arrayOfNotesReferencePath! {
                 let db = Firestore.firestore()
@@ -60,9 +62,11 @@ class HomePageView: UIView {
     var arrayOfCoursesReferencePath: [String]? {
         didSet {
             self.arrayOfCourses.removeAll()
-            print("did set arrayOfCoursesReferencePath")
-            print("number of courses:")
-            print(arrayOfCourses.count)
+            self.arrayOfCoursesToDisplay.removeAll()
+            self.myCoursesCollectionView.reloadData()
+            print("length before starting")
+            print(self.arrayOfCourses.count)
+
 
             
             for eachReference in arrayOfCoursesReferencePath! {
@@ -87,12 +91,28 @@ class HomePageView: UIView {
                         
                     }
                     print("Actual number of courses")
-                    print(self.arrayOfCourses.count)
-                    print("numebr of courses")
+                    print(self.arrayOfCoursesToDisplay.count)
+                    print("number of course references")
                     print(self.arrayOfCoursesReferencePath?.count)
-                    DispatchQueue.main.async {
+                    if (self.arrayOfCourses.count) == ((self.arrayOfCoursesReferencePath?.count)! * 2) {
+                        self.arrayOfCoursesToDisplay.removeAll()
                         self.myCoursesCollectionView.reloadData()
+                        
+                        for i in 0..<self.arrayOfCourses.count {
+                            if i % 2 != 0 {
+                                self.arrayOfCoursesToDisplay.append(self.arrayOfCourses[i])
+                                self.myCoursesCollectionView.reloadData()
+                            }
+                        }
                     }
+                    else {
+                    self.arrayOfCoursesToDisplay = self.arrayOfCourses
+                    self.myCoursesCollectionView.reloadData()
+
+                    }
+                    
+                    
+
                 })
             }
             
@@ -324,7 +344,7 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
         } else if collectionView.tag == 3 {
             return arrayOfNotes.count
         } else {
-            return arrayOfCourses.count
+            return arrayOfCoursesToDisplay.count
             
         }
     }
@@ -372,7 +392,7 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
             cell.layer.cornerRadius = 10.0
             cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openMyCoursesNotes)))
             cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
-            cell.course = arrayOfCourses[indexPath.row]
+            cell.course = arrayOfCoursesToDisplay[indexPath.row]
             return cell
         }
     }
@@ -400,8 +420,6 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
         if collectionView.tag == 1 {
             self.currentCarNumber = indexPath.row
             if self.previousCarNumber != self.currentCarNumber {
-                print("Current:")
-                print(indexPath.row)
             }
         }
     }
@@ -411,8 +429,6 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
             self.previousCarNumber = indexPath.row
             if self.previousCarNumber != self.currentCarNumber {
                 scrolledHomeCollectionView()
-                print("Previous:")
-                print(indexPath.row)
             }
         }
     }

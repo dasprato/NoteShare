@@ -91,11 +91,12 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     }
     
     override func viewDidAppear(_ animated: Bool) {
-
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
+
 
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -110,7 +111,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         } else {
             guard let unwrappedEmail = Auth.auth().currentUser?.email else {return}
             userName.text = unwrappedEmail
-            print("The email address is:", userName.text)
         }
 
         fetchNotes()
@@ -165,6 +165,10 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         let viewControllerToPresent = LoginController()
         
         self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
+        CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
+        CurrentSessionUser.favoriteNotesReferencePath.removeAll()
+        self.homePageView.arrayOfNotesReferencePath = CurrentSessionUser.favoriteNotesReferencePath
+        self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
     }
     
 

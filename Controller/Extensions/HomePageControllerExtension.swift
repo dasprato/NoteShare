@@ -45,6 +45,10 @@ func fetchNotes() {
         CurrentSessionUser.favoriteNotesReferencePath.removeAll()
         self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
     }
+    if listenerForNotes == nil {
+        CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
+        self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
+    }
     
 }
 
@@ -84,6 +88,11 @@ func fetchCourses() {
         CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
         self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
     }
+    if listenForCourse == nil {
+        CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
+        self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
+    }
+    
     
 }
 
