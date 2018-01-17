@@ -25,6 +25,7 @@ func fetchNotes() {
     let listenerForNotes = db.collection("Users").document(unwrappedUserId).collection("favoriteNotes").addSnapshotListener { snapshot, error in
         if error != nil {
             CurrentSessionUser.favoriteNotesReferencePath.removeAll()
+            self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
             return
         } else {
             CurrentSessionUser.favoriteNotesReferencePath.removeAll()
@@ -43,6 +44,7 @@ func fetchNotes() {
     }
     if listenerForNotes != nil {
         CurrentSessionUser.favoriteNotesReferencePath.removeAll()
+        self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
     }
     
 }
@@ -61,25 +63,25 @@ func fetchCourses() {
     let listenForCourse = db.collection("Users").document(unwrappedUserId).collection("favoriteCourses").addSnapshotListener { snapshot, error in
         if error != nil {
             CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
+            self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
             return
         } else {
             CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
             
             for document in (snapshot?.documents)! {
-                if let noteName = document.data()["referencePath"] as? String
-                {
-                    CurrentSessionUser.favoriteCoursesReferencePath.append(noteName)
-                    
-                    
-                }
+
+                    CurrentSessionUser.favoriteCoursesReferencePath.append(document.data()["referencePath"] as! String)
+
             }
             
             self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
             
+            print(CurrentSessionUser.favoriteCoursesReferencePath)
         }
     }
     if listenForCourse != nil {
         CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
+        self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
     }
     
 }

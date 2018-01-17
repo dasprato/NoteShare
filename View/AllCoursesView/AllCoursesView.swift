@@ -115,7 +115,7 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
             print("you can do something with the cell or index path here")
                 let cell = allCoursesCollectionView.cellForItem(at: indexPath) as! AllCoursesCollectionViewCell
                 if cell.starIcon.tintColor == UIColor.lightGray {
-                    cell.starIcon.tintColor = UIColor.red
+                    cell.starIcon.tintColor = Constants.gold
                 } else {
                     cell.starIcon.tintColor = UIColor.lightGray
                 }
@@ -123,7 +123,7 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
             
             let dict: [String: Any] = ["referencePath": "Courses/" + "\(self.arrayOfCourses![indexPath.row].code)"]
             let db = Firestore.firestore()
-            db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code).setData(dict)
+            db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code!).setData(dict)
         } else {
             print("collection view was tapped")
         }

@@ -9,25 +9,35 @@
 import Foundation
 
 struct Course: Decodable {
-    let id: String
-    let code: String
-    let name: String
-    let description: String
-    let division: String
-    let department: String
-    let prerequisites: String
-    let exclusions: String
-    let campus: String
-    let term: String
-    let level: Int
-    let breadths: [Int]
-    let meeting_sections: [MeetingSection]
+    let id: String?
+    let code: String?
+    let name: String?
+    let description: String?
+    let division: String?
+    let department: String?
+    let prerequisites: String?
+    let exclusions: String?
+    let campus: String?
+    let term: String?
+    let level: Int?
+    let breadths: [Int]?
+    let meeting_sections: [MeetingSection]?
     let isFavorite: Bool?
 }
 
 struct MeetingSection: Decodable {
-    let code: String
-    let size: Int
-    let enrolment: Int
-    let instructors: [String]
+    let code: String?
+    let size: Int?
+    let enrolment: Int?
+    let instructors: [String]?
+}
+
+
+struct FirebaseCourse {
+    let code: String?
+    let department: String?
+    let description: String?
+    let level: String?
+    let name: String?
+    let referencePath: String
 }

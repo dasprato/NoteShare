@@ -46,7 +46,7 @@ class AllCoursesController: UIViewController {
     @objc func openAllNotes() {
         let viewControllerToPush = AllNotesController()
         if allCoursesView.currentCell?.row != nil {
-        viewControllerToPush.titleForNavBar = self.arrayOfCourses[(allCoursesView.currentCell?.row)!].code
+            viewControllerToPush.titleForNavBar = self.arrayOfCourses[(allCoursesView.currentCell?.row)!].code!
         viewControllerToPush.course = self.arrayOfCourses[(allCoursesView.currentCell?.row)!]
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
         }
@@ -68,14 +68,14 @@ class AllCoursesController: UIViewController {
                 for eachitem in courses {
                     alreadyExists = false
                     for eachCourse in self.arrayOfCourses {
-                        if eachCourse.code.lowercased() == eachitem.code.lowercased() {
+                        if eachCourse.code?.lowercased() == eachitem.code?.lowercased() {
                             alreadyExists = true
                             break
                         }
                     }
                     
                     if alreadyExists == false {
-                        if eachitem.code.lowercased().hasPrefix(self.courseCode.lowercased()) {
+                        if (eachitem.code?.lowercased().hasPrefix(self.courseCode.lowercased()))! {
                             self.arrayOfCourses.append(eachitem)
                         }
                     }

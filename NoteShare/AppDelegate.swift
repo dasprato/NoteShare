@@ -21,8 +21,8 @@ import Fabric
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSignInDelegate {
     
-    var listenerForNotes: ListenerRegistration!
-    var listenForCourse: ListenerRegistration!
+    var listenerForNotes: ListenerRegistration?
+    var listenForCourse: ListenerRegistration?
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let err = error {
@@ -113,7 +113,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSig
         ///Fetch Notes reference path and courses reference path
 
 
-        
+        CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
+        CurrentSessionUser.favoriteNotesReferencePath.removeAll()
         
         return true
 

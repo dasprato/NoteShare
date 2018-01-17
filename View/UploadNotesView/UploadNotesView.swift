@@ -257,13 +257,13 @@ class UploadNotesView: UIView {
     func sendToFirebase(wtihMetaData metadata: StorageMetadata, withNoteName noteNameText: String, withNoteDescription noteDescriptionText: String, withLectureInformation lectureInformationText: String,  withUrl profileImageURL: String) {
         
         let noteReferenceName = "\(String(describing: Date().timeIntervalSince1970))"
-        let courseDict: [String: Any] = ["code": self.course.code, "department": self.course.department, "description": self.course.description, "division": self.course.division, "level": self.course.level, "name": self.course.name]
-        self.note = Note(forCourse: self.course.code, lectureInformation: lectureInformationText, noteDescription: noteDescriptionText, noteName: noteNameText, noteSize: Int((metadata.size) / 1024 / 1024), rating: 0, referencePath: "Courses/" + self.course.code + "/Notes/" + noteReferenceName, storageReference: profileImageURL, timeStamp: noteReferenceName)
+        let courseDict: [String: Any] = ["code": self.course.code, "department": self.course.department, "description": self.course.description, "division": self.course.division, "level": self.course.level, "name": self.course.name, "storageReference": "Courses/\(self.course.code!)"]
+        self.note = Note(forCourse: self.course.code!, lectureInformation: lectureInformationText, noteDescription: noteDescriptionText, noteName: noteNameText, noteSize: Int((metadata.size) / 1024 / 1024), rating: 0, referencePath: "Courses/" + self.course.code! + "/Notes/" + noteReferenceName, storageReference: profileImageURL, timeStamp: noteReferenceName)
         let noteDict: [String: Any] = ["forCourse": self.course.code, "lectureInformation": self.note.lectureInformation, "noteDescription": self.note.noteDescription, "noteName": self.note.noteName, "noteSize": self.note.noteSize, "rating": self.note.rating, "storageReference": self.note.storageReference, "referencePath": self.note.referencePath, "timeStamp": self.note.timeStamp]
         let db = Firestore.firestore()
         
-        db.collection("Courses").document(self.course.code).setData(courseDict)
-        db.collection("Courses").document(self.course.code).collection("Notes").document(noteReferenceName).setData(noteDict)
+        db.collection("Courses").document(self.course.code!).setData(courseDict)
+        db.collection("Courses").document(self.course.code!).collection("Notes").document(noteReferenceName).setData(noteDict)
         
         self.noteName.text = ""
         self.noteDescription.text = ""

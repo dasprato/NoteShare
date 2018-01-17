@@ -147,8 +147,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
                 print("---------------")
                 print(dict)
                 print("---------------")
-                    print(CurrentSessionUser.favoriteNotesReferencePath)
-                    print(CurrentSessionUser.favoriteCoursesReferencePath)
             }
             }
         }
@@ -232,7 +230,8 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     }
     
     @objc func openMyNotesNoteController() {
-        self.navigationController?.pushViewController(MyNotesNoteController(), animated: true)
+        let viewControllerToPush = NotesController()
+        self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }
     
     func checkIfUserIsLoggedIn() {

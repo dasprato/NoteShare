@@ -230,7 +230,7 @@ class NotesView: UIView, UITextViewDelegate {
     
     @objc func sendToFirebase() {
         
-        let dict: [String: Any] = ["message": newComment.text, "timeStamp":  String(describing: Date().timeIntervalSince1970), "profilePictureStorageReference": "Users/" + (Auth.auth().currentUser?.uid)! + "/", "messageOwnerEmail": CurrentSessionUser.user?.emailAddress]
+        let dict: [String: Any] = ["message": newComment.text, "timeStamp":  String(describing: Date().timeIntervalSince1970), "profileStorageReference": "Users/" + (Auth.auth().currentUser?.uid)! + "/", "messageOwnerEmail": CurrentSessionUser.user?.emailAddress]
         let db = Firestore.firestore()
         db.collection("Courses").document(note.forCourse).collection("Notes").document(note.timeStamp).collection("Comments").document(dict["timeStamp"] as! String).setData(dict)
         newComment.text = ""

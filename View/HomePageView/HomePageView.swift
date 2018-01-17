@@ -24,25 +24,77 @@ class HomePageView: UIView {
     var listenerForNotes: ListenerRegistration?
     var arrayOfNotesReferencePath: [String]? {
         didSet {
-            print("did set reference paths for fav note")
+            self.arrayOfNotes.removeAll()
+
             for eachReference in arrayOfNotesReferencePath! {
-                print(eachReference)
+                let db = Firestore.firestore()
+                db.document(eachReference).getDocument(completion: { (noteSnapshot, error) in
+                    if let err = error {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        if let noteName = noteSnapshot?.data()["noteName"] as? String,
+                            let lectureInformation = noteSnapshot?.data()["lectureInformation"] as? String,
+                            let noteDescription = noteSnapshot?.data()["noteDescription"] as? String,
+                            let forCourse = noteSnapshot?.data()["forCourse"] as? String,
+                            let storageReference = noteSnapshot?.data()["storageReference"] as? String,
+                            let noteSize = noteSnapshot?.data()["noteSize"] as? Int,
+                            let rating = noteSnapshot?.data()["rating"] as? Int,
+                            let referencePath = noteSnapshot?.data()["referencePath"] as? String,
+                            let timeStamp = noteSnapshot?.documentID as? String {
+                            self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp))
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        self.myNotesCollectionView.reloadData()
+                    }
+                })
             }
+
             
         }
     }
     var arrayOfCoursesReferencePath: [String]? {
         didSet {
-            print("did set reference paths for fav course")
+            self.arrayOfCourses.removeAll()
+
             for eachReference in arrayOfCoursesReferencePath! {
-                print(eachReference)
+                let db = Firestore.firestore()
+                db.document(eachReference).getDocument(completion: { (noteSnapshot, error) in
+                    if noteSnapshot?.exists == false {
+                        return
+                    }
+                    if let err = error {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        
+
+                        if let code = noteSnapshot?.data()["code"] as? String,
+                            let department = noteSnapshot?.data()["department"] as? String,
+                            let noteDescription = noteSnapshot?.data()["noteDescription"] as? String,
+                            let description = noteSnapshot?.data()["description"] as? String,
+                            let division = noteSnapshot?.data()["division"] as? String,
+                            let level = noteSnapshot?.data()["level"] as? String,
+                            let name = noteSnapshot?.data()["name"] as? String {
+                        
+                        self.arrayOfCourses.append(FirebaseCourse(code: code, department: department, description: description, level: level, name: name, referencePath: noteSnapshot?.data()["referencePath"] as! String ))
+                        }
+                        print("Snapshot course reference is ->")
+                        print (noteSnapshot?.data()["referencePath"] as! String)
+                        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                    }
+                    DispatchQueue.main.async {
+                        self.myCoursesCollectionView.reloadData()
+                    }
+                })
             }
+            
+
         }
         
         
     }
     var arrayOfNotes = [Note]()
-    var arrayOfCourses = [Course]()
+    var arrayOfCourses = [FirebaseCourse]()
 
         
     func populateHomePageArray() {
@@ -262,9 +314,9 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
         } else if collectionView.tag == 1 {
             return 2
         } else if collectionView.tag == 3 {
-            return 7
+            return arrayOfNotes.count
         } else {
-            return 7
+            return arrayOfCourses.count
             
         }
     }
@@ -305,13 +357,14 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
             cell.layer.cornerRadius = 10.0
             cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
             cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openMyNotesNoteController)))
-            
+            cell.note = self.arrayOfNotes[indexPath.row]
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: myCoursesCollectionViewCellId, for: indexPath) as! MyCoursesCollectionViewCell
             cell.layer.cornerRadius = 10.0
             cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openMyCoursesNotes)))
             cell.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
+            cell.course = arrayOfCourses[indexPath.row]
             return cell
         }
     }

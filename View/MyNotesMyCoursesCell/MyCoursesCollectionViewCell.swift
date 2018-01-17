@@ -10,7 +10,7 @@ import UIKit
 
 class MyCoursesCollectionViewCell: UICollectionViewCell {
     
-    var course: Course? {
+    var course: FirebaseCourse? {
         didSet {
             courseTitle.text = course?.code
             courseName.text = course?.name

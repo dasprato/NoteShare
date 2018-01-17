@@ -129,7 +129,7 @@ extension AllNotesView: UICollectionViewDelegateFlowLayout, UICollectionViewDele
             print("you can do something with the cell or index path here")
             let cell = allNotesCollectionView.cellForItem(at: indexPath) as! AllNotesCollectionViewCell
             if cell.starIcon.tintColor == UIColor.lightGray {
-                cell.starIcon.tintColor = UIColor.red
+                cell.starIcon.tintColor = Constants.gold
             } else {
                 cell.starIcon.tintColor = UIColor.lightGray
             }

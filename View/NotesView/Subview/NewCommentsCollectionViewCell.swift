@@ -18,10 +18,10 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
             print("Single Comment Fetched")
             commentLabel.text = comment?.message
 
-            guard let unwrappedUrlImage = comment?.profilePictureStorageReference else { return }
+            guard let profileStorageReference = comment?.profileStorageReference else { return }
             var url = ""
             let db = Firestore.firestore()
-            db.document(unwrappedUrlImage).getDocument(completion: { (imageUrlSnapShot, error) in
+            db.document(profileStorageReference).getDocument(completion: { (imageUrlSnapShot, error) in
                 if let err = error {
                     print("Error getting documents: \(err)")
                 } else {

@@ -72,7 +72,7 @@ class MyNotesCollectionViewCell: UICollectionViewCell {
         let si = UIButton(type: .system)
         si.translatesAutoresizingMaskIntoConstraints = false
         si.setImage(UIImage(named: "star")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        si.tintColor = UIColor.red
+        si.tintColor = Constants.gold
         return si
     }()
 }

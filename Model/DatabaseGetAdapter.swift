@@ -21,7 +21,7 @@ class DatabaseGetAdapter {
                 let courses = try JSONDecoder().decode([Course].self, from: data)
                 
                 for eachitem in courses {
-                    if eachitem.code.lowercased().hasPrefix(courseCode.lowercased()) {
+                    if (eachitem.code?.lowercased().hasPrefix(courseCode.lowercased()))! {
                         arrayOfCourses.append(eachitem)
                     }
                 }
