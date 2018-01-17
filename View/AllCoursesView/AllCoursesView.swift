@@ -121,7 +121,7 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
                 }
             
             
-            let dict: [String: Any] = ["referencePath": "Courses/" + "\(self.arrayOfCourses![indexPath.row].code)"]
+            let dict: [String: Any] = ["referencePath": "Courses/" + "\(self.arrayOfCourses![indexPath.row].code!)"]
             let db = Firestore.firestore()
             db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code!).setData(dict)
         } else {

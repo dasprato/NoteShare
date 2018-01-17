@@ -37,7 +37,6 @@ struct FirebaseCourse {
     let code: String?
     let department: String?
     let description: String?
-    let level: String?
+    let level: Int?
     let name: String?
-    let referencePath: String
 }

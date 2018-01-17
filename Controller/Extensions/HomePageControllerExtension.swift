@@ -13,10 +13,9 @@ import Firebase
 extension HomePageController {
 func fetchNotes() {
     
-    let db = Firestore.firestore()
-    
     let settings = FirestoreSettings()
     settings.isPersistenceEnabled = true
+    let db = Firestore.firestore()
     db.settings = settings
     
     
@@ -51,10 +50,9 @@ func fetchNotes() {
 
 
 func fetchCourses() {
-    let db = Firestore.firestore()
-    
     let settings = FirestoreSettings()
     settings.isPersistenceEnabled = true
+    let db = Firestore.firestore()
     db.settings = settings
     
     
@@ -67,16 +65,19 @@ func fetchCourses() {
             return
         } else {
             CurrentSessionUser.favoriteCoursesReferencePath.removeAll()
-            
+            self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
             for document in (snapshot?.documents)! {
+                guard let path = document.data()["referencePath"] as? String else { return }
+                print("Path is")
+                print(path)
+                CurrentSessionUser.favoriteCoursesReferencePath.append(path)
+                
 
-                    CurrentSessionUser.favoriteCoursesReferencePath.append(document.data()["referencePath"] as! String)
 
             }
-            
-            self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
-            
+            print("========> Check out")
             print(CurrentSessionUser.favoriteCoursesReferencePath)
+            self.homePageView.arrayOfCoursesReferencePath = CurrentSessionUser.favoriteCoursesReferencePath
         }
     }
     if listenForCourse != nil {

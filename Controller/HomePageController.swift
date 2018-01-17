@@ -38,6 +38,9 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
+        fetchUser()
         checkIfUserIsLoggedIn()
         
         view.backgroundColor = UIColor.white

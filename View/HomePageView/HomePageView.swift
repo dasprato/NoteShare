@@ -29,6 +29,10 @@ class HomePageView: UIView {
             for eachReference in arrayOfNotesReferencePath! {
                 let db = Firestore.firestore()
                 db.document(eachReference).getDocument(completion: { (noteSnapshot, error) in
+                    if !(noteSnapshot?.exists)! {
+                        return
+                        
+                    }
                     if let err = error {
                         print("Error getting documents: \(err)")
                     } else {
@@ -56,32 +60,34 @@ class HomePageView: UIView {
     var arrayOfCoursesReferencePath: [String]? {
         didSet {
             self.arrayOfCourses.removeAll()
-
+            print("did set arrayOfCoursesReferencePath")
+            print("number of courses:")
+            print(arrayOfCourses.count)
+            print(arrayOfCoursesReferencePath?.count)
+            
             for eachReference in arrayOfCoursesReferencePath! {
                 let db = Firestore.firestore()
                 db.document(eachReference).getDocument(completion: { (noteSnapshot, error) in
-                    if noteSnapshot?.exists == false {
+                    if !(noteSnapshot?.exists)! {
                         return
+                        
                     }
                     if let err = error {
                         print("Error getting documents: \(err)")
                     } else {
                         
 
-                        if let code = noteSnapshot?.data()["code"] as? String,
-                            let department = noteSnapshot?.data()["department"] as? String,
-                            let noteDescription = noteSnapshot?.data()["noteDescription"] as? String,
-                            let description = noteSnapshot?.data()["description"] as? String,
-                            let division = noteSnapshot?.data()["division"] as? String,
-                            let level = noteSnapshot?.data()["level"] as? String,
-                            let name = noteSnapshot?.data()["name"] as? String {
+                        guard let code = noteSnapshot?.data()["code"] as? String else { return }
+                        guard let department = noteSnapshot?.data()["department"] as? String else { return }
+                        guard let description = noteSnapshot?.data()["description"] as? String else { return }
+                        guard let level = noteSnapshot?.data()["level"] as? Int else { return }
+                        guard let name = noteSnapshot?.data()["name"] as? String else { return }
                         
-                        self.arrayOfCourses.append(FirebaseCourse(code: code, department: department, description: description, level: level, name: name, referencePath: noteSnapshot?.data()["referencePath"] as! String ))
-                        }
-                        print("Snapshot course reference is ->")
-                        print (noteSnapshot?.data()["referencePath"] as! String)
-                        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                        self.arrayOfCourses.append(FirebaseCourse(code: code, department: department, description: description, level: level, name: name))
+                        
                     }
+                    print("Actual number of courses")
+                    print(self.arrayOfCourses.count)
                     DispatchQueue.main.async {
                         self.myCoursesCollectionView.reloadData()
                     }
