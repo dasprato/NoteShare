@@ -208,7 +208,7 @@ class UploadNotesView: UIView {
             }
             
         } else {
-            createAlert(title: "ERROR", message: "NO MEDIA<YOU MOTHER FUCKER>")
+            createAlert(title: "ERROR", message: "<>/NO MEDIA<>")
             return
         }
         
@@ -258,7 +258,7 @@ class UploadNotesView: UIView {
         
         let noteReferenceName = "\(String(describing: Date().timeIntervalSince1970))"
         let courseDict: [String: Any] = ["code": self.course.code, "department": self.course.department, "description": self.course.description, "division": self.course.division, "level": self.course.level, "name": self.course.name]
-        self.note = Note(forCourse: self.course.code, lectureInformation: lectureInformationText, noteDescription: noteDescriptionText, noteName: noteNameText, noteSize: Int((metadata.size) / 1024 / 1024), rating: 0, referencePath: "Courses/" + self.course.name + "/Notes/" + noteReferenceName, storageReference: profileImageURL, timeStamp: noteReferenceName)
+        self.note = Note(forCourse: self.course.code, lectureInformation: lectureInformationText, noteDescription: noteDescriptionText, noteName: noteNameText, noteSize: Int((metadata.size) / 1024 / 1024), rating: 0, referencePath: "Courses/" + self.course.code + "/Notes/" + noteReferenceName, storageReference: profileImageURL, timeStamp: noteReferenceName)
         let noteDict: [String: Any] = ["forCourse": self.course.code, "lectureInformation": self.note.lectureInformation, "noteDescription": self.note.noteDescription, "noteName": self.note.noteName, "noteSize": self.note.noteSize, "rating": self.note.rating, "storageReference": self.note.storageReference, "referencePath": self.note.referencePath, "timeStamp": self.note.timeStamp]
         let db = Firestore.firestore()
         

@@ -14,7 +14,7 @@ class MyCoursesCollectionViewCell: UICollectionViewCell {
         didSet {
             courseTitle.text = course?.code
             courseName.text = course?.name
-            self.starIcon.tintColor = UIColor.red
+            self.starIcon.tintColor = Constants.gold
         }
     }
     
@@ -60,7 +60,7 @@ class MyCoursesCollectionViewCell: UICollectionViewCell {
         let si = UIButton(type: .system)
         si.translatesAutoresizingMaskIntoConstraints = false
         si.setImage(UIImage(named: "star")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        si.tintColor = UIColor.red
+        si.tintColor = Constants.gold
         return si
     }()
 }

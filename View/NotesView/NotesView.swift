@@ -259,9 +259,7 @@ class NotesView: UIView, UITextViewDelegate {
         
     }
     
-    @objc func onDownloadNoteTapped() {
 
-    }
     
     
     var commentsCollectionView: UICollectionView = {

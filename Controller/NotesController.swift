@@ -39,15 +39,10 @@ class NotesController: UIViewController, UITextFieldDelegate {
         navigationController?.navigationBar.shadowImage = UIImage()
         setupObservers()
         
-        let barDownload = UIBarButtonItem(image: UIImage(named: "download")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(download))
+        let barDownload = UIBarButtonItem(image: UIImage(named: "download")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onViewNoteTapped))
         navigationItem.setRightBarButtonItems([barDownload], animated: true)
     }
-    
-    @objc func download() {
-        print(123)
-    }
-    
-    
+
     @objc func keyboardOnChatWindowIsShown() {
         notesViewBottomAnchorWhenHidden.isActive = false
         notesViewBottomAnchorWhenShown.isActive = true

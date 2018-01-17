@@ -14,7 +14,7 @@ class MyNotesCollectionViewCell: UICollectionViewCell {
             self.noteName.text = note?.noteName
             self.noteDescription.text = note?.noteDescription
             self.lectureDescription.text = note?.lectureInformation
-            self.starIcon.tintColor = UIColor.red
+            self.starIcon.tintColor = Constants.gold
         }
     }
     override init(frame: CGRect) {

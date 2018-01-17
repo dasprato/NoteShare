@@ -63,6 +63,7 @@
 		D29B27CF1FF09B8F00575DCE /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29B27CE1FF09B8F00575DCE /* ImageCollectionViewCell.swift */; };
 		D2C44C7A200A4B0C0080A2C0 /* SameUserCommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C44C79200A4B0C0080A2C0 /* SameUserCommentCollectionViewCell.swift */; };
 		D2C5A035200D932E00A0BF3B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2C5A034200D932E00A0BF3B /* CloudKit.framework */; };
+		D2CF3AA4200F717000898675 /* HomePageControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CF3AA3200F717000898675 /* HomePageControllerExtension.swift */; };
 		D2F4FDCD1FBAAB6500EDD593 /* myCoursesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F4FDCC1FBAAB6500EDD593 /* myCoursesCell.swift */; };
 		D2F4FDCF1FBAB19C00EDD593 /* LeftMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F4FDCE1FBAB19C00EDD593 /* LeftMenu.swift */; };
 		D2F4FDD11FBAB1E100EDD593 /* MenuScrollCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F4FDD01FBAB1E100EDD593 /* MenuScrollCell.swift */; };
@@ -161,6 +162,7 @@
 		D29B27D31FF0A51A00575DCE /* NoteShare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NoteShare-Bridging-Header.h"; sourceTree = "<group>"; };
 		D2C44C79200A4B0C0080A2C0 /* SameUserCommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameUserCommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		D2C5A034200D932E00A0BF3B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		D2CF3AA3200F717000898675 /* HomePageControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageControllerExtension.swift; sourceTree = "<group>"; };
 		D2F4FDCC1FBAAB6500EDD593 /* myCoursesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myCoursesCell.swift; sourceTree = "<group>"; };
 		D2F4FDCE1FBAB19C00EDD593 /* LeftMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenu.swift; sourceTree = "<group>"; };
 		D2F4FDD01FBAB1E100EDD593 /* MenuScrollCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScrollCell.swift; sourceTree = "<group>"; };
@@ -416,6 +418,14 @@
 			path = Subview;
 			sourceTree = "<group>";
 		};
+		D2CF3AA2200F715D00898675 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D2CF3AA3200F717000898675 /* HomePageControllerExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D2F4FDC11FBA980E00EDD593 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,6 +447,7 @@
 		D2F4FDC41FBA982100EDD593 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				D2CF3AA2200F715D00898675 /* Extensions */,
 				D29B27CD1FF09B6F00575DCE /* Subview */,
 				D2F4FDD41FBB2F5300EDD593 /* HomePageController.swift */,
 				D2F4FDD21FBAB58300EDD593 /* CoursesController.swift */,
@@ -898,6 +909,7 @@
 				D25ED9EF20090DD5003870B4 /* SignUpCollectionViewCell.swift in Sources */,
 				D210C9851FF85608006E638F /* AllNotesView.swift in Sources */,
 				D2FC016F2007B1DB00A1BA45 /* LoginController.swift in Sources */,
+				D2CF3AA4200F717000898675 /* HomePageControllerExtension.swift in Sources */,
 				D210C9801FF8352B006E638F /* AllCoursesCollectionViewCell.swift in Sources */,
 				D2126C5A1FFA4BEB001F57B8 /* UploadNotesController.swift in Sources */,
 				D2062C9B20038004000791BA /* SettingsController.swift in Sources */,

@@ -38,7 +38,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         checkIfUserIsLoggedIn()
         
         view.backgroundColor = UIColor.white
@@ -111,7 +110,11 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
             print("The email address is:", userName.text)
         }
 
+        fetchNotes()
+        fetchCourses()
         fetchUser()
+
+
         
         
     }
@@ -143,15 +146,16 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
                 print("The user for the current sessoin is:")
                 print("---------------")
                 print(dict)
-                print()
                 print("---------------")
+                    print(CurrentSessionUser.favoriteNotesReferencePath)
+                    print(CurrentSessionUser.favoriteCoursesReferencePath)
             }
             }
         }
+
     }
     
     @objc func handleLogout() {
-        print("Trying to handle logout")
         do {
             try Auth.auth().signOut()
         } catch let logoutError {

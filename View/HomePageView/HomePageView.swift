@@ -22,7 +22,29 @@ class HomePageView: UIView {
     var previousCarNumber: Int = 0
     var listenerForCourses: ListenerRegistration?
     var listenerForNotes: ListenerRegistration?
+    var arrayOfNotesReferencePath: [String]? {
+        didSet {
+            print("did set reference paths for fav note")
+            for eachReference in arrayOfNotesReferencePath! {
+                print(eachReference)
+            }
+            
+        }
+    }
+    var arrayOfCoursesReferencePath: [String]? {
+        didSet {
+            print("did set reference paths for fav course")
+            for eachReference in arrayOfCoursesReferencePath! {
+                print(eachReference)
+            }
+        }
+        
+        
+    }
     var arrayOfNotes = [Note]()
+    var arrayOfCourses = [Course]()
+
+        
     func populateHomePageArray() {
         arrayOfHomePages.append(HomePage(titleLabel: "My Notes", iconForTitle: ""))
         arrayOfHomePages.append(HomePage(titleLabel: "My Courses", iconForTitle: ""))
@@ -167,7 +189,9 @@ class HomePageView: UIView {
     }
     
     override init(frame: CGRect) {
+        
         super.init(frame: frame)
+        
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
         backgroundColor = UIColor.white
@@ -238,7 +262,7 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
         } else if collectionView.tag == 1 {
             return 2
         } else if collectionView.tag == 3 {
-            return arrayOfNotes.count
+            return 7
         } else {
             return 7
             

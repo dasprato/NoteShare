@@ -13,6 +13,8 @@ import UIKit
 struct Constants {
     static let themeColor = UIColor(red: 0, green: 47/255, blue: 101/255, alpha: 1)
     static let lightColor = UIColor(red: 152/255, green: 204/255, blue: 232/255, alpha: 1)
+    static let gold = UIColor(red: 163/255, green: 141/255, blue: 28/255, alpha: 1)
+
 }
 
 extension UIViewController {

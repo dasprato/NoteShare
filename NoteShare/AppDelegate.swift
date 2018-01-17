@@ -20,6 +20,10 @@ import Fabric
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSignInDelegate {
+    
+    var listenerForNotes: ListenerRegistration!
+    var listenForCourse: ListenerRegistration!
+    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let err = error {
             print("Failed to log into Google", err ?? "")
@@ -47,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSig
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
 
         FirebaseApp.configure() // setting up firebase sdk
 //        Twitter.sharedInstance().start(withConsumerKey:"hTpkPVU4pThkM0", consumerSecret:"ovEqziMzLpUOF163Qg2mj")
@@ -104,6 +109,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSig
         application.registerForRemoteNotifications()
         
         // [END register_for_notifications]
+        
+        ///Fetch Notes reference path and courses reference path
+
+
+        
+        
         return true
 
     }

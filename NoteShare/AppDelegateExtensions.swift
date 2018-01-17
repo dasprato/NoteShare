@@ -6,4 +6,11 @@
 //  Copyright © 2018 Prato Das. All rights reserved.
 //
 
+import Firebase
 
+
+extension AppDelegate {
+    
+
+    
+}

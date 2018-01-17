@@ -69,10 +69,6 @@ class AllCoursesController: UIViewController {
                     alreadyExists = false
                     for eachCourse in self.arrayOfCourses {
                         if eachCourse.code.lowercased() == eachitem.code.lowercased() {
-                            print("++++")
-                            print(eachCourse.code.lowercased())
-                            print(eachitem.code.lowercased())
-                            print("++++")
                             alreadyExists = true
                             break
                         }
