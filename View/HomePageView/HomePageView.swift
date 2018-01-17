@@ -9,6 +9,7 @@
 
 
 import UIKit
+import Firebase
 
 class HomePageView: UIView {
     
@@ -19,6 +20,9 @@ class HomePageView: UIView {
     var arrayOfHomePages = [HomePage]()
     var currentCarNumber: Int = 0
     var previousCarNumber: Int = 0
+    var listenerForCourses: ListenerRegistration?
+    var listenerForNotes: ListenerRegistration?
+    var arrayOfNotes = [Note]()
     func populateHomePageArray() {
         arrayOfHomePages.append(HomePage(titleLabel: "My Notes", iconForTitle: ""))
         arrayOfHomePages.append(HomePage(titleLabel: "My Courses", iconForTitle: ""))
@@ -182,6 +186,47 @@ class HomePageView: UIView {
     
 }
 
+extension HomePageView {
+    fileprivate func fetchNotes() {
+        let db = Firestore.firestore()
+        
+        let settings = FirestoreSettings()
+        settings.isPersistenceEnabled = true
+        db.settings = settings
+        listenerForNotes = db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favortieNotes")
+            .addSnapshotListener { snapshot, error in
+                if error != nil {
+                    self.arrayOfNotes.removeAll()
+                    DispatchQueue.main.async {
+                        self.myNotesCollectionView.reloadData()
+                    }
+                    return
+                } else {
+                    self.arrayOfNotes.removeAll()
+                    
+                    for document in (snapshot?.documents)! {
+                        if let noteName = document.data()["noteName"] as? String,
+                            let lectureInformation = document.data()["lectureInformation"] as? String,
+                            let noteDescription = document.data()["noteDescription"] as? String,
+                            let forCourse = document.data()["forCourse"] as? String,
+                            let storageReference = document.data()["storageReference"] as? String,
+                            let noteSize = document.data()["noteSize"] as? Int,
+                            let rating = document.data()["rating"] as? Int,
+                            let referencePath = document.data()["referencePath"] as? String,
+                            let timeStamp = document.documentID as? String
+                        {
+                            self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp))
+                            
+                            
+                        }
+                    }
+                    
+                }
+        }
+        
+    }
+}
+
 extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     // collectionView.tag == 0 for the toggle and 1 for the main page itself
@@ -192,8 +237,11 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
             return arrayOfHomePages.count
         } else if collectionView.tag == 1 {
             return 2
+        } else if collectionView.tag == 3 {
+            return arrayOfNotes.count
         } else {
-            return 10
+            return 7
+            
         }
     }
     
@@ -243,6 +291,7 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
             return cell
         }
     }
+    
     
     @objc func openMyCoursesNotes() {
         NotificationCenter.default.post(name: NSNotification.Name.init("openMyCoursesNotes"), object: nil)

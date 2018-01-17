@@ -30,6 +30,22 @@ class ProfileController: UIViewController {
         
         let barPencil = UIBarButtonItem(image: UIImage(named: "edit")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onEditTapped))
         navigationItem.setRightBarButtonItems([barPencil], animated: true)
+        
+        
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .cancel , target: self, action: #selector(closeView(_:)))
+        navigationItem.setLeftBarButtonItems([closeButton], animated: true)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backgroundColor = UIColor.white
+        navigationController?.navigationBar.isTranslucent = false
+        
+        self.navigationController?.navigationBar.layer.shadowColor = UIColor.lightGray.cgColor
+        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
+        self.navigationController?.navigationBar.layer.masksToBounds = false
+    }
+    
+    @objc func closeView(_ viewController: UIViewController) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
 

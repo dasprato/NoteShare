@@ -35,7 +35,14 @@ class MyNotesNoteController: UIViewController {
         notesView.noteDescription.text = note.noteDescription
         notesView.note = note
         navigationController?.navigationBar.shadowImage = UIImage()
+        let barDownload = UIBarButtonItem(image: UIImage(named: "download")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(download))
+        navigationItem.setRightBarButtonItems([barDownload], animated: true)
         setupObservers()
+        
+    }
+    
+    @objc func download() {
+        print(123)
     }
     
     
@@ -116,7 +123,9 @@ class MyNotesNoteController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
+        if listener != nil {
         listener.remove()
+        }
     }
     
 

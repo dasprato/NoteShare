@@ -38,8 +38,14 @@ class NotesController: UIViewController, UITextFieldDelegate {
         notesView.note = note
         navigationController?.navigationBar.shadowImage = UIImage()
         setupObservers()
+        
+        let barDownload = UIBarButtonItem(image: UIImage(named: "download")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(download))
+        navigationItem.setRightBarButtonItems([barDownload], animated: true)
     }
     
+    @objc func download() {
+        print(123)
+    }
     
     
     @objc func keyboardOnChatWindowIsShown() {
@@ -119,6 +125,15 @@ class NotesController: UIViewController, UITextFieldDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         listener.remove()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        removeShadow()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        removeShadow()
     }
     
 

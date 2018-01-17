@@ -16,6 +16,9 @@ class AllCoursesController: UIViewController {
     var jsonUrl = "https://cobalt.qas.im/api/1.0/courses/filter?key=zQAdmFEhDSHkUrnh16gxs2BNiSL6UYB7&q=code:"
     var courseCode = ""
 
+    override func viewWillAppear(_ animated: Bool) {
+        addShadow()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

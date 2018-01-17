@@ -68,7 +68,7 @@ class NotesView: UIView, UITextViewDelegate {
         
         NotificationCenter.default.post(name: NSNotification.Name.init("keyboardOnChatWindowIsShown"), object: nil)
         
-        
+        guard let _ = self.arrayOfComments else { return }
         if (self.arrayOfComments?.count)! > 0 {
             self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
         }
@@ -86,7 +86,7 @@ class NotesView: UIView, UITextViewDelegate {
         })
 
         NotificationCenter.default.post(name: NSNotification.Name.init("keyboardOnChatWindowWentAway"), object: nil)
-        
+        guard let _ = self.arrayOfComments else { return }
         if (self.arrayOfComments?.count)! > 0 && self.commentsCollectionView.isDragging == false {
             self.commentsCollectionView.scrollToItem(at: IndexPath(row: (self.arrayOfComments?.count)! - 1, section: 0), at: .bottom, animated: false)
         }
@@ -96,14 +96,14 @@ class NotesView: UIView, UITextViewDelegate {
         addSubview(downloadSize)
         addSubview(uploadedBy)
         addSubview(noteDescription)
-        addSubview(viewNote)
+
         
-        NSLayoutConstraint.activate([viewNote.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), viewNote.topAnchor.constraint(equalTo: downloadSize.topAnchor), viewNote.heightAnchor.constraint(equalToConstant: 30), viewNote.widthAnchor.constraint(equalToConstant: 30)])
+
         
-        NSLayoutConstraint.activate([downloadSize.topAnchor.constraint(equalTo: topAnchor, constant: 8), downloadSize.leftAnchor.constraint(equalTo: leftAnchor, constant: 8), downloadSize.heightAnchor.constraint(equalTo: viewNote.heightAnchor)])
-        NSLayoutConstraint.activate([uploadedBy.topAnchor.constraint(equalTo: downloadSize.topAnchor), uploadedBy.leftAnchor.constraint(equalTo: downloadSize.rightAnchor, constant: 8), uploadedBy.heightAnchor.constraint(equalTo: viewNote.heightAnchor)])
+        NSLayoutConstraint.activate([downloadSize.topAnchor.constraint(equalTo: topAnchor), downloadSize.leftAnchor.constraint(equalTo: leftAnchor, constant: 8)])
+        NSLayoutConstraint.activate([uploadedBy.topAnchor.constraint(equalTo: downloadSize.topAnchor), uploadedBy.leftAnchor.constraint(equalTo: downloadSize.rightAnchor, constant: 8)])
         
-        NSLayoutConstraint.activate([noteDescription.topAnchor.constraint(equalTo: downloadSize.topAnchor), noteDescription.leftAnchor.constraint(equalTo: uploadedBy.rightAnchor, constant: 8), noteDescription.rightAnchor.constraint(equalTo: viewNote.leftAnchor, constant: -8), noteDescription.heightAnchor.constraint(equalTo: viewNote.heightAnchor)])
+        NSLayoutConstraint.activate([noteDescription.topAnchor.constraint(equalTo: downloadSize.topAnchor), noteDescription.leftAnchor.constraint(equalTo: uploadedBy.rightAnchor, constant: 8), noteDescription.rightAnchor.constraint(equalTo: rightAnchor, constant: -8)])
         
         
     }
@@ -115,19 +115,21 @@ class NotesView: UIView, UITextViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
-        
+        addSubview(commentsCollectionView)
+        addSubview(shadowView)
         setupLabels()
         setupButtons()
         addSubview(commentBackground)
         addSubview(newComment)
         addSubview(sendButton)
+
         newCommentBottomAnchor = newComment.bottomAnchor.constraint(equalTo: bottomAnchor)
         NSLayoutConstraint.activate([newComment.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), newComment.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -8), newCommentBottomAnchor])
         
         NSLayoutConstraint.activate([commentBackground.leftAnchor.constraint(equalTo: leftAnchor), commentBackground.rightAnchor.constraint(equalTo: rightAnchor), commentBackground.topAnchor.constraint(equalTo: newComment.topAnchor), commentBackground.bottomAnchor.constraint(equalTo: newComment.bottomAnchor)])
         NSLayoutConstraint.activate([sendButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), sendButton.bottomAnchor.constraint(equalTo: newComment.bottomAnchor), sendButton.widthAnchor.constraint(equalToConstant: 32), sendButton.heightAnchor.constraint(equalToConstant: 32)])
         
-        addSubview(commentsCollectionView)
+        
         commentsCollectionView.dataSource = self
         commentsCollectionView.delegate = self
         commentsCollectionView.register(NewCommentsCollectionViewCell.self, forCellWithReuseIdentifier: commentsCollectionViewCellId)
@@ -135,20 +137,35 @@ class NotesView: UIView, UITextViewDelegate {
         
         
         commentsCollectionViewBottomAnchor = commentsCollectionView.bottomAnchor.constraint(equalTo: newComment.topAnchor)
-        NSLayoutConstraint.activate([commentsCollectionView.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), commentsCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), commentsCollectionViewBottomAnchor, commentsCollectionView.topAnchor.constraint(equalTo: noteDescription.bottomAnchor)])
+        NSLayoutConstraint.activate([commentsCollectionView.leftAnchor.constraint(equalTo: downloadSize.leftAnchor), commentsCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8), commentsCollectionViewBottomAnchor, commentsCollectionView.topAnchor.constraint(equalTo: shadowView.bottomAnchor)])
         
         newComment.delegate = self
         NotificationCenter.default.addObserver(self, selector:#selector(NotesView.handleKeyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(NotesView.handleKeyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 // NotificationCenter.default.addObserver(self, selector: #selector(UITextInputDelegate.textDidChange(_:)), name: Notification.Name.UITextViewTextDidChange, object: self)
         
+        NSLayoutConstraint.activate([shadowView.topAnchor.constraint(equalTo: downloadSize.topAnchor), shadowView.leftAnchor.constraint(equalTo: leftAnchor), shadowView.rightAnchor.constraint(equalTo: rightAnchor), shadowView.bottomAnchor.constraint(equalTo: downloadSize.bottomAnchor, constant: 8)])
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        shadowView.layer.shadowColor = UIColor.lightGray.cgColor
+        shadowView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        shadowView.layer.shadowOpacity = 1.0
+        shadowView.layer.masksToBounds = false
+        shadowView.layer.shadowPath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: shadowView.frame.width, height: shadowView.frame.height), cornerRadius: shadowView.layer.cornerRadius).cgPath
+    }
     
-    
+    var shadowView: UIView = {
+        let sv = UIView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.backgroundColor = UIColor.white
+        return sv
+    }()
     var downloadSize: FlexibleTextView = {
         let ds = FlexibleTextView()
         ds.translatesAutoresizingMaskIntoConstraints = false
@@ -236,16 +253,7 @@ class NotesView: UIView, UITextViewDelegate {
         return dn
     }()
     
-    lazy var viewNote: UIButton = {
-        let vn = UIButton(type: .system)
-        vn.clipsToBounds = true
-        vn.translatesAutoresizingMaskIntoConstraints = false
-        vn.setImage(UIImage(named: "download")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-        vn.addTarget(self, action: #selector(onViewNoteTapped), for: .touchUpInside)
-        return vn
-    }()
-    
+
     @objc func onViewNoteTapped() {
         NotificationCenter.default.post(name: NSNotification.Name.init("onViewNoteTapped"), object: nil)
         

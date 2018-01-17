@@ -37,13 +37,14 @@ class AllNotesController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(showNote), name: NSNotification.Name(rawValue: "showNote"), object: nil)
         
     }
+    
 
     
     @objc func showNote() {
         let viewControllerToPush = NotesController()
         guard let unwrappedCurrentCell = allNotesView.currentCell else { return }
         
-        viewControllerToPush.titleForNavBar = self.arrayOfNotes[unwrappedCurrentCell.row].noteName
+        viewControllerToPush.titleForNavBar = self.arrayOfNotes.reversed()[unwrappedCurrentCell.row].noteName
         viewControllerToPush.note = arrayOfNotes.reversed()[(allNotesView.currentCell?.row)!]
         
 
@@ -58,9 +59,9 @@ class AllNotesController: UIViewController {
     fileprivate func fetchNotes() {
         let db = Firestore.firestore()
 
-//        let settings = FirestoreSettings()
-//        settings.isPersistenceEnabled = false
-//        db.settings = settings
+        let settings = FirestoreSettings()
+        settings.isPersistenceEnabled = true
+        db.settings = settings
         listener = db.collection("Courses").document(titleForNavBar).collection("Notes")
             .addSnapshotListener { snapshot, error in
             if error != nil {
@@ -112,10 +113,19 @@ class AllNotesController: UIViewController {
         print("listener removed from this course")
         self.arrayOfNotes.removeAll()
         self.allNotesView.arrayOfNotes = self.arrayOfNotes
+        
+        
+        removeShadow()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        removeShadow()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-                fetchNotes()
+        fetchNotes()
+        addShadow()
     }
     
 }

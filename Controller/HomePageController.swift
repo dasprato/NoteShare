@@ -95,9 +95,14 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
 
-        addShadow()
     }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        removeShadow()
+        NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
+        //        let barUserImage = UIBarButtonItem(customView: userImage)
+        let barUserImage = UIBarButtonItem(image: UIImage(named: "profileIcon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openProfile))
+        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
         if HomePageController.userEmail != "" {
             userName.text = HomePageController.userEmail
         } else {
@@ -105,13 +110,9 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
             userName.text = unwrappedEmail
             print("The email address is:", userName.text)
         }
-        NSLayoutConstraint.activate([userImage.heightAnchor.constraint(equalToConstant: 40), userImage.widthAnchor.constraint(equalToConstant: 40)])
-        //        let barUserImage = UIBarButtonItem(customView: userImage)
-        let barUserImage = UIBarButtonItem(image: UIImage(named: "profileIcon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openProfile))
-//        let barUserName = UIBarButtonItem(customView: userName)
-        navigationItem.setLeftBarButtonItems([barUserImage], animated: true)
+
         fetchUser()
-        removeShadow()
+        
         
     }
     
@@ -195,27 +196,31 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     
     @objc func openProfile() {
-        self.navigationController?.pushViewController(ProfileController(), animated: true)
+        self.present(UINavigationController(rootViewController: ProfileController()), animated: true, completion: nil)
     }
     
     
     @objc func openAllCourses() {
         self.navigationController?.pushViewController(AllCoursesController(), animated: true)
+
     }
     
     
     @objc func openMyNotes() {
         self.navigationController?.pushViewController(MyNotesController(), animated: true)
+
     }
     
     
     @objc func openSettings() {
         self.navigationController?.pushViewController(SettingsController(), animated: true)
+        
     }
     
     
     @objc func openMyCourses() {
         self.navigationController?.pushViewController(MyCoursesController(), animated: true)
+        
     }
     
     @objc func openMyCoursesNotes() {
@@ -228,7 +233,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
-            perform(#selector(handleLogout), with: nil, afterDelay: 0)
+//            perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
 //            userName.text =  Auth.auth().currentUser?.email
         }
@@ -236,10 +241,15 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     
     
+
+
+
+}
+
+extension UIViewController {
     
     
     @objc func addShadow() {
-        print("Attempting to Add Shadow")
         
         let changeColor = CATransition()
         changeColor.type = kCATransitionFade
@@ -252,33 +262,25 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         CATransaction.setCompletionBlock {
         }
         CATransaction.commit()
-
-        
-        
         self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
         self.navigationController?.navigationBar.layer.masksToBounds = false
     }
     
     @objc func removeShadow() {
-        
         let changeColor = CATransition()
         changeColor.type = kCATransitionFade
         changeColor.duration = 0.2
-        
-        
         CATransaction.begin()
         self.navigationController?.navigationBar.layer.shadowColor = UIColor.white.cgColor
         self.navigationController?.navigationBar.layer.add(changeColor, forKey: nil)
         CATransaction.setCompletionBlock {
         }
         CATransaction.commit()
-
+        
         self.navigationController?.navigationBar.layer.shadowOpacity = 0.0
         self.navigationController?.navigationBar.layer.masksToBounds = false
-
+        
     }
     
-
-
 }
