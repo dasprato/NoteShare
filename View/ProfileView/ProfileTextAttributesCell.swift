@@ -17,6 +17,9 @@ class ProfileTextAttributesCell: UICollectionViewCell {
             if titleOfMenuString == "Email" {
                 textCell.isUserInteractionEnabled = false
             }
+            if titleOfMenuString == "Year Of Study" {
+                textCell.keyboardType = .numberPad
+            }
             
         }
     }

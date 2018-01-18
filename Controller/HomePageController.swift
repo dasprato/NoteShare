@@ -144,8 +144,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
                 fieldOfStudy = (dict!["fieldOfStudy"]  as? String)!
                 name = (dict!["name"]  as? String)!
                 profilePictureStorageReference = (dict!["profilePictureStorageReference"] as? String)!
-                yearOfStudy = (dict!["yearOfStudy"] as? Int)!
-                
+                    yearOfStudy = (dict?["yearOfStudy"] as? Int) ?? 0
                 CurrentSessionUser.user = FirebaseUser(emailAddress: emailAddress, fieldOfStudy: fieldOfStudy, yearOfStudy: yearOfStudy, profilePictureStorageReference: profilePictureStorageReference, name: name)
                 print("The user for the current sessoin is:")
                 print("---------------")
