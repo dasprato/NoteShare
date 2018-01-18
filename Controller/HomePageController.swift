@@ -67,10 +67,10 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         setupObservers()
         
         
-        let barSettings = UIBarButtonItem(image: UIImage(named: "settings")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openSettings))
+//        let barSettings = UIBarButtonItem(image: UIImage(named: "settings")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openSettings))
         let barLogout = UIBarButtonItem(image: UIImage(named: "logout")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLogout))
                 let barSearch = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(openAllCourses))
-        navigationItem.setRightBarButtonItems([barLogout, barSettings, barSearch], animated: true)
+        navigationItem.setRightBarButtonItems([barLogout, barSearch], animated: true)
         
 //        self.navigationController?.navigationBar.shadowImage = UIImage()
 //        navigationController?.navigationBar.backgroundColor = UIColor.darkGray

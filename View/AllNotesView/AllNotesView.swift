@@ -130,14 +130,26 @@ extension AllNotesView: UICollectionViewDelegateFlowLayout, UICollectionViewDele
             let cell = allNotesCollectionView.cellForItem(at: indexPath) as! AllNotesCollectionViewCell
             if cell.starIcon.tintColor == UIColor.lightGray {
                 cell.starIcon.tintColor = Constants.gold
+                let dict: [String: Any] = ["referencePath": "\(self.arrayOfNotes!.reversed()[indexPath.row].referencePath)"]
+                let db = Firestore.firestore()
+                db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteNotes").document((self.arrayOfNotes?.reversed()[indexPath.row].timeStamp)!).setData(dict)
+                
+//                arrayOfNotes![indexPath.row].isFavorite = true
             } else {
+                let db = Firestore.firestore()
                 cell.starIcon.tintColor = UIColor.lightGray
+                db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteNotes").document((self.arrayOfNotes?.reversed()[indexPath.row].timeStamp)!).delete() { err in
+                    if let err = err {
+                        print("Error removing document: \(err)")
+                    } else {
+                        print("Document successfully removed!")
+                    }
+                }
+//                arrayOfNotes![indexPath.row].isFavorite = false
             }
             
             
-            let dict: [String: Any] = ["referencePath": "\(self.arrayOfNotes!.reversed()[indexPath.row].referencePath)"]
-            let db = Firestore.firestore()
-            db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteNotes").document((self.arrayOfNotes?.reversed()[indexPath.row].timeStamp)!).setData(dict)
+
         } else {
             print("collection view was tapped")
         }
