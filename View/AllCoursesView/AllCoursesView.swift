@@ -81,8 +81,6 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: allCoursesCollectionViewCellId, for: indexPath) as! AllCoursesCollectionViewCell
-//        cell.layer.borderColor = UIColor.lightGray.cgColor
-//        cell.layer.borderWidth = 0.5
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))
         cell.starIcon.addGestureRecognizer(tapGesture)
         
@@ -114,16 +112,37 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
         if let indexPath = self.allCoursesCollectionView.indexPathForItem(at: sender.location(in: self.allCoursesCollectionView)) {
             print("you can do something with the cell or index path here")
                 let cell = allCoursesCollectionView.cellForItem(at: indexPath) as! AllCoursesCollectionViewCell
+            
+            let courseDict: [String: Any] = ["code": self.arrayOfCourses![indexPath.row].code, "department": self.arrayOfCourses![indexPath.row].department, "description": self.arrayOfCourses![indexPath.row].description, "division": self.arrayOfCourses![indexPath.row].division, "level": self.arrayOfCourses![indexPath.row].level, "name": self.arrayOfCourses![indexPath.row].name, "storageReference": "Courses/\(self.arrayOfCourses![indexPath.row].code!)"]
+            
+            let db = Firestore.firestore()
+            db.collection("Courses").document(self.arrayOfCourses![indexPath.row].code!).setData(courseDict)
+            
+            
                 if cell.starIcon.tintColor == UIColor.lightGray {
                     cell.starIcon.tintColor = Constants.gold
+                    
+                    let dict: [String: Any] = ["referencePath": "Courses/" + "\(self.arrayOfCourses![indexPath.row].code!)"]
+                    let db = Firestore.firestore()
+                    db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code!).setData(dict)
+                    arrayOfCourses![indexPath.row].isFavorite = true
                 } else {
+                    let db = Firestore.firestore()
                     cell.starIcon.tintColor = UIColor.lightGray
+                    db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code!).delete() { err in
+                        if let err = err {
+                            print("Error removing document: \(err)")
+                        } else {
+                            print("Document successfully removed!")
+                        }
+                    }
+                        arrayOfCourses![indexPath.row].isFavorite = false
                 }
             
             
-            let dict: [String: Any] = ["referencePath": "Courses/" + "\(self.arrayOfCourses![indexPath.row].code!)"]
-            let db = Firestore.firestore()
-            db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code!).setData(dict)
+
+            
+
         } else {
             print("collection view was tapped")
         }

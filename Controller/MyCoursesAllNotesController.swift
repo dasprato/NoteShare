@@ -84,7 +84,7 @@ class MyCoursesAllNotesController: UIViewController {
                             let referencePath = document.data()["referencePath"] as? String,
                             let timeStamp = document.documentID as? String
                         {
-                            self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp))
+                            self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp, isFavorite: false))
                             
                             
                         }

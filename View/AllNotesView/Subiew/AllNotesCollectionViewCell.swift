@@ -14,6 +14,12 @@ class AllNotesCollectionViewCell: UICollectionViewCell {
             self.noteName.text = note?.noteName
             self.noteDescription.text = note?.noteDescription
             self.lectureDescription.text = note?.lectureInformation
+            guard let bool = note?.isFavorite else { return }
+            if bool {
+                self.starIcon.tintColor = Constants.gold
+            } else {
+                self.starIcon.tintColor = UIColor.lightGray
+            }
         }
     }
     override init(frame: CGRect) {

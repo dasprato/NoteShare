@@ -85,7 +85,16 @@ class AllNotesController: UIViewController {
                         let referencePath = document.data()["referencePath"] as? String,
                         let timeStamp = document.documentID as? String
                     {
-                        self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp))
+                        self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp, isFavorite: false))
+                        
+//                        for i in 0..<self.arrayOfNotes.count {
+//                            for j in 0..<CurrentSessionUser.favoriteCourses.count {
+//                                
+//                                if CurrentSessionUser.favoriteNotes[j].timeStamp == self.arrayOfNotes[i].timeStamp {
+//                                    self.arrayOfNotes[i].isFavorite = true
+//                                }
+//                            }
+//                        }
                         
 
                     }

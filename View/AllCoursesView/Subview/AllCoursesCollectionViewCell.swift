@@ -14,6 +14,25 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
         didSet {
             courseTitle.text = course?.code
             courseName.text = course?.name
+            guard let bool = course?.isFavorite else { return }
+            if bool {
+                self.starIcon.tintColor = Constants.gold
+            } else {
+                self.starIcon.tintColor = UIColor.lightGray
+            }
+        }
+    }
+    
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        courseTitle.text = course?.code
+        courseName.text = course?.name
+        guard let bool = course?.isFavorite else { return }
+        if bool {
+            self.starIcon.tintColor = Constants.gold
+        } else {
+            self.starIcon.tintColor = UIColor.lightGray
         }
     }
     
@@ -58,7 +77,6 @@ class AllCoursesCollectionViewCell: UICollectionViewCell {
         let si = UIButton(type: .system)
         si.translatesAutoresizingMaskIntoConstraints = false
         si.setImage(UIImage(named: "star")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        si.tintColor = UIColor.lightGray
         return si
     }()
 }

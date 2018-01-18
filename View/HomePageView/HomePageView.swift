@@ -27,13 +27,12 @@ class HomePageView: UIView {
         didSet {
             self.arrayOfNotes.removeAll()
             self.myNotesCollectionView.reloadData()
-
+            CurrentSessionUser.favoriteNotes = self.arrayOfNotes
             for eachReference in arrayOfNotesReferencePath! {
                 let db = Firestore.firestore()
                 db.document(eachReference).getDocument(completion: { (noteSnapshot, error) in
                     if !(noteSnapshot?.exists)! {
                         return
-                        
                     }
                     if let err = error {
                         print("Error getting documents: \(err)")
@@ -47,10 +46,11 @@ class HomePageView: UIView {
                             let rating = noteSnapshot?.data()["rating"] as? Int,
                             let referencePath = noteSnapshot?.data()["referencePath"] as? String,
                             let timeStamp = noteSnapshot?.documentID as? String {
-                            self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp))
+                            self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp, isFavorite: false))
                         }
                     }
                     DispatchQueue.main.async {
+                        CurrentSessionUser.favoriteNotes = self.arrayOfNotes
                         self.myNotesCollectionView.reloadData()
                     }
                 })
@@ -64,6 +64,7 @@ class HomePageView: UIView {
             self.arrayOfCourses.removeAll()
             self.arrayOfCoursesToDisplay.removeAll()
             self.myCoursesCollectionView.reloadData()
+            CurrentSessionUser.favoriteCourses = self.arrayOfCourses
             print("length before starting")
             print(self.arrayOfCourses.count)
 
@@ -107,6 +108,7 @@ class HomePageView: UIView {
                     }
                     else {
                     self.arrayOfCoursesToDisplay = self.arrayOfCourses
+                    CurrentSessionUser.favoriteCourses = self.arrayOfCourses
                     self.myCoursesCollectionView.reloadData()
 
                     }
@@ -161,13 +163,13 @@ class HomePageView: UIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 1
+        layout.minimumLineSpacing = 0
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
         ma.backgroundColor = UIColor.white
         ma.layer.masksToBounds = true
-        ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        ma.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         ma.tag = 3
         ma.alwaysBounceVertical = true
         ma.showsVerticalScrollIndicator = false
@@ -178,13 +180,13 @@ class HomePageView: UIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 1
+        layout.minimumLineSpacing = 0
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
         ma.backgroundColor = UIColor.white
         ma.layer.masksToBounds = true
-        ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        ma.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         ma.tag = 4
         ma.alwaysBounceVertical = true
         ma.showsVerticalScrollIndicator = false
@@ -319,7 +321,7 @@ extension HomePageView {
                             let referencePath = document.data()["referencePath"] as? String,
                             let timeStamp = document.documentID as? String
                         {
-                            self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp))
+                            self.arrayOfNotes.append(Note(forCourse: forCourse, lectureInformation: lectureInformation, noteDescription: noteDescription, noteName: noteName, noteSize: noteSize, rating: rating, referencePath: referencePath, storageReference: storageReference, timeStamp: timeStamp, isFavorite: false))
                             
                             
                         }

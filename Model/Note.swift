@@ -18,4 +18,5 @@ struct Note {
     let referencePath: String
     let storageReference: String
     let timeStamp: String
+    var isFavorite: Bool?
 }

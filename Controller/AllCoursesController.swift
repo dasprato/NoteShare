@@ -81,6 +81,16 @@ class AllCoursesController: UIViewController {
                     }
                     
                 }
+                
+                
+                for i in 0..<self.arrayOfCourses.count {
+                    self.arrayOfCourses[i].isFavorite = false
+                    for j in 0..<CurrentSessionUser.favoriteCourses.count {
+                        if CurrentSessionUser.favoriteCourses[j].code == self.arrayOfCourses[i].code {
+                            self.arrayOfCourses[i].isFavorite = true
+                        }
+                    }
+                }
                 self.allCoursesView.arrayOfCourses = self.arrayOfCourses
 
             } catch let jsonErr {

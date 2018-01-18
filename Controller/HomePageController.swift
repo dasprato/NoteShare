@@ -127,6 +127,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         
         let settings = FirestoreSettings()
         db.settings = settings
+        guard let unwrappedID = Auth.auth().currentUser?.uid else { return }
         listener = db.collection("Users").document((Auth.auth().currentUser?.uid)!).addSnapshotListener { snapshot, error in
             if error != nil {
                 return

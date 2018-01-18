@@ -14,7 +14,7 @@ final public class CurrentSessionUser {
     static var gmailEmail: String?
     static var profileImageUrl: String = ""
     static var name: String = ""
-    static var favoriteCourses = [Course]()
+    static var favoriteCourses = [FirebaseCourse]()
     static var favoriteNotes = [Note]()
     
     static var favoriteCoursesReferencePath = [String]()

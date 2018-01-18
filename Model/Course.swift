@@ -22,7 +22,7 @@ struct Course: Decodable {
     let level: Int?
     let breadths: [Int]?
     let meeting_sections: [MeetingSection]?
-    let isFavorite: Bool?
+    var isFavorite: Bool?
 }
 
 struct MeetingSection: Decodable {

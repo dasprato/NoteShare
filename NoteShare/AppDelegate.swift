@@ -17,7 +17,6 @@ import GoogleSignIn
 import Fabric
 
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, GIDSignInDelegate {
     
