@@ -12,7 +12,7 @@ import M13PDFKit
 
 class NotesController: UIViewController, UITextFieldDelegate {
     
-    var note = Note(forCourse: "", lectureInformation: "", noteDescription: "", noteName: "", noteSize: 0, rating: 0, referencePath: "", storageReference: "", timeStamp: "", isFavorite: false)
+    var note: Note!
     var arrayOfComments = [Comment]()
     var titleForNavBar = ""
     var notesSize = 0
@@ -33,7 +33,8 @@ class NotesController: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint.activate([notesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), notesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), notesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), notesViewBottomAnchorWhenHidden])
         
         navigationItem.title = titleForNavBar
-        notesView.downloadSize.text = String(describing: note.noteSize) + " MB"
+        guard let _ = note else { return }
+        notesView.downloadSize.text = String(describing: note.noteSize!) + " MB"
         notesView.noteDescription.text = note.noteDescription
         notesView.note = note
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -63,7 +64,9 @@ class NotesController: UIViewController, UITextFieldDelegate {
 
         let settings = FirestoreSettings()
         db.settings = settings
-        listener = db.collection("Courses").document(note.forCourse).collection("Notes").document(note.timeStamp).collection("Comments").addSnapshotListener { snapshot, error in
+        guard let _ = note else { return }
+        listener = db.collection("Courses").document(note.forCourse!).collection("Notes").document(note.timeStamp!).collection("Comments").addSnapshotListener { snapshot, error in
+            
             if error != nil {
                 self.arrayOfComments.removeAll()
                 return
@@ -114,12 +117,14 @@ class NotesController: UIViewController, UITextFieldDelegate {
 
 
         let sUrl = note.storageReference
-        UIApplication.shared.openURL(NSURL(string: sUrl) as! URL)
+        UIApplication.shared.openURL(NSURL(string: sUrl!) as! URL)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
+        if listener != nil {
         listener.remove()
+        }
     }
     
     

@@ -180,7 +180,7 @@ class NotesView: UIView, UITextViewDelegate {
     var uploadedBy: FlexibleTextView = {
         let ds = FlexibleTextView()
         ds.translatesAutoresizingMaskIntoConstraints = false
-        ds.text = "Prato Das"
+        ds.text = ""
         ds.textAlignment = .left
         ds.textColor = UIColor.gray
         ds.layer.cornerRadius = 10.0
@@ -232,7 +232,8 @@ class NotesView: UIView, UITextViewDelegate {
         
         let dict: [String: Any] = ["message": newComment.text, "timeStamp":  String(describing: Date().timeIntervalSince1970), "profileStorageReference": "Users/" + (Auth.auth().currentUser?.uid)! + "/", "messageOwnerEmail": CurrentSessionUser.user?.emailAddress]
         let db = Firestore.firestore()
-        db.collection("Courses").document(note.forCourse).collection("Notes").document(note.timeStamp).collection("Comments").document(dict["timeStamp"] as! String).setData(dict)
+        guard let _ = note else { return }
+        db.collection("Courses").document(note.forCourse!).collection("Notes").document(note.timeStamp!).collection("Comments").document(dict["timeStamp"] as! String).setData(dict)
         newComment.text = ""
         layoutIfNeeded()
         

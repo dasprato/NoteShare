@@ -144,7 +144,6 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
     var profileImageView: UIImageView = {
         let tom = UIImageView()
         tom.translatesAutoresizingMaskIntoConstraints = false
-        tom.backgroundColor = UIColor.red
         tom.clipsToBounds = true
         return tom
     }()

@@ -44,7 +44,7 @@ class AllNotesController: UIViewController {
         let viewControllerToPush = NotesController()
         guard let unwrappedCurrentCell = allNotesView.currentCell else { return }
         
-        viewControllerToPush.titleForNavBar = self.arrayOfNotes.reversed()[unwrappedCurrentCell.row].noteName
+        viewControllerToPush.titleForNavBar = self.arrayOfNotes.reversed()[unwrappedCurrentCell.row].noteName!
         viewControllerToPush.note = arrayOfNotes.reversed()[(allNotesView.currentCell?.row)!]
         
 

@@ -13,6 +13,8 @@ import Firebase
 
 class HomePageView: UIView {
     
+    var selectedNote: Note!
+    
     let myNotesMyCoursesCollectionViewCellId = "myNotesMyCoursesCollectionViewCellId"
     let mainCollectionViewCellId = "mainCollectionViewCellId"
     let myNotesCollectionViewCellId = "myNotesCollectionViewCellId"
@@ -31,9 +33,12 @@ class HomePageView: UIView {
             for eachReference in arrayOfNotesReferencePath! {
                 let db = Firestore.firestore()
                 db.document(eachReference).getDocument(completion: { (noteSnapshot, error) in
-                    if !(noteSnapshot?.exists)! {
+                    guard let unwrappedBool = noteSnapshot?.exists else { return }
+                    if !unwrappedBool {
                         return
                     }
+                    
+                    
                     if let err = error {
                         print("Error getting documents: \(err)")
                     } else {
@@ -73,9 +78,10 @@ class HomePageView: UIView {
             for eachReference in arrayOfCoursesReferencePath! {
                 let db = Firestore.firestore()
                 db.document(eachReference).getDocument(completion: { (noteSnapshot, error) in
-                    if !(noteSnapshot?.exists)! {
+
+                    guard let unwrappedBool = noteSnapshot?.exists else { return }
+                    if !unwrappedBool {
                         return
-                        
                     }
                     if let err = error {
                         print("Error getting documents: \(err)")
@@ -146,6 +152,7 @@ class HomePageView: UIView {
     func tappedOnCell(withTitle title: String) {
         switch title {
         case "My Notes":
+            
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openMyNotes"), object: nil)
         case "My Courses":
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "openMyCourses"), object: nil)
@@ -403,8 +410,11 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
     @objc func openMyCoursesNotes() {
         NotificationCenter.default.post(name: NSNotification.Name.init("openMyCoursesNotes"), object: nil)
     }
-    @objc func openMyNotesNoteController() {
+    @objc func openMyNotesNoteController(sender: UITapGestureRecognizer) {
+        if let indexPath = self.myNotesCollectionView.indexPathForItem(at: sender.location(in: self.myNotesCollectionView)) {
+            self.selectedNote = arrayOfNotes[indexPath.row]
         NotificationCenter.default.post(name: NSNotification.Name.init("openMyNotesNoteController"), object: nil)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

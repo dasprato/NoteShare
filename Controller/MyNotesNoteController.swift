@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 class MyNotesNoteController: UIViewController {
 
-    var note = Note(forCourse: "", lectureInformation: "", noteDescription: "", noteName: "", noteSize: 0, rating: 0, referencePath: "", storageReference: "", timeStamp: "", isFavorite: false)
+    var note: Note!
     var arrayOfComments = [Comment]()
     var titleForNavBar = ""
     var notesSize = 0
@@ -67,7 +67,8 @@ class MyNotesNoteController: UIViewController {
         
         let settings = FirestoreSettings()
         db.settings = settings
-        listener = db.collection("Courses").document(note.forCourse).collection("Notes").document(note.timeStamp).collection("Comments").addSnapshotListener { snapshot, error in
+        guard let _ = note else { return }
+        listener = db.collection("Courses").document(note.forCourse!).collection("Notes").document(note.timeStamp!).collection("Comments").addSnapshotListener { snapshot, error in
             if error != nil {
                 self.arrayOfComments.removeAll()
                 return
@@ -118,7 +119,7 @@ class MyNotesNoteController: UIViewController {
         
         
         let sUrl = note.storageReference
-        UIApplication.shared.openURL(NSURL(string: sUrl) as! URL)
+        UIApplication.shared.openURL(NSURL(string: sUrl!) as! URL)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

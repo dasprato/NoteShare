@@ -216,7 +216,18 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     
     @objc func openMyNotes() {
-        self.navigationController?.pushViewController(MyNotesController(), animated: true)
+        let viewControllerToPush = NotesController()
+        
+//        guard let unwrappedCurrentCell = homePageView.currentCell else { return }
+        
+//        viewControllerToPush.titleForNavBar = self.arrayOfNotes.reversed()[unwrappedCurrentCell.row].noteName
+        viewControllerToPush.note = homePageView.selectedNote
+        print("The note passed on is:")
+        (viewControllerToPush.note.noteName)
+        
+        self.navigationController?.pushViewController(viewControllerToPush, animated: true)
+        
+
 
     }
     
@@ -238,6 +249,13 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     @objc func openMyNotesNoteController() {
         let viewControllerToPush = NotesController()
+        
+        //        guard let unwrappedCurrentCell = homePageView.currentCell else { return }
+        
+        viewControllerToPush.titleForNavBar = homePageView.selectedNote.noteName!
+        viewControllerToPush.note = homePageView.selectedNote
+
+        
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }
     
