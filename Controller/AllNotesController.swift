@@ -24,12 +24,18 @@ class AllNotesController: UIViewController {
         NSLayoutConstraint.activate([allNotesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), allNotesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), allNotesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), allNotesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
         
         let addNotesButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(uploadNote))
-        navigationItem.setRightBarButtonItems([addNotesButton], animated: true)
         navigationItem.title = titleForNavBar
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: Constants.themeColor]
         navigationController?.navigationBar.shadowImage = UIImage()
 
         setupObservers()
+        
+        let barHome = UIBarButtonItem(image: UIImage(named: "home")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onHomeTapped))
+        navigationItem.setRightBarButtonItems([addNotesButton, barHome], animated: true)
+    }
+    
+    @objc func onHomeTapped() {
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     func setupObservers() {
@@ -43,7 +49,7 @@ class AllNotesController: UIViewController {
     @objc func showNote() {
         let viewControllerToPush = NotesController()
         guard let unwrappedCurrentCell = allNotesView.currentCell else { return }
-        
+        if unwrappedCurrentCell.row > self.arrayOfNotes.count { return }
         viewControllerToPush.titleForNavBar = self.arrayOfNotes.reversed()[unwrappedCurrentCell.row].noteName!
         viewControllerToPush.note = arrayOfNotes.reversed()[(allNotesView.currentCell?.row)!]
         

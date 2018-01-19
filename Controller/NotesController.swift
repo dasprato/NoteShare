@@ -41,7 +41,13 @@ class NotesController: UIViewController, UITextFieldDelegate {
         setupObservers()
         
         let barDownload = UIBarButtonItem(image: UIImage(named: "download")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onViewNoteTapped))
-        navigationItem.setRightBarButtonItems([barDownload], animated: true)
+        
+        let barHome = UIBarButtonItem(image: UIImage(named: "home")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onHomeTapped))
+        navigationItem.setRightBarButtonItems([barDownload, barHome], animated: true)
+    }
+    
+    @objc func onHomeTapped() {
+        self.navigationController?.popToRootViewController(animated: true)
     }
 
     @objc func keyboardOnChatWindowIsShown() {

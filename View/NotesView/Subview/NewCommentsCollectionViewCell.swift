@@ -22,13 +22,17 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
             var url = ""
             let db = Firestore.firestore()
             db.document(profileStorageReference).getDocument(completion: { (imageUrlSnapShot, error) in
-                if let err = error {
-                    print("Error getting documents: \(err)")
-                } else {
+                guard let unwrappedBool = imageUrlSnapShot?.exists else { return }
+                if !unwrappedBool { return }
+                if let err = error { print("Error getting documents: \(err)"); return } else {
                     guard let unwrappedUrl = imageUrlSnapShot?.data()["profilePictureStorageReference"] else { return }
                     guard let unwrappedName = imageUrlSnapShot?.data()["name"] else { return }
                     self.profileImageView.sd_setImage(with: URL(string: unwrappedUrl as! String), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
                     self.userName.text = unwrappedName as! String
+                    self.profileImageView.alpha = 0
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.profileImageView.alpha = 1
+                    })
                 }
                 
             })
@@ -92,6 +96,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
             commentLabelTieToWidth.isActive = false
         }
         
+        profileImageView.image = UIImage()
 
         
         
@@ -147,16 +152,6 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         tom.clipsToBounds = true
         return tom
     }()
-//    private var dateLabel: FlexibleTextView = {
-//        let ds = FlexibleTextView()
-//        ds.translatesAutoresizingMaskIntoConstraints = false
-//        ds.textAlignment = .left
-//        ds.textColor = UIColor.lightGray
-//        ds.font = UIFont.systemFont(ofSize: 12)
-//        ds.layer.cornerRadius = 10.0
-//        ds.backgroundColor = Constants.themeColor.withAlphaComponent(0.1)
-//        ds.isUserInteractionEnabled = false
-//        return ds
-//    }()
+
 }
 
