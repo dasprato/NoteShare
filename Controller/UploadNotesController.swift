@@ -11,11 +11,12 @@ import ImagePicker
 class UploadNotesController: UIViewController, ImagePickerDelegate, UIDocumentPickerDelegate {
 
     var course: Course!
+    var firebaseCourse: FirebaseCourse!
     var uploadNotesView = UploadNotesView()
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        uploadNotesView.course = course
+        if course != nil { uploadNotesView.course = course } else { uploadNotesView.firebaseCourse = firebaseCourse }
         view.backgroundColor = UIColor.white
         view.addSubview(uploadNotesView)
         NSLayoutConstraint.activate([uploadNotesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), uploadNotesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), uploadNotesView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), uploadNotesView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])

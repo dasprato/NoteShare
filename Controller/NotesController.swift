@@ -13,6 +13,7 @@ import M13PDFKit
 class NotesController: UIViewController, UITextFieldDelegate {
     
     var note: Note!
+    
     var arrayOfComments = [Comment]()
     var titleForNavBar = ""
     var notesSize = 0

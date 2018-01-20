@@ -16,6 +16,7 @@ class AllNotesController: UIViewController {
     var titleForNavBar = ""
     var listener: ListenerRegistration!
     var course: Course!
+    var firebaseCourse: FirebaseCourse!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,9 +58,15 @@ class AllNotesController: UIViewController {
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }
     @objc func uploadNote() {
+        if self.course != nil {
         let viewControllerToPresent = UploadNotesController()
         viewControllerToPresent.course = self.course
-                self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
+        self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
+        } else {
+            let viewControllerToPresent = UploadNotesController()
+            viewControllerToPresent.firebaseCourse = self.firebaseCourse
+            self.present(UINavigationController(rootViewController: viewControllerToPresent), animated: true, completion: nil)
+        }
     }
     
     fileprivate func fetchNotes() {

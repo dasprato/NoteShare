@@ -244,7 +244,13 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     }
     
     @objc func openMyCoursesNotes() {
-        self.navigationController?.pushViewController(MyCoursesAllNotesController(), animated: true)
+        let viewControllerToPush = AllNotesController()
+        
+        //        guard let unwrappedCurrentCell = homePageView.currentCell else { return }
+        
+        viewControllerToPush.titleForNavBar = homePageView.selectedCourse.code ?? ""
+        viewControllerToPush.firebaseCourse = homePageView.selectedCourse
+        self.navigationController?.pushViewController(viewControllerToPush, animated: true)
     }
     
     @objc func openMyNotesNoteController() {
@@ -261,7 +267,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
-//            perform(#selector(handleLogout), with: nil, afterDelay: 0)
+            perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
 //            userName.text =  Auth.auth().currentUser?.email
         }

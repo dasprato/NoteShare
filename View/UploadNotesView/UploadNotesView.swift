@@ -13,6 +13,7 @@ class UploadNotesView: UIView {
     
     var course: Course!
     var note: Note!
+    var firebaseCourse: FirebaseCourse!
     var imagesToSend: [UIImage]!
     static var classLevelMetaData: StorageMetadata!
     
@@ -257,13 +258,22 @@ class UploadNotesView: UIView {
     func sendToFirebase(wtihMetaData metadata: StorageMetadata, withNoteName noteNameText: String, withNoteDescription noteDescriptionText: String, withLectureInformation lectureInformationText: String,  withUrl profileImageURL: String) {
         
         let noteReferenceName = "\(String(describing: Date().timeIntervalSince1970))"
-        let courseDict: [String: Any] = ["code": self.course.code, "department": self.course.department, "description": self.course.description, "division": self.course.division, "level": self.course.level, "name": self.course.name, "storageReference": "Courses/\(self.course.code!)"]
-        self.note = Note(forCourse: self.course.code!, lectureInformation: lectureInformationText, noteDescription: noteDescriptionText, noteName: noteNameText, noteSize: Int((metadata.size) / 1024 / 1024), rating: 0, referencePath: "Courses/" + self.course.code! + "/Notes/" + noteReferenceName, storageReference: profileImageURL, timeStamp: noteReferenceName, isFavorite: false)
-        let noteDict: [String: Any] = ["forCourse": self.course.code, "lectureInformation": self.note.lectureInformation, "noteDescription": self.note.noteDescription, "noteName": self.note.noteName, "noteSize": self.note.noteSize, "rating": self.note.rating, "storageReference": self.note.storageReference, "referencePath": self.note.referencePath, "timeStamp": self.note.timeStamp]
+        var courseDict = [String: Any]()
+        if course != nil {
+        courseDict = ["code": self.course.code, "department": self.course.department, "description": self.course.description, "division": self.course.division, "level": self.course.level, "name": self.course.name, "storageReference": "Courses/\(self.course.code!)"]
+                    self.note = Note(forCourse: self.course.code!, lectureInformation: lectureInformationText, noteDescription: noteDescriptionText, noteName: noteNameText, noteSize: Int((metadata.size) / 1024 / 1024), rating: 0, referencePath: "Courses/" + self.course.code! + "/Notes/" + noteReferenceName, storageReference: profileImageURL, timeStamp: noteReferenceName, isFavorite: false)
+            
+
+        } else {
+            courseDict = ["code": self.firebaseCourse.code, "department": self.firebaseCourse.department, "description": self.firebaseCourse.description, "division": "", "level": self.firebaseCourse.level, "name": self.firebaseCourse.name, "storageReference": "Courses/\(self.firebaseCourse.code!)"]
+                    self.note = Note(forCourse: self.firebaseCourse.code, lectureInformation: lectureInformationText, noteDescription: noteDescriptionText, noteName: noteNameText, noteSize: Int((metadata.size) / 1024 / 1024), rating: 0, referencePath: "Courses/" + self.firebaseCourse.code! + "/Notes/" + noteReferenceName, storageReference: profileImageURL, timeStamp: noteReferenceName, isFavorite: false)
+        }
+
+        let noteDict: [String: Any] = ["forCourse": self.note.forCourse, "lectureInformation": self.note.lectureInformation, "noteDescription": self.note.noteDescription, "noteName": self.note.noteName, "noteSize": self.note.noteSize, "rating": self.note.rating, "storageReference": self.note.storageReference, "referencePath": self.note.referencePath, "timeStamp": self.note.timeStamp]
         let db = Firestore.firestore()
         
-        db.collection("Courses").document(self.course.code!).setData(courseDict)
-        db.collection("Courses").document(self.course.code!).collection("Notes").document(noteReferenceName).setData(noteDict)
+        if course != nil { db.collection("Courses").document(self.course.code!).setData(courseDict); db.collection("Courses").document(self.course.code!).collection("Notes").document(noteReferenceName).setData(noteDict)
+        } else { db.collection("Courses").document(self.firebaseCourse.code!).setData(courseDict); db.collection("Courses").document(self.firebaseCourse.code!).collection("Notes").document(noteReferenceName).setData(noteDict) }
         
         self.noteName.text = ""
         self.noteDescription.text = ""

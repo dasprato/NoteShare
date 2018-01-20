@@ -14,6 +14,7 @@ import Firebase
 class HomePageView: UIView {
     
     var selectedNote: Note!
+    var selectedCourse: FirebaseCourse!
     
     let myNotesMyCoursesCollectionViewCellId = "myNotesMyCoursesCollectionViewCellId"
     let mainCollectionViewCellId = "mainCollectionViewCellId"
@@ -25,6 +26,7 @@ class HomePageView: UIView {
     var listenerForCourses: ListenerRegistration?
     var listenerForNotes: ListenerRegistration?
     var arrayOfCoursesToDisplay = [FirebaseCourse]()
+
     var arrayOfNotesReferencePath: [String]? {
         didSet {
             self.arrayOfNotes.removeAll()
@@ -407,8 +409,11 @@ extension HomePageView: UICollectionViewDelegate, UICollectionViewDataSource, UI
     }
     
     
-    @objc func openMyCoursesNotes() {
+    @objc func openMyCoursesNotes(sender: UITapGestureRecognizer) {
+        if let indexPath = self.myCoursesCollectionView.indexPathForItem(at: sender.location(in: self.myCoursesCollectionView)) {
+            self.selectedCourse = arrayOfCoursesToDisplay[indexPath.row]
         NotificationCenter.default.post(name: NSNotification.Name.init("openMyCoursesNotes"), object: nil)
+        }
     }
     @objc func openMyNotesNoteController(sender: UITapGestureRecognizer) {
         if let indexPath = self.myNotesCollectionView.indexPathForItem(at: sender.location(in: self.myNotesCollectionView)) {
