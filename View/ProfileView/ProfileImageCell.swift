@@ -12,7 +12,8 @@ class ProfileImageCell: UICollectionViewCell {
     var urlOfImage: String? {
         didSet {
             guard let unwrappedUrlImage = urlOfImage else { return }
-            profileImageView.sd_setImage(with: URL(string: unwrappedUrlImage), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+            if unwrappedUrlImage == "" { return }
+            else { profileImageView.sd_setImage(with: URL(string: unwrappedUrlImage), placeholderImage: UIImage(named: "default"), options: [.continueInBackground, .progressiveDownload]) }
             
         }
     }
@@ -32,6 +33,7 @@ class ProfileImageCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor), profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor), profileImageView.widthAnchor.constraint(equalTo: heightAnchor), profileImageView.heightAnchor.constraint(equalTo: heightAnchor)])
         profileImageView.layer.cornerRadius = frame.height / 2
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,7 +43,7 @@ class ProfileImageCell: UICollectionViewCell {
     var profileImageView: UIImageView = {
         let tom = UIImageView()
         tom.translatesAutoresizingMaskIntoConstraints = false
-        tom.backgroundColor = UIColor.red
+        tom.image = UIImage(named: "default")
         tom.clipsToBounds = true
         return tom
     }()

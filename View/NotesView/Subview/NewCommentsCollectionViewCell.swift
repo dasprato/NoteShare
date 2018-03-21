@@ -24,15 +24,20 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
             db.document(profileStorageReference).getDocument(completion: { (imageUrlSnapShot, error) in
                 guard let unwrappedBool = imageUrlSnapShot?.exists else { return }
                 if !unwrappedBool { return }
+                
+
                 if let err = error { print("Error getting documents: \(err)"); return } else {
                     guard let unwrappedUrl = imageUrlSnapShot?.data()["profilePictureStorageReference"] else { return }
                     guard let unwrappedName = imageUrlSnapShot?.data()["name"] else { return }
-                    self.profileImageView.sd_setImage(with: URL(string: unwrappedUrl as! String), placeholderImage: UIImage(), options: [.continueInBackground, .progressiveDownload])
+                    self.profileImageView.sd_setImage(with: URL(string: unwrappedUrl as! String), placeholderImage: UIImage(named: "default"), options: [.continueInBackground, .progressiveDownload])
                     self.userName.text = unwrappedName as! String
                     self.profileImageView.alpha = 0
                     UIView.animate(withDuration: 0.2, animations: {
                         self.profileImageView.alpha = 1
                     })
+                    
+                    if unwrappedName as! String == "" { self.userName.text = "Anonymous" }
+
                 }
                 
             })
@@ -142,7 +147,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
          ds.font = UIFont.boldSystemFont(ofSize: 15)
         ds.layer.cornerRadius = 10.0
         ds.isUserInteractionEnabled = false
-        ds.text = " " 
+        ds.text = "Anonymous"
         return ds
     }()
     
@@ -150,6 +155,7 @@ class NewCommentsCollectionViewCell: UICollectionViewCell {
         let tom = UIImageView()
         tom.translatesAutoresizingMaskIntoConstraints = false
         tom.clipsToBounds = true
+    
         return tom
     }()
 

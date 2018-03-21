@@ -34,10 +34,10 @@ class ProfileTextAttributesCell: UICollectionViewCell {
         super.init(frame: frame)
 //        contentView.translatesAutoresizingMaskIntoConstraints = false
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = Constants.themeColor.withAlphaComponent(0.2)
-        layer.cornerRadius = 5.0
+        layer.cornerRadius = 10.0
         addSubview(titleOfMenu)
         addSubview(textCell)
+        
         
         NSLayoutConstraint.activate([titleOfMenu.centerYAnchor.constraint(equalTo: centerYAnchor), titleOfMenu.leftAnchor.constraint(equalTo: leftAnchor, constant: 8)])
         
@@ -65,6 +65,7 @@ class ProfileTextAttributesCell: UICollectionViewCell {
         tom.textColor = UIColor.gray
         tom.clipsToBounds = true
         tom.textAlignment = .right
+        
         return tom
     }()
 }

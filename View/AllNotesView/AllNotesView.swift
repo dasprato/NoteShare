@@ -79,6 +79,7 @@ class AllNotesView: UIView {
         ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         ma.showsVerticalScrollIndicator = false
         ma.keyboardDismissMode = .onDrag
+        ma.alwaysBounceVertical = true
         return ma
     }()
 }

@@ -45,7 +45,7 @@ class AllCoursesController: UIViewController {
     
     @objc func openAllNotes() {
         let viewControllerToPush = AllNotesController()
-        if allCoursesView.currentCell?.row != nil {
+        if allCoursesView.currentCell?.row != nil && (allCoursesView.currentCell?.row)! < self.arrayOfCourses.count {
             viewControllerToPush.titleForNavBar = self.arrayOfCourses[(allCoursesView.currentCell?.row)!].code!
         viewControllerToPush.course = self.arrayOfCourses[(allCoursesView.currentCell?.row)!]
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
@@ -60,7 +60,6 @@ class AllCoursesController: UIViewController {
             self.arrayOfCourses.removeAll()
             guard let data = data else { return }
             if (err != nil) {
-                print("Big big error")
             }
             do {
                 let courses = try JSONDecoder().decode([Course].self, from: data)

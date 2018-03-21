@@ -157,23 +157,15 @@ class UploadNotesView: UIView {
         print("trying to document picker and notificaiton sent")
     }
     
-    func createAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
-            alert.dismiss(animated: true, completion: nil)
-        }))
-        print("NS Error by NOTESHARE")
-        print(title, message)
-    }
+
     
     
     @objc func onUploadTapped() {
 
-        ///////////////
         if self.noteName.text.isEmpty {
             print("No note name supplied")
+            NotificationCenter.default.post(name: Notification.Name.init("uploadError"), object: nil)
             return
-            
         }
         
         var noteDescriptionText = "No note description supplied"
@@ -201,6 +193,7 @@ class UploadNotesView: UIView {
         // Load or create your UIImage
         if self.imagesToSend != nil {
             if self.imagesToSend.count > 0 {
+                NotificationCenter.default.post(name: Notification.Name.init("uploadStarted"), object: nil)
             for i in 0..<self.imagesToSend.count {
                 let image = UIImage(cgImage: imagesToSend[i].cgImage!, scale: 1, orientation: .downMirrored)
                 let pdfPage = PDFPage(image: image)
@@ -209,13 +202,14 @@ class UploadNotesView: UIView {
             }
             
         } else {
-            createAlert(title: "ERROR", message: "<>/NO MEDIA<>")
+            NotificationCenter.default.post(name: Notification.Name.init("uploadError"), object: nil)
             return
         }
         
 
 
         // Get the raw data of your PDF document
+        NotificationCenter.default.post(name: Notification.Name.init("uploadingBegan"), object: nil)
         let pdfData = pdfDocument.dataRepresentation()
             let imageUploadTask = storageRef.putData(pdfData!, metadata: nil, completion: { (metadata, error) in
                 // NOTE for Sumit: This is the completion handler, meaning the code will execute when the process is complete

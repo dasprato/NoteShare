@@ -72,8 +72,7 @@ class HomePageView: UIView {
             self.arrayOfCoursesToDisplay.removeAll()
             self.myCoursesCollectionView.reloadData()
             CurrentSessionUser.favoriteCourses = self.arrayOfCourses
-            print("length before starting")
-            print(self.arrayOfCourses.count)
+
 
 
             
@@ -86,7 +85,6 @@ class HomePageView: UIView {
                         return
                     }
                     if let err = error {
-                        print("Error getting documents: \(err)")
                     } else {
                         
 
@@ -99,10 +97,7 @@ class HomePageView: UIView {
                         self.arrayOfCourses.append(FirebaseCourse(code: code, department: department, description: description, level: level, name: name))
                         
                     }
-                    print("Actual number of courses")
-                    print(self.arrayOfCoursesToDisplay.count)
-                    print("number of course references")
-                    print(self.arrayOfCoursesReferencePath?.count)
+
                     if (self.arrayOfCourses.count) == ((self.arrayOfCoursesReferencePath?.count)! * 2) {
                         self.arrayOfCoursesToDisplay.removeAll()
                         self.myCoursesCollectionView.reloadData()

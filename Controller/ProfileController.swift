@@ -16,53 +16,57 @@ class ProfileController: UIViewController {
     let profileTextAttributesCellId = "profileTextAttributesCellId"
     let profileImageCellId = "profileImageCellId"
     var listener: ListenerRegistration?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.clear
         profileCollectionView.delegate = self
         profileCollectionView.dataSource = self
         profileCollectionView.register(ProfileTextAttributesCell.self, forCellWithReuseIdentifier: profileTextAttributesCellId)
         profileCollectionView.register(ProfileImageCell.self, forCellWithReuseIdentifier: profileImageCellId)
-        
+                view.addSubview(whiteBackgroundView)
         view.addSubview(profileCollectionView)
-        NSLayoutConstraint.activate([profileCollectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), profileCollectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), profileCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor), profileCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)])
+
+        view.addSubview(closeButton)
+        view.addSubview(editButton)
+        view.addSubview(saveButton)
         
+        NSLayoutConstraint.activate([profileCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor), profileCollectionView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor), profileCollectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16), profileCollectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16), profileCollectionView.heightAnchor.constraint(equalToConstant: view.frame.width / 2 + 32 * 4 + 16)])
+        
+        
+        NSLayoutConstraint.activate([whiteBackgroundView.leftAnchor.constraint(equalTo: profileCollectionView.leftAnchor), whiteBackgroundView.rightAnchor.constraint(equalTo: profileCollectionView.rightAnchor), whiteBackgroundView.topAnchor.constraint(equalTo: profileCollectionView.topAnchor), whiteBackgroundView.bottomAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 8)])
         let barPencil = UIBarButtonItem(image: UIImage(named: "edit")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onEditTapped))
         navigationItem.setRightBarButtonItems([barPencil], animated: true)
         
+
+        NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: profileCollectionView.bottomAnchor), closeButton.leftAnchor.constraint(equalTo: profileCollectionView.leftAnchor, constant: 16), closeButton.widthAnchor.constraint(equalTo: profileCollectionView.widthAnchor, multiplier: 0.4)])
         
-        let closeButton = UIBarButtonItem(barButtonSystemItem: .cancel , target: self, action: #selector(closeView(_:)))
-        navigationItem.setLeftBarButtonItems([closeButton], animated: true)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.backgroundColor = UIColor.white
-        navigationController?.navigationBar.isTranslucent = false
+        NSLayoutConstraint.activate([editButton.topAnchor.constraint(equalTo: profileCollectionView.bottomAnchor), editButton.rightAnchor.constraint(equalTo: profileCollectionView.rightAnchor, constant: -16), editButton.widthAnchor.constraint(equalTo: profileCollectionView.widthAnchor, multiplier: 0.4)])
         
-        self.navigationController?.navigationBar.layer.shadowColor = UIColor.lightGray.cgColor
-        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
-        self.navigationController?.navigationBar.layer.masksToBounds = false
+                NSLayoutConstraint.activate([saveButton.topAnchor.constraint(equalTo: profileCollectionView.bottomAnchor), saveButton.rightAnchor.constraint(equalTo: profileCollectionView.rightAnchor, constant: -16), saveButton.widthAnchor.constraint(equalTo: profileCollectionView.widthAnchor, multiplier: 0.4)])
+        
+        
     }
     
     @objc func closeView(_ viewController: UIViewController) {
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
 
     @objc func onEditTapped() {
-        let barSave = UIBarButtonItem(image: UIImage(named: "save")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onSaveTapped))
+        editButton.isHidden = true
+        saveButton.isHidden = false
         profileCollectionView.isUserInteractionEnabled = true
-        
-        
-        navigationItem.setRightBarButtonItems([barSave], animated: true)
+        profileCollectionView.isScrollEnabled = false
+
     }
     
     @objc func onSaveTapped() {
-    
-        let barEdit = UIBarButtonItem(image: UIImage(named: "edit")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onEditTapped))
+        editButton.isHidden = false
+        saveButton.isHidden = true
         profileCollectionView.isUserInteractionEnabled = false
         
-        navigationItem.setRightBarButtonItems([barEdit], animated: true)
         let name = profileCollectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as! ProfileTextAttributesCell
         let email = profileCollectionView.cellForItem(at: IndexPath(row: 2, section: 0)) as! ProfileTextAttributesCell
         let fieldOfStudy = profileCollectionView.cellForItem(at: IndexPath(row: 3, section: 0)) as! ProfileTextAttributesCell
@@ -118,7 +122,6 @@ class ProfileController: UIViewController {
         let ma = UICollectionView(frame: .zero, collectionViewLayout: layout)
         ma.translatesAutoresizingMaskIntoConstraints = false
         ma.clipsToBounds = true
-        ma.backgroundColor = UIColor.white
         ma.layer.masksToBounds = true
         ma.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         ma.showsVerticalScrollIndicator = false
@@ -126,10 +129,56 @@ class ProfileController: UIViewController {
         ma.bounces = true
         ma.alwaysBounceVertical = true
         ma.isUserInteractionEnabled = false
+        ma.backgroundColor = .clear
+        ma.layer.cornerRadius = 5.0
         return ma
+        
+    }()
+    
+    var closeButton: UIButton = {
+        var cb = UIButton()
+        cb.translatesAutoresizingMaskIntoConstraints = false
+        cb.setTitle("Close", for: .normal)
+        cb.backgroundColor = .red
+        cb.addTarget(self, action: #selector(closeView(_:)), for: .touchUpInside)
+        cb.layer.cornerRadius = 10.0
+        return cb
+    }()
+    
+    
+    var editButton: UIButton = {
+        var cb = UIButton()
+        cb.translatesAutoresizingMaskIntoConstraints = false
+        cb.setTitle("Edit", for: .normal)
+        cb.backgroundColor = UIColor.blue.withAlphaComponent(0.8)
+        cb.addTarget(self, action: #selector(onEditTapped), for: .touchUpInside)
+        cb.layer.cornerRadius = 10.0
+        return cb
+    }()
+    
+    var saveButton: UIButton = {
+        var cb = UIButton()
+        cb.translatesAutoresizingMaskIntoConstraints = false
+        cb.setTitle("Save", for: .normal)
+        cb.backgroundColor = UIColor.blue.withAlphaComponent(0.8)
+        cb.addTarget(self, action: #selector(onSaveTapped), for: .touchUpInside)
+        cb.layer.cornerRadius = 10.0
+        cb.isHidden = true
+        return cb
+    }()
+    
+    var whiteBackgroundView: UIView = {
+        let wb = UIView()
+        wb.translatesAutoresizingMaskIntoConstraints = false
+        wb.backgroundColor = .white
+        wb.layer.cornerRadius = 10.0
+        
+        return wb
     }()
 
-}
+    
+    
+    }
 
 extension ProfileController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -148,13 +197,13 @@ extension ProfileController: UICollectionViewDelegate, UICollectionViewDataSourc
         cell.titleOfMenuString = self.arrayOfFields[indexPath.row - 1]
         switch indexPath.row - 1 {
         case 0:
-            cell.textString = CurrentSessionUser.user?.name
+            cell.textString = CurrentSessionUser.user!.name
         case 1:
-            cell.textString = CurrentSessionUser.user?.emailAddress
+            cell.textString = CurrentSessionUser.user!.emailAddress
         case 2:
-            cell.textString = CurrentSessionUser.user?.fieldOfStudy
+            cell.textString = CurrentSessionUser.user!.fieldOfStudy
         case 3:
-            guard let unwrappedYear = CurrentSessionUser.user?.yearOfStudy else { break }
+            guard let unwrappedYear = CurrentSessionUser.user!.yearOfStudy else { break }
             cell.textString = String(describing: unwrappedYear)
         default:
             break
@@ -167,10 +216,23 @@ extension ProfileController: UICollectionViewDelegate, UICollectionViewDataSourc
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.width / 2)
             
         }
-        return CGSize(width: collectionView.frame.width - 16, height: 32)
+        return CGSize(width: collectionView.frame.width - 32, height: 32)
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        whiteBackgroundView.layer.shadowColor = UIColor.lightGray.cgColor
+        whiteBackgroundView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        whiteBackgroundView.layer.shadowOpacity = 1.0
+        whiteBackgroundView.layer.masksToBounds = false
+        
+        whiteBackgroundView.layer.shadowPath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: whiteBackgroundView.frame.width, height: whiteBackgroundView.frame.height), cornerRadius: 10.0).cgPath
+    }
+    
 
 }
+
+
 
 extension ProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -197,9 +259,6 @@ extension ProfileController: UIImagePickerControllerDelegate, UINavigationContro
             let cell = profileCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as! ProfileImageCell
             cell.galleryImage = selectedImage
             imageToSend = selectedImage
-            print("============")
-            print(selectedImage)
-             print("============")
         }
         
         dismiss(animated: true, completion: nil)

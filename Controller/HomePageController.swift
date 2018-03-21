@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseMessaging
 
 class HomePageController: UIViewController, LeftMenuDelegate, UINavigationControllerDelegate {
     
@@ -19,7 +20,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         didSet {
 
             guard let email = user?.email else { return }
-//            userName.text = email
         }
     }
     
@@ -39,16 +39,12 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-        fetchUser()
         checkIfUserIsLoggedIn()
         
         view.backgroundColor = UIColor.white
         view.addSubview(homePageView)
-//        view.addSubview(leftMenu)
         
         
-//        leftMenu.delegate = self
         NSLayoutConstraint.activate([homePageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor), homePageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor), homePageView.bottomAnchor.constraint(equalTo: view.bottomAnchor), homePageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)])
         
 //        NSLayoutConstraint.activate([leftMenu.leftAnchor.constraint(equalTo: view.leftAnchor), leftMenu.topAnchor.constraint(equalTo: view.topAnchor), leftMenu.heightAnchor.constraint(equalTo: view.heightAnchor), leftMenu.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)])
@@ -91,7 +87,9 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        fetchUser()
+        fetchNotes()
+        fetchCourses()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,9 +111,15 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
             userName.text = unwrappedEmail
         }
 
-        fetchNotes()
-        fetchCourses()
-        fetchUser()
+
+        DispatchQueue.main.async {
+
+            Messaging.messaging().unsubscribe(fromTopic: "pushNotifications")
+            Messaging.messaging().unsubscribe(fromTopic: "Comment_Notifications")
+            print("Did unsubscribe to the topic")
+        }
+        
+        
 
 
         
@@ -146,10 +150,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
                 profilePictureStorageReference = (dict!["profilePictureStorageReference"] as? String) ?? ""
                     yearOfStudy = (dict?["yearOfStudy"] as? Int) ?? 0
                 CurrentSessionUser.user = FirebaseUser(emailAddress: emailAddress, fieldOfStudy: fieldOfStudy, yearOfStudy: yearOfStudy, profilePictureStorageReference: profilePictureStorageReference, name: name)
-                print("The user for the current sessoin is:")
-                print("---------------")
-                print(dict)
-                print("---------------")
             }
             }
         }
@@ -205,7 +205,10 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     
     @objc func openProfile() {
-        self.present(UINavigationController(rootViewController: ProfileController()), animated: true, completion: nil)
+        let pc = ProfileController()
+        pc.modalTransitionStyle = .crossDissolve
+        pc.modalPresentationStyle = .overCurrentContext
+        self.present(pc, animated: true, completion: nil)
     }
     
     
@@ -222,8 +225,6 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
         
 //        viewControllerToPush.titleForNavBar = self.arrayOfNotes.reversed()[unwrappedCurrentCell.row].noteName
         viewControllerToPush.note = homePageView.selectedNote
-        print("The note passed on is:")
-        (viewControllerToPush.note.noteName)
         
         self.navigationController?.pushViewController(viewControllerToPush, animated: true)
         

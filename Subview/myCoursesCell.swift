@@ -13,7 +13,6 @@ class myCoursesCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-//        addSubview(courseImage)
         backgroundColor = Constants.themeColor
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true

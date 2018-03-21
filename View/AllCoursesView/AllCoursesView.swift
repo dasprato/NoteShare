@@ -104,13 +104,13 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
             self.currentCell = indexPath
             NotificationCenter.default.post(name: NSNotification.Name.init("openAllNotes"), object: nil)
         } else {
-            print("collection view was tapped")
+      
         }
     }
     
     @objc func changeColor(sender: UITapGestureRecognizer) {
         if let indexPath = self.allCoursesCollectionView.indexPathForItem(at: sender.location(in: self.allCoursesCollectionView)) {
-            print("you can do something with the cell or index path here")
+
                 let cell = allCoursesCollectionView.cellForItem(at: indexPath) as! AllCoursesCollectionViewCell
             
             let courseDict: [String: Any] = ["code": self.arrayOfCourses![indexPath.row].code, "department": self.arrayOfCourses![indexPath.row].department, "description": self.arrayOfCourses![indexPath.row].description, "division": self.arrayOfCourses![indexPath.row].division, "level": self.arrayOfCourses![indexPath.row].level, "name": self.arrayOfCourses![indexPath.row].name, "storageReference": "Courses/\(self.arrayOfCourses![indexPath.row].code!)"]
@@ -126,15 +126,25 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
                     let db = Firestore.firestore()
                     db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code!).setData(dict)
                     arrayOfCourses![indexPath.row].isFavorite = true
+                    
+                    DispatchQueue.main.async {
+                        
+                        Messaging.messaging().subscribe(toTopic: "Notifications_" + "\(self.arrayOfCourses![indexPath.row].code!)")
+                        print("Did subscribe to the topic:")
+                        print("Notifications_" + "\(self.arrayOfCourses![indexPath.row].code!)")
+                    }
                 } else {
                     let db = Firestore.firestore()
                     cell.starIcon.tintColor = UIColor.lightGray
                     db.collection("Users").document((Auth.auth().currentUser?.uid)!).collection("favoriteCourses").document(self.arrayOfCourses![indexPath.row].code!).delete() { err in
                         if let err = err {
-                            print("Error removing document: \(err)")
                         } else {
-                            print("Document successfully removed!")
                         }
+                    }
+                    DispatchQueue.main.async {
+                        Messaging.messaging().unsubscribe(fromTopic: "Notifications_" + "\(self.arrayOfCourses![indexPath.row].code!)")
+                        print("Did unsubscribe to the topic")
+                        print("Notifications_" + "\(self.arrayOfCourses![indexPath.row].code!)")
                     }
                         arrayOfCourses![indexPath.row].isFavorite = false
                 }
@@ -144,7 +154,6 @@ extension AllCoursesView: UICollectionViewDelegateFlowLayout, UICollectionViewDe
             
 
         } else {
-            print("collection view was tapped")
         }
         
         

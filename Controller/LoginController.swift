@@ -60,29 +60,7 @@ class LoginController: UIViewController {
     
 
     
-    var customFacebookButton: UIButton = {
-        let lb = UIButton(type: .system)
-        lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.setTitle("Custom Facebook Login", for: .normal)
-        lb.setTitleColor(UIColor.white, for: .normal)
-        lb.backgroundColor = UIColor(red: 152/255, green: 204/255, blue: 232/255, alpha: 1)
-        lb.contentMode = .scaleAspectFit
-        lb.addTarget(self, action: #selector(handleFacebookLogin), for: .touchUpInside)
-        lb.layer.cornerRadius = 5.0
-        return lb
-    }()
-    
-    @objc func handleFacebookLogin() {
-//        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, err) in
-//            if err != nil {
-//                print("Custom FB Login failed:")
-//                return
-//            }
-//            self.showEmailAddress()
-//        }
-    }
-    
-    
+
     
     
     
@@ -166,11 +144,14 @@ class LoginController: UIViewController {
             
             //successfully logged in our user
             
-            let firebaseUser = FirebaseUser(emailAddress: user?.email, fieldOfStudy: "", yearOfStudy: 0, profilePictureStorageReference: "https://scontent.fyto1-1.fna.fbcdn.net/v/t1.0-9/26167731_1580968031970582_2119099227383639033_n.jpg?oh=a20c561f3d5402711b7f2e42ef1d1d7d&oe=5AF07D7C", name: "Prato Das")
-            
-//            HomePageController.user = user
-//            HomePageController.firebaseUser = firebaseUser
+            print("The email address previously was:")
+            print(Auth.auth().currentUser?.email)
+            print(HomePageController.userEmail)
             HomePageController.userEmail =  (Auth.auth().currentUser?.email)!
+            print("The email address and uId is:")
+            print(HomePageController.userEmail)
+            print(Auth.auth().currentUser?.email)
+            print(Auth.auth().currentUser?.uid)
             self.dismiss(animated: true, completion: nil)
 
 

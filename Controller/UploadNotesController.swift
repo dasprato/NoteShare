@@ -41,10 +41,27 @@ class UploadNotesController: UIViewController, ImagePickerDelegate, UIDocumentPi
         NotificationCenter.default.addObserver(self, selector: #selector(launchDocumentPicker), name: NSNotification.Name.init("launchDocumentPicker"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(closeView(_:)), name: NSNotification.Name.init("closeNoteUpload"), object: nil)
         
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(createAlert), name: NSNotification.Name.init("uploadError"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(uploadingBegan), name: NSNotification.Name.init("uploadingBegan"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(uploadStarted), name: NSNotification.Name.init("uploadStarted"), object: nil)
+        
 
     }
     @objc func closeView(_ viewController: UIViewController) {
         self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func uploadStarted() {
+        self.navigationController?.navigationBar.topItem?.title = "Starting..."
+    
+    }
+    
+    @objc func uploadingBegan() {
+        self.navigationController?.navigationBar.topItem?.title = "Uploading..."
+        
     }
     let imagePickerController = ImagePickerController()
     @objc func launchImagePicker() {
@@ -53,6 +70,15 @@ class UploadNotesController: UIViewController, ImagePickerDelegate, UIDocumentPi
         imagePickerController.delegate = self
     }
     
+    
+    
+    @objc func createAlert() {
+        let alert = UIAlertController(title: "Error", message: "Either the note or the note name is missing", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        present(alert, animated: true, completion: nil)
+    }
     
     @objc func launchDocumentPicker() {
         var documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.pdf"], in: UIDocumentPickerMode.import)
