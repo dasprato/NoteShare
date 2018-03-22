@@ -88,8 +88,7 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
     
     override func viewDidAppear(_ animated: Bool) {
         fetchUser()
-        fetchNotes()
-        fetchCourses()
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -119,7 +118,8 @@ class HomePageController: UIViewController, LeftMenuDelegate, UINavigationContro
             print("Did unsubscribe to the topic")
         }
         
-        
+        fetchNotes()
+        fetchCourses()
 
 
         
